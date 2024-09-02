@@ -1,0 +1,140 @@
+<section class="grid-container large-grid-container">
+  <div class="large-image-container image-container">
+    <img
+      class="full-width"
+      src="../../../../assets/signUp/sign-up.png"
+      alt="sign up image"
+    />
+  </div>
+
+  <div class="form-container">
+    <div class="header-section">
+      <h1 class="header">Sign Up</h1>
+      <p>Sign up for free to access to any of our products</p>
+    </div>
+
+    <form
+      class="form"
+      action=""
+      [formGroup]="signUpForm"
+      (ngSubmit)="formAction()"
+    >
+      <!-- First Name-->
+      <label for="firstName">First Name</label>
+      <div class="input-wrapper">
+        <input
+          name="firstName"
+          class="input"
+          type="firstName"
+          placeholder="examplename"
+          formControlName="firstName"
+          required
+        />
+      </div>
+      @if (signUpForm.get('firstName')?.errors &&
+      (signUpForm.get('firstName')?.dirty ||
+      signUpForm.get('firstName')?.touched)) { @if
+      (signUpForm.get('firstName')?.errors?.['required']){
+      <div class="error">firstName is required</div>
+      } }
+
+      <!-- last Name-->
+      <label for="lastName">Last Name</label>
+      <div class="input-wrapper">
+        <input
+          name="lastName"
+          class="input"
+          type="lastName"
+          placeholder="examplename"
+          formControlName="lastName"
+          required
+        />
+      </div>
+      @if (signUpForm.get('lastName')?.errors &&
+      (signUpForm.get('lastName')?.dirty ||
+      signUpForm.get('lastName')?.touched)) { @if
+      (signUpForm.get('lastName')?.errors?.['required']){
+      <div class="error">lastName is required</div>
+      } }
+
+      <!-- Email Address -->
+      <label for="email">Email Address</label>
+      <div class="input-wrapper">
+        <input
+          name="email"
+          class="input"
+          type="email"
+          placeholder="designer@gmail.com"
+          formControlName="email"
+          required
+        />
+      </div>
+      @if (signUpForm.get('email')?.errors && (signUpForm.get('email')?.dirty ||
+      signUpForm.get('email')?.touched)) { @if
+      (signUpForm.get('email')?.errors?.['required']){
+      <div class="error">Email is required</div>
+      } @if (signUpForm.get('email')?.errors?.['email']) {
+      <div class="error">Invalid email format</div>
+      } }
+
+      <!-- Password -->
+      <div class="password-wrapper">
+        <div class="flex justify-between">
+          <label for="password">Password</label>
+          <span
+            (click)="togglePassword()"
+            class="toggle-password cursor-pointer"
+          >
+            <i
+              *ngIf="showPassword"
+              class="fa fa-eye-slash"
+              aria-hidden="true"
+              id="eyeIcon"
+            ></i>
+            <i
+              *ngIf="!showPassword"
+              class="fa fa-eye"
+              aria-hidden="true"
+              id="eyeIcon"
+            ></i>
+          </span>
+        </div>
+        <div class="input-wrapper relative">
+          <input
+            name="password"
+            class="input"
+            type="{{ showPassword ? 'text' : 'password' }}"
+            id="passwordInput"
+            formControlName="password"
+            required
+          />
+        </div>
+      </div>
+
+      @if (signUpForm.get('password')?.errors &&
+      (signUpForm.get('password')?.dirty ||
+      signUpForm.get('password')?.touched)) {
+      <div class="error">
+        @if (signUpForm.get('password')?.errors?.['required']) { Password is
+        required } @if (signUpForm.get('password')?.errors?.['minlength']) {
+        Password must be at least 8 characters }
+      </div>
+      }
+
+      <div>
+        <button
+          type="submit"
+          class="submit-btn"
+          [ngClass]="{ disabled: signUpForm.invalid || isLoading }"
+          [disabled]="signUpForm.invalid"
+        >
+          Sign Up
+        </button>
+        <p class="additional-text">
+          Already have an account?
+          <a class="link" routerLink="/login">Log in</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</section>

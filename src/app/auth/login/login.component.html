@@ -1,0 +1,78 @@
+<section class="flex-container large-flex-container">
+  <div class="large-image-container image-container">
+    <img
+      class="login-img"
+      src="../../../../assets/signUp/login.png"
+      alt="sign up image"
+    />
+  </div>
+
+  <div class="form-container">
+    <h1 class="header">Sign In Page</h1>
+    <form
+      class="form"
+      action=""
+      [formGroup]="signupForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <!-- email Address -->
+      <div>
+        <label for="email"> Email*</label>
+        <div class="input-wrapper">
+          <input
+            name="email"
+            class="input"
+            type="email"
+            formControlName="email"
+            required
+          />
+        </div>
+        @if (signupForm.get('email')?.errors &&
+        (signupForm.get('email')?.dirty ||
+        signupForm.get('email')?.touched)) { @if
+        (signupForm.get('email')?.errors?.['required']){
+        <div class="error">email is required</div>
+        } }
+      </div>
+
+      <!-- password -->
+      <div>
+        <label for="password">Password*</label>
+        <div class="input-wrapper">
+          <input
+            name="password"
+            class="input"
+            type="password"
+            formControlName="password"
+            required
+          />
+        </div>
+
+        @if (signupForm.get('password')?.errors &&
+        (signupForm.get('password')?.dirty ||
+        signupForm.get('password')?.touched)) {
+        <div>
+          @if (signupForm.get('password')?.errors?.['required']) {
+          <div class="error">Password is required</div>
+          } @if (signupForm.get('password')?.errors?.['minlength']) {
+          <div class="error">Password must be at least 8 characters</div>
+          }
+        </div>
+        }
+      </div>
+
+      @if(errorMessage.length > 0){
+      <div class="error">Invalid credenetials</div>
+      }
+
+      <button
+        type="submit"
+        class="submit-btn"
+        [ngClass]="{ disabled: signupForm.invalid || isLoading }"
+        [disabled]="signupForm.invalid"
+      >
+        Log in
+      </button>
+    </form>
+  </div>
+</section>

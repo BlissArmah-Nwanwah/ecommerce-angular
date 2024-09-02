@@ -1,0 +1,27 @@
+
+
+<div class="product-card">
+    <div class="product-info" (click)="onViewDetails()">
+      <img
+        class="product-image"
+        [src]="product.image"
+        [alt]="product.title"
+      />
+      <div class="product-details">
+        <p class="product-title">
+          {{ product.title }}
+        </p>
+        <div class="product-price">
+          {{ product.price | currency }}
+        </div>
+      </div>
+    </div>
+
+    <button
+      mat-raised-button
+      color="basic"
+      (click)="onProductSelectedToCart()"
+    >
+      Add To Cart
+    </button>
+  </div>

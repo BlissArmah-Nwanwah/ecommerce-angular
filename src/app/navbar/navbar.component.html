@@ -1,0 +1,39 @@
+<header>
+  <nav class="navbar">
+    <div (click)="routeToHome()" class="logo-container cursor-pointer">
+      <img src="../../../../../assets/Logo.png" alt="logo" />
+    </div>
+
+    <!-- icons -->
+    <div class="icon-container">
+      @if (isLoggenIn$ | async){
+      <h1>Welcome Bliss Armah</h1>
+      <button mat-raised-button color="link" (click)="logout()">Logout</button>
+      } @else {
+
+      <button mat-raised-button color="link" routerLink="/login">Login</button>
+      }
+
+      <!-- cart icon -->
+      <button
+        (click)="routeToCart()"
+        class="cart-button"
+        [ngClass]="{ 'cart-button-color': selectedProductCount > 0 }"
+      >
+        <mat-icon
+          [ngClass]="{ 'cart-button-icon ': selectedProductCount > 0 }"
+          name="cart-outline"
+          class="icon-gray icon"
+          >shopping_cart</mat-icon
+        >
+        @if (getProductCount() >= 1) {
+        <span
+          class="cart-count bg-red-500 w-5 h-5 rounded-full text-white text-[13px] flex justify-center items-center"
+        >
+          {{ getProductCount() }}
+        </span>
+        }
+      </button>
+    </div>
+  </nav>
+</header>

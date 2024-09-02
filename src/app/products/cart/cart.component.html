@@ -1,0 +1,63 @@
+<app-navbar></app-navbar>
+<section class="add-to-cart-section">
+  <div class="grid-view-container">
+    <div>Product Details</div>
+    <div>Price</div>
+    <div>Quantity</div>
+    <div>Shipping</div>
+    <div>Subtotal</div>
+    <div>Action</div>
+  </div>
+
+  <!-- Cart Products -->
+  @for (product of cartProducts; track product) {
+  <div class="cart-product">
+    <div class="product-details">
+      <img
+        class="product-image"
+        src="{{ product.image }}"
+        alt="{{ product.title }}"
+      />
+      <p class="product-title">{{ product.title }}</p>
+    </div>
+    <p class="product-price">$ {{ product.price }}</p>
+    <div class="quantity">
+      <button class="quantity-button" (click)="decrementCount(product.id)">
+        <i class="fa-solid fa-minus"></i>
+      </button>
+      <p>{{ product.count }}</p>
+      <button class="quantity-button" (click)="incrementCount(product.id)">
+        <i class="fa-solid fa-plus"></i>
+      </button>
+    </div>
+    <button class="">FREE</button>
+    <p class="subtotal">$ {{ product.price }}</p>
+    <button class="remove-button" (click)="removeProduct(product)">
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+  }
+
+  <div class="cart-summary">
+    <button class="continue-shopping" (click)="redirectToHome()">
+      Continue Shopping
+    </button>
+
+    <div class="order-summary">
+      <div class="summary-details">
+        <p>Sub Total</p>
+        <p>{{ totalAmount | number }}</p>
+        <p>Shipping</p>
+        <p>{{ 00.0 | number }}</p>
+        <p class="font-bold">Grand Total</p>
+        <p>{{ totalAmount | number }}</p>
+      </div>
+      <button class="checkout-button" (click)="redirectToCheckout()">
+        Proceed To Checkout
+      </button>
+    </div>
+  </div>
+</section>
+<router-outlet></router-outlet>
+
+<app-footer></app-footer>

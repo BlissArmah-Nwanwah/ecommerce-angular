@@ -1,0 +1,78 @@
+<div class="">
+  <div class="modal-wrapper" (click)="onCloseModal()"></div>
+  <div class="modal-content" #modalContent>
+    <div class="modal-header">
+      <h2>Create Product</h2>
+      <mat-icon (click)="onCloseModal()" class="icon-close">close</mat-icon>
+    </div>
+
+    <form class="form" [formGroup]="productForm" (ngSubmit)="formSubmit()">
+      <!-- Title (mapped to firstName) -->
+      <label for="title">Title</label>
+      <div class="input-wrapper">
+        <input
+          name="title"
+          class="input"
+          type="text"
+          placeholder="Product Title"
+          formControlName="title"
+          required
+        />
+      </div>
+
+      <!-- Description (mapped to lastName) -->
+      <label for="description">Description</label>
+      <div class="input-wrapper">
+        <input
+          name="description"
+          class="input"
+          type="text"
+          placeholder="Product Description"
+          formControlName="description"
+          required
+        />
+      </div>
+
+      <!-- Price -->
+      <label for="price">Price</label>
+      <div class="input-wrapper">
+        <input
+          name="price"
+          class="input"
+          type="number"
+          placeholder="Product Price"
+          formControlName="price"
+          required
+        />
+      </div>
+
+      <!-- Category -->
+      <label for="category">Category</label>
+      <div class="input-wrapper">
+        <input
+          name="category"
+          class="input"
+          type="text"
+          placeholder="Product Category"
+          formControlName="category"
+          required
+        />
+      </div>
+
+      <!-- Image URL -->
+      <label for="image">Image URL</label>
+      <div class="input-wrapper">
+        <input
+          name="image"
+          class="input"
+          type="file"
+          placeholder="Image URL"
+          formControlName="image"
+          required
+        />
+      </div>
+
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+</div>

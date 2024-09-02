@@ -1,0 +1,77 @@
+@if(toggleModal){
+<app-createproductmodal
+  (closeModal)="onToggleCreatProductModal()"
+></app-createproductmodal>
+}
+<app-navbar></app-navbar>
+<section class="main-section">
+  <section class="image-section mb-5">
+    <img
+      class="full-width"
+      src="../../../../assets/images/shop-hero-1-product-slide-1.png"
+      alt=""
+    />
+    <div class="text-overlay">
+      <div class="text-content">
+        <p class="category">T-Shirt / Tops</p>
+        <h1 class="title">Summer Value Pack</h1>
+        <p class="description">cool / colorful /comfy</p>
+        <button mat-raised-button color="accent">Shop Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products section -->
+  <section class="products-section">
+    <div class="title-all-container">
+      <div class="title-container">Products</div>
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="onToggleCreatProductModal()"
+      >
+        Create Product
+      </button>
+      @if (!loading) {
+      <div id="searchBar">
+        <form class="search-bar">
+          <i class="fas fa-search icon-search"></i>
+          <input
+            type="text"
+            placeholder="Search"
+            class="search-input"
+            formControlName="searchTerm"
+            (keyup)="onInputChange($event)"
+          />
+        </form>
+      </div>
+      }
+    </div>
+    <div class="content">
+      @if (loading()) {
+      <div class="loading-message">Loading...😎</div>
+      }
+
+      <div class="product-grid" #container>
+        @for(product of products();track product.id){
+        <app-item-card
+          #cardRef
+          [product]="product"
+          (productSelectDetail)="onProductSelectDetail($event)"
+          (productAddToCart)="onProductSelectedToCart($event)"
+        ></app-item-card>
+        }
+      </div>
+      <!-- @if (paginationVisible) {
+        <mat-paginator
+          [length]="productLength * itemsPerPage"
+          [pageSize]="itemsPerPage"
+          [pageIndex]="currentPage - 1"
+          [showFirstLastButtons]="true"
+          (page)="handlePageEvent($event)"
+        >
+        </mat-paginator>
+        } -->
+    </div>
+  </section>
+</section>

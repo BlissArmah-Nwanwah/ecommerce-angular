@@ -1,0 +1,37 @@
+.empty-cart-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .empty-cart-content {
+    text-align: center;
+  }
+  
+  .empty-cart-image {
+    margin-bottom: 1rem;
+  }
+  
+  .empty-cart-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .empty-cart-message {
+    margin-bottom: 1rem;
+  }
+  
+  .continue-shopping-button {
+    background-color: rgba(132, 52, 225, 1);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  .continue-shopping-button:hover {
+    background-color: #8a2be2;
+  }
+  

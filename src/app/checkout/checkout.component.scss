@@ -1,0 +1,43 @@
+.main-section {
+  position: relative;
+  top: 130px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.title-container {
+  border-left: 4px solid rgba(132, 52, 225, 1);
+  font-weight: bold;
+  padding-left: 8px;
+  font-size: 1.5rem;
+}
+
+.checkout-details-container {
+  display: grid;
+  margin-top: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+}
+
+.payment-method-container {
+    border-radius: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 28px;
+    padding-right: 28px;
+    background-color:#F6F6F6 ;
+    margin-bottom: 20px;
+}
+
+.order-summary-container {
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-shadow: 1px 1px 10px 1px rgba(0, 0, 0, 0.3);
+}
+
+.order-summary-line {
+  border-bottom: 1px solid #edeef2;
+}
+
+ 
