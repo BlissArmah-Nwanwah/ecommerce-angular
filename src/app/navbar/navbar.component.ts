@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit {
   }
 
   routeToHome() {
-    this.router.navigate(['']);
+    this.router.navigate(['/home']);
   }
 
   logout() {

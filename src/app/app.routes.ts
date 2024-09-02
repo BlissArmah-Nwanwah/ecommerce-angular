@@ -8,18 +8,19 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { SignupComponent } from './auth/signup/signup.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'home', component: HomeComponent,canActivate: [AuthGuard] },
   {
     path: 'details/:id',
-    component: DetailsComponent,
+    component: DetailsComponent,canActivate: [AuthGuard]
   },
   {
     path: 'cart',
     loadChildren: () =>
       import('./products/cart/cart.module').then((m) => m.cartRoutingModule),
+    canActivate: [AuthGuard]
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'empty-cart', component: EmptyCartComponent },
+  { path: 'empty-cart', component: EmptyCartComponent,canActivate: [AuthGuard] },
   { path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard] },
 ];

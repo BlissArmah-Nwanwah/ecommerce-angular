@@ -29,7 +29,7 @@ export class AuthGuard {
       select(isLoggedIn),
       tap((isLoggedIn) => {
         if (!isLoggedIn) {
-          return this.router.createUrlTree(['/login']);
+          return this.router.navigate(['/']);
         }
         return true
       })

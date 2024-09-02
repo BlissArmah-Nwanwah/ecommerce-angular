@@ -8,13 +8,7 @@ import {
 } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
-import { EMPTY, Observable, concat, of } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { Observable, } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import {
@@ -27,7 +21,7 @@ import { ItemCardComponent } from '../item-card/item-card.component';
 import { ProductData, cartProductData } from '../../services/product-data';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
-import { select, Store } from '@ngrx/store';
+import {  Store } from '@ngrx/store';
 import { PRODUCT_ACTIONS } from '../products.actions';
 import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
@@ -81,21 +75,6 @@ export class HomeComponent implements OnInit {
     this.loading = this.store.selectSignal(isProductsLoading);
   }
 
-  // searchProducts(searchInput: string): Observable<ProductData[]> {
-  //   if (searchInput === '') {
-  //     return this.displayedProducts;
-  //   } else {
-  //     return new Observable<ProductData[]>((observer) => {
-  //       observer.next(
-  //         this.products.filter((product) =>
-  //           product.title
-  //             .toLowerCase()
-  //             .includes(searchInput.toLocaleLowerCase())
-  //         )
-  //       );
-  //     });
-  //   }
-  // }
 
   onToggleCreatProductModal() {
     this.toggleModal = !this.toggleModal;
@@ -114,23 +93,12 @@ export class HomeComponent implements OnInit {
     this.store.dispatch(
       PRODUCT_ACTIONS.loadSelectedProduct({ productId: product.id })
     );
-    // this.productService.setSelectedProduct(product);
-    // this.router.navigate(['/details', product.id]);
   }
 
   handlePageEvent(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
   }
 
-  // get paginationVisible(): boolean {
-  //   return this.products.length > this.itemsPerPage;
-  // }
-
-  // get displayedProducts(): Observable<ProductData[]> {
-  //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  //   const endIndex = startIndex + this.itemsPerPage;
-  //   return of(this.products.slice(startIndex, endIndex));
-  // }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {

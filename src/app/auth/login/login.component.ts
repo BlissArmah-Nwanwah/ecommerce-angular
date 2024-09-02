@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     });
     this.isLoggenIn = this.store.selectSignal(isLoggedIn);
     if (this.isLoggenIn()) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     }
   }
 
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       .pipe(
         tap((user) => {
           this.store.dispatch(AuthActions.login({ user: { ...user } }));
-          this.router.navigate(['/']);
+          this.router.navigate(['/home']);
         })
       )
       .subscribe({
