@@ -7,18 +7,20 @@ import { EMPTY, catchError } from 'rxjs';
 import { ProductData, cartProductData } from '../../services/product-data';
 import { FooterComponent } from '../../footer/footer.component';
 import { NavbarComponent } from '../../navbar/navbar.component';
-import { selectedProduct } from '../products.selectors';
+import { isProductsLoading, selectedProduct } from '../products.selectors';
+import { PRODUCT_ACTIONS } from '../products.actions';
+import { LoaderComponent } from '../../loader/loader.component';
 
 @Component({
   selector: 'app-details',
   standalone: true,
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',
-  imports: [CommonModule, FooterComponent, RouterLink, NavbarComponent],
+  imports: [CommonModule, FooterComponent, RouterLink, NavbarComponent,LoaderComponent],
 })
 export class DetailsComponent {
   selectedProduct = this.store.selectSignal(selectedProduct);
-  loading: boolean = false;
+  loading =this.store.selectSignal(isProductsLoading);
   selectedSize: string = '';
   id!: string;
 
@@ -29,21 +31,11 @@ export class DetailsComponent {
   ) {
     this.id = this.route.snapshot.params['id'];
   }
+  ngOnInit(): void {
+    this.store.dispatch(
+      PRODUCT_ACTIONS.loadSelectedProduct({ productId: this.id })    );
+    }
 
-  // ngOnInit(): void {
-  //   // this.getSingleProduct();
-  //   this.selectedProduct = this.store.selectSignal(selectedProduct);
-  // }
-
-  // getSingleProduct() {
-  //   this.loading = true;
-  //   this.productService
-  //     .getSelectedProduct(this.id)
-  //     .pipe(catchError(() => EMPTY))
-  //     .subscribe((products) => {
-  //       this.selectedProduct = products;
-  //     });
-  // }
 
   onProductSelectedToCart(product: cartProductData | null): void {
     if (product) this.productService.setSelectedProductToCart(product);

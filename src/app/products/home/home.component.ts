@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
-import { Observable, } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import {
@@ -21,7 +21,7 @@ import { ItemCardComponent } from '../item-card/item-card.component';
 import { ProductData, cartProductData } from '../../services/product-data';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
-import {  Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { PRODUCT_ACTIONS } from '../products.actions';
 import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
@@ -75,7 +75,6 @@ export class HomeComponent implements OnInit {
     this.loading = this.store.selectSignal(isProductsLoading);
   }
 
-
   onToggleCreatProductModal() {
     this.toggleModal = !this.toggleModal;
   }
@@ -90,15 +89,12 @@ export class HomeComponent implements OnInit {
   }
 
   onProductSelectDetail(product: cartProductData): void {
-    this.store.dispatch(
-      PRODUCT_ACTIONS.loadSelectedProduct({ productId: product.id })
-    );
+    this.router.navigate(['/details', product.id]);
   }
 
   handlePageEvent(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
   }
-
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {

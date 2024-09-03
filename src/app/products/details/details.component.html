@@ -1,56 +1,61 @@
 <app-navbar></app-navbar>
+@if (loading()) {
+<app-loader></app-loader>
+}
+@if (!loading()) {
 
-<section class="product-details-container">
-    <div
-      class="product-details-title"
-    >
-      Product Details
-    </div>
-    <div class="product-grid">
-      <div></div>
-      @if (selectedProduct()) {
-      <img class="product-detail-image" [src]="selectedProduct()?.image" [alt]="selectedProduct()?.title" />
-  
-      <div class="product-details">
-        <h1 class="product-title">
-          {{ selectedProduct()?.title }}
-        </h1>
-        <!-- stars -->
-        <div class="product-rating">
-          <i class="fa-solid fa-star text-yellow-500"></i>
-          <span class="rating-text">Rating:</span>
-          {{ selectedProduct()?.rating?.rate }}
-        </div>
-  
-        <div class="product-category">
-            <span class="category-text">Category:</span>
-            {{ selectedProduct()?.category }}
-          </div>
-  
-          <div class="product-actions">
-            @if(selectedProduct()){
-
-              <div class="action-buttons">
-                <button class="add-to-cart-button" (click)="onProductSelectedToCart(selectedProduct())">
-                  <i class="fa-solid fa-cart-shopping"></i>Add to cart
-                </button>
-                <button class="price-button">
-                  ${{ selectedProduct()?.price }}
-                </button>
-              </div>
-            }
-          </div>
+  <section class="product-details-container">
+      <div
+        class="product-details-title"
+      >
+        Product Details
       </div>
+      <div class="product-grid">
+        <div></div>
+        @if (selectedProduct()) {
+        <img class="product-detail-image" [src]="selectedProduct()?.image" [alt]="selectedProduct()?.title" />
+    
+        <div class="product-details">
+          <h1 class="product-title">
+            {{ selectedProduct()?.title }}
+          </h1>
+          <!-- stars -->
+          <div class="product-rating">
+            <i class="fa-solid fa-star text-yellow-500"></i>
+            <span class="rating-text">Rating:</span>
+            {{ selectedProduct()?.rating?.rate }}
+          </div>
+    
+          <div class="product-category">
+              <span class="category-text">Category:</span>
+              {{ selectedProduct()?.category }}
+            </div>
+    
+            <div class="product-actions">
+              @if(selectedProduct()){
   
-      <section class="description-section">
-        <div class="description-title">
-          Description
+                <div class="action-buttons">
+                  <button class="add-to-cart-button" (click)="onProductSelectedToCart(selectedProduct())">
+                    <i class="fa-solid fa-cart-shopping"></i>Add to cart
+                  </button>
+                  <button class="price-button">
+                    ${{ selectedProduct()?.price }}
+                  </button>
+                </div>
+              }
+            </div>
         </div>
-
-        <div class="description-content">
-          {{ selectedProduct()?.description }}
-        </div>
-      </section>
-      }
-    </div>
-  </section>
+    
+        <section class="description-section">
+          <div class="description-title">
+            Description
+          </div>
+  
+          <div class="description-content">
+            {{ selectedProduct()?.description }}
+          </div>
+        </section>
+        }
+      </div>
+    </section>
+}

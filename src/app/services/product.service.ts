@@ -84,6 +84,7 @@ export class ProductService {
     const existingProductIndex = this.cartProducts.findIndex(
       (p) => p.id === product.id
     );
+    console.log(existingProductIndex);
     if (existingProductIndex !== -1) {
       // Product already exists in the cart, increase count by one
       const existingProduct = this.cartProducts[existingProductIndex];
