@@ -1,4 +1,5 @@
-/* Simple and meaningful class names */
+@import '../../../styles.scss';
+
 .main-section {
   position: relative;
   top: 80px;
@@ -21,8 +22,6 @@
 .text-content {
   display: flex;
   flex-direction: column;
-  /* gap: 20px; */
-  color: white;
 }
 
 .category {
@@ -44,18 +43,24 @@
   padding-left: 5%;
   padding-right: 5%;
 }
+
 .title-all-container{
-display: flex;
-align-items: center;
-justify-content: space-between;
+@include flex-between
 }
 
 .title-container {
-  border-left: 4px solid rgba(132, 52, 225, 1);
+  border-left: 4px solid var(--primary-color);
   font-weight: bold;
   padding-left: 8px;
 
   font-size: 1.5rem;
+}
+
+.title-button-search{
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  gap: 8px;
 }
 
 .search-bar {
@@ -93,9 +98,8 @@ justify-content: space-between;
   padding-bottom: 5%;
 }
 
-/* product card styles */
 .loading-message {
-  color: rgba(132, 52, 225, 1); /* Voilent color */
+  color: var(--primary-color); 
 }
 
 .product-grid {

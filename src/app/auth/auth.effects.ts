@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
-  login$ = createEffect(
+  public login$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.login),
@@ -22,11 +22,12 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  logout$ = createEffect(
+  public logout$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
+          localStorage.removeItem('user');
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           this.router.navigateByUrl('/');
@@ -34,5 +35,5 @@ export class AuthEffects {
       ),
     { dispatch: false }
   );
-  constructor(private actions$: Actions, private router: Router) {}
+  public constructor(private actions$: Actions, private router: Router) {}
 }

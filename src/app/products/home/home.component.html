@@ -8,11 +8,13 @@
   <section class="image-section mb-5">
     <img
       class="full-width"
-      src="../../../../assets/images/shop-hero-1-product-slide-1.png"
-      alt=""
+      ngSrc="../../../../assets/images/shop-hero-1-product-slide-1.png"
+      alt="hero_pic"
+      width="100" height="900" 
+      priority
     />
     <div class="text-overlay">
-      <div class="text-content">
+      <div class="text-content white-color">
         <p class="category">T-Shirt / Tops</p>
         <h1 class="title">Summer Value Pack</h1>
         <p class="description">cool / colorful /comfy</p>
@@ -20,32 +22,35 @@
       </div>
     </div>
   </section>
+  <p appHighlight >This is a directive effect</p>
 
   <!-- Products section -->
   <section class="products-section">
-    <div class="title-all-container">
+    <div class="title-all-container flex-between">
       <div class="title-container">Products</div>
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="onToggleCreatProductModal()"
-      >
-        Create Product
-      </button>
-      @if (!loading) {
-      <div id="searchBar">
-        <form class="search-bar">
-          <i class="fas fa-search icon-search"></i>
-          <input
-            type="text"
-            placeholder="Search"
-            class="search-input"
-            formControlName="searchTerm"
-            (keyup)="onInputChange($event)"
-          />
-        </form>
+      <div class="title-button-search">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="onToggleCreatProductModal()"
+        >
+          Create Product
+        </button>
+        @if (!loading()) {
+        <div id="searchBar">
+          <form [formGroup]="searchForm" class="search-bar">
+            <i class="fas fa-search icon-search"></i>
+            <input
+              type="text"
+              placeholder="Search"
+              class="search-input"
+              formControlName="searchTerm"
+            />
+          </form>
+        </div>
+
+        }
       </div>
-      }
     </div>
     <div class="content">
       @if (loading()) {

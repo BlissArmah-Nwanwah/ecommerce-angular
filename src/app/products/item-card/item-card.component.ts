@@ -6,22 +6,21 @@ import { ProductData } from '../../services/product-data';
 @Component({
   selector: 'app-item-card',
   standalone: true,
-  imports: [MatButtonModule,CommonModule],
+  imports: [MatButtonModule, CommonModule],
   templateUrl: './item-card.component.html',
   styleUrl: './item-card.component.scss',
 })
 export class ItemCardComponent {
-  @Input() product!: ProductData;
-  @Output() productSelectDetail = new EventEmitter<ProductData>();
-  @Output() productAddToCart = new EventEmitter<ProductData>();
+  @Input() public product!: ProductData;
+  @Output() public productSelectDetail = new EventEmitter<ProductData>();
+  @Output() public productAddToCart = new EventEmitter<ProductData>();
 
-  constructor() {}
 
-  onViewDetails(): void {
+  public onViewDetails(): void {
     this.productSelectDetail.emit(this.product);
   }
 
-  onProductSelectedToCart(): void {
+  public onProductSelectedToCart(): void {
     this.productAddToCart.emit(this.product);
   }
 }
