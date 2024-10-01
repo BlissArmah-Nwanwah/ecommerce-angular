@@ -1,46 +1,47 @@
-import { Component, OnInit, Signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule,NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AuthService } from '../../guard/auth.service';
-import { AppState, User } from '../../app.state';
-import { forbiddenNameValidator } from '../../shared/forbidden-name-validator.directive';
+import { AppState } from '../../app.state';
 import { AuthActions } from '../action-types';
 import { isLoggedIn } from '../auth.selectors';
+import { LoaderComponent } from '../../loader/loader.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule,NgOptimizedImage,LoaderComponent],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   public signupForm!: FormGroup;
   public isLoading = false;
   public errorMessage = '';
-  isLoggenIn!: Signal<boolean>;
-  constructor(
+  public isLoggenIn = this.store.selectSignal(isLoggedIn);
+  private authSubscription!: Subscription;
+  public constructor(
     private authService: AuthService,
     private router: Router,
     private store: Store<AppState>
   ) {}
 
-  ngOnInit(): void {
+  //use the formbuilder approach instead
+  public ngOnInit(): void {
     this.signupForm = new FormGroup({
       email: new FormControl(null, Validators.required),
       password: new FormControl(null, Validators.required),
     });
-    this.isLoggenIn = this.store.selectSignal(isLoggedIn);
     if (this.isLoggenIn()) {
-      this.router.navigate(['/home']);
+      this.router.navigateByUrl('/home');
     }
   }
 
@@ -48,16 +49,15 @@ export class LoginComponent implements OnInit {
     const email = this.signupForm.value.email;
     const password = this.signupForm.value.password;
 
-    let authObs: Observable<User>;
     this.isLoading = true;
 
-    authObs = this.authService.logIn(email, password);
-
-    authObs
+    const authObs = this.authService.logIn(email, password);
+    this.authSubscription = authObs
       .pipe(
         tap((user) => {
+          console.log(user);
           this.store.dispatch(AuthActions.login({ user: { ...user } }));
-          this.router.navigate(['/home']);
+          this.router.navigateByUrl('/home');
         })
       )
       .subscribe({
@@ -70,5 +70,11 @@ export class LoginComponent implements OnInit {
           this.errorMessage = error.message;
         },
       });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 }

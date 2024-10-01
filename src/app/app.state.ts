@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { isDevMode } from '@angular/core';
 import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { authReducer } from './auth/auth.reducer';
@@ -10,12 +11,12 @@ export interface User {
 
 export interface AppState {
   auth: User;
-  goods:ProductState
+  goods: ProductState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
-  goods: productReducer
+  goods: productReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -12,27 +13,24 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient, private store: Store) {}
+  public constructor(private http: HttpClient, private store: Store) {}
 
-  private authApi = environment.AUTH_API_BASEURL
+  private authApi = environment.AUTH_API_BASEURL;
 
-  signUp(data: {
+  public signUp(data: {
     email: string;
     firstName: string;
     lastName: string;
     password: string;
   }) {
-    return this.http.post<{ message: string }>(
-      `${this.authApi}/user/signup`,
-      {
-        email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        password: data.password,
-      }
-    );
+    return this.http.post<{ message: string }>(`${this.authApi}/user/signup`, {
+      email: data.email,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      password: data.password,
+    });
   }
-  logIn(email: string, password: string) {
+  public logIn(email: string, password: string) {
     return this.http.post<{ login_token: string; refresh_token: string }>(
       `${this.authApi}/user/login`,
       {
@@ -42,7 +40,7 @@ export class AuthService {
     );
   }
 
-  validateToken(): Observable<boolean> {
+  public validateToken(): Observable<boolean> {
     return this.http.get(`${this.authApi}/user/validate`).pipe(
       map(() => {
         return true;
@@ -53,14 +51,14 @@ export class AuthService {
     );
   }
 
-  refreshToken(): Observable<boolean> {
+  public refreshToken(): Observable<boolean> {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) {
       return of(false);
     }
     return this.http
       .post(`${this.authApi}/user/refresh-token`, {
-        refresh_token: JSON.parse(refreshToken),
+        refreshToken: JSON.parse(refreshToken),
       })
       .pipe(
         map((response: any) => {
@@ -70,7 +68,7 @@ export class AuthService {
           );
           localStorage.setItem(
             'refreshToken',
-            JSON.stringify(response.refresh_token)
+            JSON.stringify(response.refreshToken)
           );
           return true;
         }),

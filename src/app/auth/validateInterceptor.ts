@@ -1,9 +1,9 @@
-import { HttpRequest, HttpHandlerFn, HttpEvent, HttpResponse } from '@angular/common/http';
-import { Observable, switchMap, of } from 'rxjs';
-import { inject } from '@angular/core'; 
+import { HttpResponse, HttpInterceptorFn } from '@angular/common/http';
+import { switchMap, of } from 'rxjs';
+import { inject } from '@angular/core';
 import { AuthService } from '../guard/auth.service';
 
-export const validateInterceptor = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
+export const validateInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
   if (isExternalEndpoint(req.url)) {
@@ -17,7 +17,9 @@ export const validateInterceptor = (req: HttpRequest<any>, next: HttpHandlerFn):
               if (refreshSuccess) {
                 return next(req);
               } else {
-                return of(new HttpResponse({ status: 401, statusText: 'Unauthorized' }));
+                return of(
+                  new HttpResponse({ status: 401, statusText: 'Unauthorized' })
+                );
               }
             })
           );

@@ -1,6 +1,11 @@
 <header>
   <nav class="navbar">
-    <div (click)="routeToHome()" class="logo-container cursor-pointer">
+    <div
+      tabindex=""
+      (click)="routeToHome()"
+      (keyup)="routeToHome()"
+      class="logo-container cursor-pointer"
+    >
       <img src="../../../../../assets/Logo.png" alt="logo" />
     </div>
 

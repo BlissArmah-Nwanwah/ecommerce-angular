@@ -21,7 +21,7 @@ export const unambiguousRoleValidator: ValidatorFn = (
   ],
 })
 export class UnambiguousRoleValidatorDirective implements Validator {
-  validate(control: AbstractControl): ValidationErrors | null {
+  public validate(control: AbstractControl): ValidationErrors | null {
     return unambiguousRoleValidator(control);
   }
 }

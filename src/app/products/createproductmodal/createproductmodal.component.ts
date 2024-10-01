@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { AppState } from '../../app.state';
 import { PRODUCT_ACTIONS } from '../products.actions';
 import { CommonModule } from '@angular/common';
@@ -16,36 +16,34 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-createproductmodal',
   standalone: true,
-  imports: [MatIconModule, ReactiveFormsModule,CommonModule],
+  imports: [MatIconModule, ReactiveFormsModule, CommonModule],
   templateUrl: './createproductmodal.component.html',
   styleUrl: './createproductmodal.component.scss',
 })
 export class CreateproductmodalComponent implements OnInit {
-  productForm!: FormGroup;
+  public productForm!: FormGroup;
   public isLoading = false;
   public errorMessage = '';
-  @Output() closeModal = new EventEmitter();
+  @Output() public closeModal = new EventEmitter();
 
-  constructor(
+  public constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private store: Store<AppState>
   ) {}
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.productForm = this.formBuilder.group({
       title: ['', [Validators.required]],
-      price: [ [Validators.required]],
+      price: [[Validators.required]],
       description: ['', [Validators.required]],
       category: ['', [Validators.required]],
-    }
-  );
-}
+    });
+  }
 
-  formSubmit() {
+  public formSubmit() {
     if (this.productForm.valid) {
       const formData = this.productForm.value;
-      let authObs: Observable<any>;
-      authObs = this.productService.createProduct(formData);
+      const authObs = this.productService.createProduct(formData);
       this.isLoading = true;
 
       authObs
@@ -66,7 +64,7 @@ export class CreateproductmodalComponent implements OnInit {
     }
   }
 
-  onCloseModal(): void {
+  public onCloseModal(): void {
     this.closeModal.emit();
   }
 }
