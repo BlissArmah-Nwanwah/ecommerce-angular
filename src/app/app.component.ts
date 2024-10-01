@@ -13,13 +13,13 @@ import { AuthActions } from './auth/action-types';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  public title = 'B-commerce';
+  title = 'B-commerce';
 
-  public count$?: Observable<number>;
+  count$?: Observable<number>;
 
-  public constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     const userProfile = localStorage?.getItem('user') ?? '';
     if (userProfile) {
       this.store.dispatch(AuthActions.login({ user: JSON.parse(userProfile) }));

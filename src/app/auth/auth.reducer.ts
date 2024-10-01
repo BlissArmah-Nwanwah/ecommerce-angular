@@ -10,5 +10,5 @@ export const initialState: User = {
 export const authReducer = createReducer(
   initialState,
   on(AuthActions.login, (_, { user }) => user),
-  on(AuthActions.logout, () => ({ login_token: null, refresh_token: null }))
+  on(AuthActions.logout, (_) => ({ login_token: null, refresh_token: null })),
 );

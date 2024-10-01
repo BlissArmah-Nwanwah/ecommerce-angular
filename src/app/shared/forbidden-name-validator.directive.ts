@@ -20,9 +20,10 @@ export function forbiddenNameValidator(nameRe: RegExp): ValidatorFn {
   standalone: true,
 })
 export class ForbiddenNameValidatorDirective implements Validator {
+  constructor() {}
 
-  @Input('appForbiddenNameValidator') public forbiddenName = '';
-  public validate(control: AbstractControl): ValidationErrors | null {
+  @Input('appForbiddenNameValidator') forbiddenName = '';
+  validate(control: AbstractControl): ValidationErrors | null {
     return this.forbiddenName
       ? forbiddenNameValidator(new RegExp(this.forbiddenName, 'i'))(control)
       : null;

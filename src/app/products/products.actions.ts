@@ -12,6 +12,5 @@ export const PRODUCT_ACTIONS = createActionGroup({
     'load Selected Product': props<{ productId: string }>(),
     'load selected Product success': props<{ product: ProductData }>(),
     'load selected Product failure':props<{ error: string }>(),
-    'search products': props<{ searchTerm: string }>(),
   },
 });

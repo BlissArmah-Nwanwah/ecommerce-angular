@@ -10,7 +10,7 @@ describe('EmptyCartComponent', () => {
     await TestBed.configureTestingModule({
       imports: [EmptyCartComponent]
     })
-      .compileComponents();
+    .compileComponents();
     
     fixture = TestBed.createComponent(EmptyCartComponent);
     component = fixture.componentInstance;

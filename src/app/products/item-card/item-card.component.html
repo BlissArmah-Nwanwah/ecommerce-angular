@@ -1,7 +1,7 @@
 
 
 <div class="product-card">
-    <div class="product-info" tabindex="" (click)="onViewDetails()" (keyup)="onViewDetails()">
+    <div class="product-info" (click)="onViewDetails()">
       <img
         class="product-image"
         [src]="product.image"
@@ -19,7 +19,7 @@
 
     <button
       mat-raised-button
-      color="accent"
+      color="basic"
       (click)="onProductSelectedToCart()"
     >
       Add To Cart

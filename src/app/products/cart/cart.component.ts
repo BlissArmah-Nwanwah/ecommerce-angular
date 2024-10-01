@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { CartProductData } from '../../services/product-data';
+import { cartProductData } from '../../services/product-data';
 import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
@@ -11,66 +11,59 @@ import { FooterComponent } from '../../footer/footer.component';
   standalone: true,
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
-  imports: [
-    RouterLink,
-    FooterComponent,
-    NavbarComponent,
-    CommonModule,
-    RouterOutlet,
-  ],
+  imports: [RouterLink, FooterComponent, NavbarComponent,CommonModule,RouterOutlet],
 })
 export class CartComponent implements OnInit {
-  public cartProducts: CartProductData[] = [];
-  public totalAmount = 0;
+  cartProducts: cartProductData[] = [];
+  totalAmount: number = 0;
 
-  public constructor(
-    private productService: ProductService,
-    private router: Router
-  ) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.getCartProducts();
   }
 
-  public getCartProducts() {
+  getCartProducts() {
     this.cartProducts = this.productService.getCartProducts();
-    this.getTotalAmount();
+    this.TotalAmount();
   }
 
-  public getTotalAmount() {
+  TotalAmount() {
     this.totalAmount = this.cartProducts.reduce((total, product) => {
+      // Use optional chaining to access product.count safely
       const count = product.count ?? 0;
-      const amount = parseFloat(product.price) * count || 0;
+      // Convert product.price.amount to a number using parseFloat or Number function
+      const amount = parseFloat(product.price) * count || 0; // Use parseFloat to handle cases where product.price.amount is not a valid number
       return total + amount;
     }, 0);
   }
 
-  public removeProduct(product: CartProductData): void {
-    this.productService.removeProductFromCart(product);
-    this.getCartProducts();
-    if (!this.cartProducts.length) {
-      this.router.navigateByUrl('/empty-cart');
-    }
-  }
-
-  public incrementCount(id: string) {
-    this.productService.incrementProductCount(id);
-    this.getTotalAmount();
-  }
-
-  public decrementCount(id: string) {
-    this.productService.decrementProductCount(id);
-    this.getTotalAmount();
+  removeProduct(product: cartProductData): void {
+    this.productService.removeProductFromCart(product); // Remove product from cart
+    this.getCartProducts(); // Refresh cart products
     if (this.cartProducts.length === 0) {
       this.router.navigate(['/empty-cart']);
     }
   }
 
-  public redirectToHome() {
-    this.router.navigateByUrl('');
+  incrementCount(id: string) {
+    this.productService.incrementProductCount(id);
+    this.TotalAmount();
   }
 
-  public redirectToCheckout() {
-    this.router.navigateByUrl('/checkout');
+  decrementCount(id: string) {
+    this.productService.decrementProductCount(id);
+    this.TotalAmount();
+    if (this.cartProducts.length === 0) {
+      this.router.navigate(['/empty-cart']);
+    }
+  }
+
+  redirectToHome() {
+    this.router.navigate(['']);
+  }
+
+  redirectToCheckout() {
+    this.router.navigate(['/checkout']);
   }
 }

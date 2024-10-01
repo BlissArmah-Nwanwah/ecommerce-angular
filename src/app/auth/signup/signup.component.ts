@@ -1,40 +1,39 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { AppState } from '../../app.state';
+import { AppState, User } from '../../app.state';
 import { select, Store } from '@ngrx/store';
-import { Observable, Subscription, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { isLoggedIn } from '../auth.selectors';
 import { AuthService } from '../../guard/auth.service';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule,NgOptimizedImage],
+  imports: [ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent implements OnDestroy, OnInit {
-  public signUpForm!: FormGroup;
-  public showPassword = false;
-  public isLoggenIn$ = new Observable<boolean>();
-  public authSignUpSubscription!: Subscription;
+export class SignupComponent {
+  signUpForm!: FormGroup;
+  showPassword: boolean = false;
+  isLoggenIn$: Observable<boolean> = new Observable();
   public isLoading = false;
   public errorMessage = '';
-  public constructor(
+  constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private store: Store<AppState>
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.signUpForm = this.formBuilder.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -42,17 +41,21 @@ export class SignupComponent implements OnDestroy, OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
     this.isLoggenIn$ = this.store.pipe(select(isLoggedIn));
+    // if (this.isLoggenIn$) {
+    //   this.router.navigate(['/']);
+    // }
   }
-  public formAction() {
+  formAction() {
     if (this.signUpForm.valid) {
       const formData = this.signUpForm.value;
       console.log(formData);
-      const authObs = this.authService.signUp(formData);
-      this.authSignUpSubscription = authObs
+      let authObs: Observable<{ message: string }>;
+      authObs = this.authService.signUp(formData);
+
+      authObs
         .pipe(
           tap(() => {
-            this.router.navigateByUrl('/login');
-            
+            this.router.navigate(['/login']);
           })
         )
         .subscribe({
@@ -67,11 +70,7 @@ export class SignupComponent implements OnDestroy, OnInit {
     }
   }
 
-  public togglePassword(): void {
+  togglePassword(): void {
     this.showPassword = !this.showPassword;
-  }
-
-  public ngOnDestroy(): void {
-    this.authSignUpSubscription.unsubscribe();
   }
 }

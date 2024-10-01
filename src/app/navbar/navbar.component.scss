@@ -1,8 +1,8 @@
-@import '../../styles.scss';
-
-
+/* Simple and meaningful class names */
 .navbar {
-  @include flex-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding-left: 2.5rem;
     padding-right: 2.5rem;
     padding-top: 1.25rem/* 20px */;
@@ -26,8 +26,8 @@
   
   .icon-container {
     display: flex;
-    align-items: center;
     gap: 20px;
+    align-items: center;
   }
   
   .auth-button {
@@ -79,16 +79,16 @@
   }
   
   .auth-link:hover {
-    color: var(--primary-color);
+    color: rgba(132, 52, 225, 1);
     text-decoration: underline;
   }
 
   .icon-gray{
-    color: var(--gray-color);
+    color: gray;
   }
 
   .icon-white{
-    color: var(--white-color);
+    color: white;
   }
 
   button{
@@ -104,16 +104,18 @@
   }
 
   .cart-button-color {
-    background-color: var(--primary-color);
+    background-color: rgba(132, 52, 225, 1);
   }
 
   .cart-button-icon{
-    color: var(--white-color);
+    color: white;
     font-size: 20px;
 
   }
   
-k
+  .cart-button:hover {
+    background-color: rgba(132, 52, 225, 1);
+  }
   
   .cart-count {
     background-color: #ff0000;

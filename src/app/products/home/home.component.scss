@@ -1,5 +1,4 @@
-@import '../../../styles.scss';
-
+/* Simple and meaningful class names */
 .main-section {
   position: relative;
   top: 80px;
@@ -22,6 +21,8 @@
 .text-content {
   display: flex;
   flex-direction: column;
+  /* gap: 20px; */
+  color: white;
 }
 
 .category {
@@ -43,24 +44,18 @@
   padding-left: 5%;
   padding-right: 5%;
 }
-
 .title-all-container{
-@include flex-between
+display: flex;
+align-items: center;
+justify-content: space-between;
 }
 
 .title-container {
-  border-left: 4px solid var(--primary-color);
+  border-left: 4px solid rgba(132, 52, 225, 1);
   font-weight: bold;
   padding-left: 8px;
 
   font-size: 1.5rem;
-}
-
-.title-button-search{
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  gap: 8px;
 }
 
 .search-bar {
@@ -98,8 +93,9 @@
   padding-bottom: 5%;
 }
 
+/* product card styles */
 .loading-message {
-  color: var(--primary-color); 
+  color: rgba(132, 52, 225, 1); /* Voilent color */
 }
 
 .product-grid {

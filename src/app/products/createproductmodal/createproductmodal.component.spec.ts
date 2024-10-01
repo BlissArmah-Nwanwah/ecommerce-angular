@@ -10,7 +10,7 @@ describe('CreateproductmodalComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CreateproductmodalComponent]
     })
-      .compileComponents();
+    .compileComponents();
     
     fixture = TestBed.createComponent(CreateproductmodalComponent);
     component = fixture.componentInstance;

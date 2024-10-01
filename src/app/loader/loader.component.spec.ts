@@ -10,7 +10,7 @@ describe('LoaderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoaderComponent]
     })
-      .compileComponents();
+    .compileComponents();
     
     fixture = TestBed.createComponent(LoaderComponent);
     component = fixture.componentInstance;

@@ -16,4 +16,4 @@ export const allProducts = createSelector(
 export const selectedProduct = createSelector(
   selectProductState,
   (goods) => goods.selectedProduct
-);
+)
