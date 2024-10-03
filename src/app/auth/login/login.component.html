@@ -1,49 +1,82 @@
 <section class="flex-container large-flex-container">
   <div class="large-image-container image-container">
     <img
-      class="auth-img"
-      src="../../../../assets/signUp/login.png"
-      alt="sign up image"
+      class="login-img"
+      ngSrc="../../../../assets/signUp/login.png"
+      alt="log_in_logo"
+      width="100" height="900"
+      priority
     />
   </div>
-
   <div class="form-container">
     <h1 class="header">Sign In</h1>
     <form
       class="form"
       action=""
-      [formGroup]="loginForm"
+      [formGroup]="signupForm"
       (ngSubmit)="onSubmit()"
     >
       <!-- email Address -->
-      <app-custom-input-field
-        label="Email"
-        type="email"
-        placeholder="Enter your email"
-        [control]="email"
-      />
+      <div>
+        <label for="email"> Email*</label>
+        <div class="input-wrapper">
+          <input
+            id="email"
+            name="email"
+            class="input"
+            type="email"
+            formControlName="email"
+            required
+          />
+        </div>
+        @if (signupForm.get('email')?.errors &&
+        (signupForm.get('email')?.dirty ||
+        signupForm.get('email')?.touched)) { @if
+        (signupForm.get('email')?.errors?.['required']){
+        <div class="error">email is required</div>
+        } }
+      </div>
 
       <!-- password -->
-      <app-custom-input-field
-        label="Password"
-        type="password"
-        [control]="password"
-        placeholder="Enter your password"
-      />
+      <div>
+        <label for="password">Password*</label>
+        <div class="input-wrapper">
+          <input
+            id="password"
+            name="password"
+            class="input"
+            type="password"
+            formControlName="password"
+            required
+          />
+        </div>
 
-      @if (errorMessage) {
-        <div class="error">{{ errorMessage }}</div>
+        @if (signupForm.get('password')?.errors &&
+        (signupForm.get('password')?.dirty ||
+        signupForm.get('password')?.touched)) {
+        <div>
+          @if (signupForm.get('password')?.errors?.['required']) {
+          <div class="error">Password is required</div>
+          } @if (signupForm.get('password')?.errors?.['minlength']) {
+          <div class="error">Password must be at least 8 characters</div>
+          }
+        </div>
+        }
+      </div>
+
+      @if(errorMessage.length > 0){
+      <div class="error">Invalid credenetials</div>
       }
 
       <button
         type="submit"
         class="submit-btn"
-        [class.disabled]="loginForm.invalid || isLoading"
-        [disabled]="loginForm.invalid"
+        [ngClass]="{ disabled: signupForm.invalid  }"
+        [disabled]="signupForm.invalid"
       >
         Log in
       </button>
-      <a class="link" routerLink="/signup">Sign up?</a>
+       <a class="link" routerLink="/signup">Sign up?</a>
     </form>
   </div>
 </section>

@@ -6,6 +6,8 @@ import { productReducer, ProductState } from './products/product.reducers';
 export interface User {
   login_token: string | null;
   refresh_token: string | null;
+  isLoading: boolean;
+  error: string | null;
 }
 
 export interface AppState {

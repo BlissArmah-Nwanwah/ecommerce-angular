@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { ProductData, cartProductData } from './product-data';
+import { catchError, map, Observable } from 'rxjs';
+import { ProductData, CartProductData } from './product-data';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -12,14 +12,14 @@ export class ProductService {
   private productCountKey = 'productCount';
   private cartProductsKey = 'cartProducts';
 
-  selectedProduct: ProductData | null = null;
-  cartProducts: cartProductData[] = [];
-  productCount: number = 0;
-  activeButton: string = '';
+  public selectedProduct: ProductData | null = null;
+  public cartProducts: CartProductData[] = [];
+  public productCount = 0;
+  public activeButton = '';
 
-  private apiurl = environment.apiUrl
+  private apiurl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
+  public constructor(private http: HttpClient) {
     this.loadFromLocalStorage();
   }
 
@@ -55,15 +55,32 @@ export class ProductService {
     );
   }
 
-  getProducts(): Observable<ProductData[]> {
-    return this.http.get<ProductData[]>(this.apiurl);
+  public getProducts(): Observable<ProductData[]> {
+    return this.http.get<ProductData[]>(this.apiurl).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    );
   }
 
-  getSelectedProduct(id: string): Observable<ProductData> {
+  public searchProducts(searchTerm: string): Observable<ProductData[]> {
+    return this.getProducts().pipe(
+      map((products) =>
+        products.filter((product) =>
+          product.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    );
+  }
+
+  public getSelectedProduct(id: string): Observable<ProductData> {
     return this.http.get<ProductData>(`${this.apiurl}/${id}`);
   }
 
-  createProduct(data: {
+  public createProduct(data: {
     title: string;
     price: number;
     description: string;
@@ -74,26 +91,23 @@ export class ProductService {
     });
   }
 
-  setSelectedProduct(product: ProductData): void {
+  public setSelectedProduct(product: ProductData): void {
     this.selectedProduct = product;
     this.updateLocalStorage();
   }
 
-  setSelectedProductToCart(product: cartProductData): void {
+  public setSelectedProductToCart(product: CartProductData): void {
     const existingProductIndex = this.cartProducts.findIndex(
       (p) => p.id === product.id
     );
-    console.log(existingProductIndex);
     if (existingProductIndex !== -1) {
-      // Product already exists in the cart, increase count by one
       const existingProduct = this.cartProducts[existingProductIndex];
       const updatedProduct = {
         ...existingProduct,
-        count: (existingProduct.count || 0) + 1,
+        count: (existingProduct.count ?? 0) + 1,
       };
       this.cartProducts[existingProductIndex] = updatedProduct;
     } else {
-      // Product does not exist in the cart, add it
       const newProduct = { ...product, count: 1 };
       this.cartProducts.push(newProduct);
       this.productCount += 1;
@@ -102,11 +116,11 @@ export class ProductService {
     this.updateLocalStorage();
   }
 
-  incrementProductCount(productId: string): void {
+  public incrementProductCount(productId: string): void {
     this.updateProductCount(productId, 1);
   }
 
-  decrementProductCount(productId: string): void {
+  public decrementProductCount(productId: string): void {
     this.updateProductCount(productId, -1);
   }
 
@@ -128,7 +142,7 @@ export class ProductService {
     }
   }
 
-  cartCount(count: number): void {
+  public cartCount(count: number): void {
     this.productCount += count;
     localStorage.setItem(
       this.productCountKey,
@@ -136,11 +150,11 @@ export class ProductService {
     );
   }
 
-  getCartProducts(): ProductData[] {
+  public getCartProducts(): ProductData[] {
     return this.cartProducts;
   }
 
-  removeProductFromCart(product: ProductData): void {
+  public removeProductFromCart(product: ProductData): void {
     const index = this.cartProducts.findIndex((p) => p.id === product.id);
     if (index !== -1) {
       this.cartProducts.splice(index, 1);
@@ -149,11 +163,10 @@ export class ProductService {
     }
   }
 
-  setActiveButton(button: string): void {
+  public setActiveButton(button: string): void {
     this.activeButton = button;
   }
-
-  getActiveButton(): string {
+  public getActiveButton(): string {
     return this.activeButton;
   }
 }
