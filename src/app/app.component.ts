@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { AppState } from './app.state';
 import { AuthActions } from './auth/action-types';
 
@@ -14,8 +13,6 @@ import { AuthActions } from './auth/action-types';
 })
 export class AppComponent implements OnInit {
   public title = 'B-commerce';
-
-  public count$?: Observable<number>;
 
   public constructor(private store: Store<AppState>) {}
 

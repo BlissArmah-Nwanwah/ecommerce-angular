@@ -4,11 +4,10 @@
       class="login-img"
       ngSrc="../../../../assets/signUp/login.png"
       alt="log_in_logo"
-      width="100" height="900" 
+      width="100" height="900"
       priority
     />
   </div>
-<app-loader></app-loader>
   <div class="form-container">
     <h1 class="header">Sign In</h1>
     <form
@@ -22,6 +21,7 @@
         <label for="email"> Email*</label>
         <div class="input-wrapper">
           <input
+            id="email"
             name="email"
             class="input"
             type="email"
@@ -42,6 +42,7 @@
         <label for="password">Password*</label>
         <div class="input-wrapper">
           <input
+            id="password"
             name="password"
             class="input"
             type="password"
@@ -70,7 +71,7 @@
       <button
         type="submit"
         class="submit-btn"
-        [ngClass]="{ disabled: signupForm.invalid || isLoading }"
+        [ngClass]="{ disabled: signupForm.invalid  }"
         [disabled]="signupForm.invalid"
       >
         Log in

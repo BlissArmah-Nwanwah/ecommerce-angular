@@ -11,3 +11,7 @@ export const isLoggedOut = createSelector(
   isLoggedIn,
   (isLoggedIn) => !isLoggedIn
 );
+export const getAuthError = createSelector(
+  selectAuthState,
+  (auth) => auth.error
+);

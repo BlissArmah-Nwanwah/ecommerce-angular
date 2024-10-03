@@ -19,7 +19,6 @@ import { PRODUCT_ACTIONS } from '../products.actions';
 import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HighlightDirective } from '../../directives/highlight.directive';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +35,6 @@ import { HighlightDirective } from '../../directives/highlight.directive';
     CreateproductmodalComponent,
     ReactiveFormsModule,
     NgOptimizedImage,
-    HighlightDirective
   ],
 })
 export class HomeComponent implements OnInit {

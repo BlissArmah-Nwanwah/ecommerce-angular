@@ -46,13 +46,12 @@ export class SignupComponent implements OnDestroy, OnInit {
   public formAction() {
     if (this.signUpForm.valid) {
       const formData = this.signUpForm.value;
-      console.log(formData);
       const authObs = this.authService.signUp(formData);
       this.authSignUpSubscription = authObs
         .pipe(
           tap(() => {
             this.router.navigateByUrl('/login');
-            
+
           })
         )
         .subscribe({

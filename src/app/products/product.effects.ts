@@ -20,7 +20,6 @@ export class ProductEffects {
         this.productService.getProducts().pipe(
           map((products) => PRODUCT_ACTIONS.loadProductSuccess({ products })),
           catchError((error) => {
-            console.error('Error loading products:', error);
             return of(PRODUCT_ACTIONS.productFailure({ error }));
           })
         )

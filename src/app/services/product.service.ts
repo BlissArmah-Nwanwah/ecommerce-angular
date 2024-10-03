@@ -58,11 +58,9 @@ export class ProductService {
   public getProducts(): Observable<ProductData[]> {
     return this.http.get<ProductData[]>(this.apiurl).pipe(
       map((response) => {
-        console.log('Products loaded:', response); // Log the API response
         return response;
       }),
       catchError((error) => {
-        console.error('Failed to load products', error); // Log any errors
         throw error;
       })
     );
@@ -102,7 +100,6 @@ export class ProductService {
     const existingProductIndex = this.cartProducts.findIndex(
       (p) => p.id === product.id
     );
-    console.log(existingProductIndex);
     if (existingProductIndex !== -1) {
       const existingProduct = this.cartProducts[existingProductIndex];
       const updatedProduct = {
