@@ -29,14 +29,14 @@ export class DetailsComponent implements OnInit {
   public selectedSize = '';
   public id!: string;
 
-  public constructor(
+   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private store: Store
   ) {
     this.id = this.route.snapshot.params['id'];
   }
-  public ngOnInit(): void {
+   ngOnInit(): void {
     this.store.dispatch(
       PRODUCT_ACTIONS.loadSelectedProduct({ productId: this.id })
     );
@@ -48,12 +48,4 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  public changeBgColor(size: string) {
-    this.selectedSize = size;
-    alert('Selected Size: ' + this.selectedSize);
-  }
-
-  public isSizeSelected(size: string): boolean {
-    return this.selectedSize === size;
-  }
 }

@@ -24,15 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
   ],
 })
 export class NavbarComponent implements OnInit {
-  public isAuthenticated = false;
-  public userName!: string;
-  public showNav = false;
   public selectedProductCount = 0;
-  public dropdownVisible = false;
-  public isHovered = false;
-  public isAuthVisible = false;
   public isLoggenIn$ = new Observable<boolean>();
-  public isLoggenOut$ = new Observable<boolean>();
 
   public constructor(
     private router: Router,
@@ -42,9 +35,8 @@ export class NavbarComponent implements OnInit {
     this.selectedProductCount = this.productService.productCount;
   }
 
-  public ngOnInit(): void {
+   ngOnInit(): void {
     this.getProductCount();
-
     this.isLoggenIn$ = this.store.pipe(select(isLoggedIn));
   }
 

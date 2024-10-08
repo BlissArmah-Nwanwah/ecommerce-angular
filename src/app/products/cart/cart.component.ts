@@ -23,12 +23,12 @@ export class CartComponent implements OnInit {
   public cartProducts: CartProductData[] = [];
   public totalAmount = 0;
 
-  public constructor(
+   constructor(
     private productService: ProductService,
     private router: Router
   ) {}
 
-  public ngOnInit(): void {
+   ngOnInit(): void {
     this.getCartProducts();
   }
 

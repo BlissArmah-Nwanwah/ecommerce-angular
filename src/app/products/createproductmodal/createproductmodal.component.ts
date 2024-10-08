@@ -26,12 +26,12 @@ export class CreateproductmodalComponent implements OnInit {
   public errorMessage = '';
   @Output() public closeModal = new EventEmitter();
 
-  public constructor(
+   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private store: Store<AppState>
   ) {}
-  public ngOnInit(): void {
+   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       price: [[Validators.required]],

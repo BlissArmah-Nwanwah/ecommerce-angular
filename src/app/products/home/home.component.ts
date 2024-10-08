@@ -19,6 +19,7 @@ import { PRODUCT_ACTIONS } from '../products.actions';
 import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-home',
@@ -40,31 +41,27 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class HomeComponent implements OnInit {
   public horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   public verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  public newProducts$!: Observable<ProductData[]>;
   public searchForm!: FormGroup;
   public products = this.store.selectSignal(allProducts);
-  public currentPage = 1;
-  public itemsPerPage = 8;
   public loading = this.store.selectSignal(isProductsLoading);
-  public productLength = 0;
   public durationInSeconds = 2;
   public toggleModal = false;
 
-  public constructor(
+   constructor(
     private router: Router,
     private productService: ProductService,
     private _snackBar: MatSnackBar,
     private store: Store
   ) {}
 
-  public ngOnInit(): void {
+   ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
     this.searchForm = new FormGroup({
       searchTerm: new FormControl(''),
     });
     this.searchForm
       .get('searchTerm')
-      ?.valueChanges.pipe(debounceTime(300), distinctUntilChanged())
+      ?.valueChanges.pipe(debounceTime(300), distinctUntilChanged(),takeUntilDestroyed())
       .subscribe((searchTerm: string) => {
         this.store.dispatch(PRODUCT_ACTIONS.searchProducts({ searchTerm }));
       });
@@ -83,9 +80,6 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl(`/details/${product.id}`);
   }
 
-  public handlePageEvent(event: PageEvent) {
-    this.currentPage = event.pageIndex + 1;
-  }
 
   public openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {

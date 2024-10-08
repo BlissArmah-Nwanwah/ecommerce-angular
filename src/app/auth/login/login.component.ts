@@ -14,6 +14,7 @@ import {AppState} from '../../app.state';
 import {AuthActions} from '../action-types';
 import {getAuthError, isLoggedIn} from '../auth.selectors';
 import {LoaderComponent} from '../../loader/loader.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-login',
@@ -22,13 +23,12 @@ import {LoaderComponent} from '../../loader/loader.component';
   styleUrl: './login.component.scss',
   imports: [CommonModule, RouterModule, ReactiveFormsModule, NgOptimizedImage, LoaderComponent],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   public signupForm!: FormGroup;
   public errorMessage = this.store.selectSignal(getAuthError);
   public isLoggedIn = this.store.selectSignal(isLoggedIn);
-  private authSubscription!: Subscription;
 
-  public constructor(
+  constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -36,21 +36,29 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {
   }
 
-  public ngOnInit(): void {
-    this.signupForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    });
+  ngOnInit(): void {
+    this.handleFormChange()
     if (this.isLoggedIn()) {
       this.router.navigateByUrl('/home');
     }
   }
 
+  public handleFormChange() {
+    this.signupForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
+
+  }
+
   public onSubmit() {
-    const email = this.signupForm.value.email;
-    const password = this.signupForm.value.password;
-    const authObs = this.authService.logIn(email, password);
-    this.authSubscription = authObs
+    const loginData = {
+      email: this.signupForm.value.email,
+      password: this.signupForm.value.password,
+    }
+
+    const authObs = this.authService.logIn(loginData);
+    authObs
       .pipe(
         tap((user) => {
           this.store.dispatch(AuthActions.login({user: {...user, isLoading: false, error: null}}));
@@ -59,13 +67,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         catchError((error) => {
           this.store.dispatch(AuthActions.loginError({error: error.message || 'Login failed'}));
           return of();
-        })
-      ).subscribe();
+        }
+  ),
+    takeUntilDestroyed()
+  ).
+    subscribe();
   }
 
-  public ngOnDestroy(): void {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-  }
 }

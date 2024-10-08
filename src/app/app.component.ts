@@ -14,9 +14,9 @@ import { AuthActions } from './auth/action-types';
 export class AppComponent implements OnInit {
   public title = 'B-commerce';
 
-  public constructor(private store: Store<AppState>) {}
+   constructor(private store: Store<AppState>) {}
 
-  public ngOnInit(): void {
+   ngOnInit(): void {
     const userProfile = localStorage?.getItem('user') ?? '';
     if (userProfile) {
       this.store.dispatch(AuthActions.login({ user: JSON.parse(userProfile) }));

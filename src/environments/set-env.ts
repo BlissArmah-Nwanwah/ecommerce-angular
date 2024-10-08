@@ -20,11 +20,9 @@ const setEnv = () => {
     apiUrl: '${process.env['apiUrl']}',
   };`;
   writeFile(targetPathDev, envConfigFileDev, () => {
-    console.log('I am on development');
     console.log(envConfigFileProd);
   });
   writeFile(targetPathProd, envConfigFileProd, () => {
-    console.log('I am on production');
     console.log(envConfigFileProd);
   });
 };
