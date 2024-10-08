@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable } from 'rxjs';
 import { ProductData, CartProductData } from './product-data';
 import { environment } from '../../environments/environment';
+import {LocalStorageService} from "./localstorage.service";
 
 @Injectable({
   providedIn: 'root',
@@ -15,44 +16,23 @@ export class ProductService {
   public selectedProduct: ProductData | null = null;
   public cartProducts: CartProductData[] = [];
   public productCount = 0;
-  public activeButton = '';
 
   private apiurl = environment.apiUrl;
 
-  public constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private localStorageService: LocalStorageService) {
     this.loadFromLocalStorage();
   }
 
   private loadFromLocalStorage(): void {
-    const storedProduct = localStorage.getItem(this.selectedProductKey);
-    if (storedProduct) {
-      this.selectedProduct = JSON.parse(storedProduct);
-    }
-
-    const storedCartProducts = localStorage.getItem(this.cartProductsKey);
-    if (storedCartProducts) {
-      this.cartProducts = JSON.parse(storedCartProducts);
-    }
-
-    const storedProductCount = localStorage.getItem(this.productCountKey);
-    if (storedProductCount) {
-      this.productCount = JSON.parse(storedProductCount);
-    }
+    this.selectedProduct = this.localStorageService.getItem<ProductData>(this.selectedProductKey);
+    this.cartProducts = this.localStorageService.getItem<CartProductData[]>(this.cartProductsKey) || [];
+    this.productCount = this.localStorageService.getItem<number>(this.productCountKey) || 0;
   }
 
   private updateLocalStorage(): void {
-    localStorage.setItem(
-      this.selectedProductKey,
-      JSON.stringify(this.selectedProduct)
-    );
-    localStorage.setItem(
-      this.cartProductsKey,
-      JSON.stringify(this.cartProducts)
-    );
-    localStorage.setItem(
-      this.productCountKey,
-      JSON.stringify(this.productCount)
-    );
+    this.localStorageService.setItem(this.selectedProductKey, this.selectedProduct);
+    this.localStorageService.setItem(this.cartProductsKey, this.cartProducts);
+    this.localStorageService.setItem(this.productCountKey, this.productCount);
   }
 
   public getProducts(): Observable<ProductData[]> {
@@ -89,11 +69,6 @@ export class ProductService {
     return this.http.post<ProductData>(`${this.apiurl}`, {
       ...data,
     });
-  }
-
-  public setSelectedProduct(product: ProductData): void {
-    this.selectedProduct = product;
-    this.updateLocalStorage();
   }
 
   public setSelectedProductToCart(product: CartProductData): void {
@@ -142,13 +117,6 @@ export class ProductService {
     }
   }
 
-  public cartCount(count: number): void {
-    this.productCount += count;
-    localStorage.setItem(
-      this.productCountKey,
-      JSON.stringify(this.productCount)
-    );
-  }
 
   public getCartProducts(): ProductData[] {
     return this.cartProducts;
@@ -161,12 +129,5 @@ export class ProductService {
       this.productCount--; // Decrease product count
       this.updateLocalStorage();
     }
-  }
-
-  public setActiveButton(button: string): void {
-    this.activeButton = button;
-  }
-  public getActiveButton(): string {
-    return this.activeButton;
   }
 }

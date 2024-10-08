@@ -1,11 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-  --primary-color: #ff4500;
-  --error-color: #ff0000;
+
+:root{
+    --primary-color:  rgba(132, 52, 225, 1);
+    --secondary-color:rgba(132, 52, 225, 1);
+    --white-color: white;
+    --accent-color: #000;
+    --gray-color: gray;
   --padding: 10px;
   --gap-small: 10px;
   --gap-large: 20px;
+}
 
+
+.primary-color{
+    color: var(--primary-color);
+}
+
+.white-color{
+    color: var(--white-color);
+}
+
+
+@mixin flex-between{
+    display: flex;
+align-items: center;
+justify-content: space-between;
+}
+@mixin flex-center{
+    display: flex;
+  align-items: center;
+  justify-content: center;
 }

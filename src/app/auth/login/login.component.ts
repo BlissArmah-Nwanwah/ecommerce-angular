@@ -1,87 +1,77 @@
-import {Component, OnInit, Signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import {Observable, tap} from 'rxjs';
+import {catchError, of, Subscription, tap} from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {AuthService} from '../../guard/auth.service';
-import {AppState, User} from '../../app.state';
-import {forbiddenNameValidator} from '../../shared/forbidden-name-validator.directive';
+import {AppState} from '../../app.state';
 import {AuthActions} from '../action-types';
-import {isLoggedIn} from '../auth.selectors';
-import {CustomInputFieldComponent} from "../custom-input-field/custom-input-field.component";
+import {getAuthError, isLoggedIn} from '../auth.selectors';
+import {LoaderComponent} from '../../loader/loader.component';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule,CustomInputFieldComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgOptimizedImage, LoaderComponent],
 })
 export class LoginComponent implements OnInit {
-  public loginForm=this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-  });
-  public isLoading = false;
-  public errorMessage = '';
-  isLoggenIn!: Signal<boolean>;
+  public signupForm!: FormGroup;
+  public errorMessage = this.store.selectSignal(getAuthError);
+  public isLoggedIn = this.store.selectSignal(isLoggedIn);
 
   constructor(
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private store: Store<AppState>,
-  private formBuilder: FormBuilder,
+    private store: Store<AppState>
   ) {
   }
 
   ngOnInit(): void {
-    this.isLoggenIn = this.store.selectSignal(isLoggedIn);
-    if (this.isLoggenIn()) {
-      this.router.navigate(['/home']);
+    this.handleFormChange()
+    if (this.isLoggedIn()) {
+      this.router.navigateByUrl('/home');
     }
   }
 
+  public handleFormChange() {
+    this.signupForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
 
-  public get email() {
-    return this.loginForm.controls['email'];
   }
 
-  public get password() {
-    return this.loginForm.controls['password'];
-  }
-
-  public onSubmit()
-    {
-      const email = this.loginForm.value.email ?? '';
-      const password = this.loginForm.value.password ?? '';
-
-      let authObs: Observable<User>;
-      this.isLoading = true;
-
-      authObs = this.authService.logIn(email, password);
-
-      authObs
-        .pipe(
-          tap((user) => {
-            this.store.dispatch(AuthActions.login({user: {...user}}));
-            this.router.navigate(['/home']);
-          })
-        )
-        .subscribe({
-          next: () => {
-            this.isLoading = true;
-          },
-          error: (error) => {
-            this.isLoading = false;
-            this.loginForm.reset();
-            this.errorMessage = error.message;
-          },
-        });
+  public onSubmit() {
+    const loginData = {
+      email: this.signupForm.value.email,
+      password: this.signupForm.value.password,
     }
+
+    const authObs = this.authService.logIn(loginData);
+    authObs
+      .pipe(
+        tap((user) => {
+          this.store.dispatch(AuthActions.login({user: {...user, isLoading: false, error: null}}));
+          this.router.navigateByUrl('/home');
+        }),
+        catchError((error) => {
+          this.store.dispatch(AuthActions.loginError({error: error.message || 'Login failed'}));
+          return of();
+        }
+  ),
+    takeUntilDestroyed()
+  ).
+    subscribe();
   }
+
+}
