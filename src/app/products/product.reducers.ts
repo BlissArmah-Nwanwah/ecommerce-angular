@@ -53,4 +53,9 @@ export const productReducer = createReducer(
     error,
     isLoading: false,
   })),
+  on(PRODUCT_ACTIONS.searchProducts,(state)=>({
+    ...state,
+    isLoading: false,
+    error: null,
+  })),
 );

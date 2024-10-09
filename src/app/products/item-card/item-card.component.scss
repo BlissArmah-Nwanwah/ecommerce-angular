@@ -1,3 +1,6 @@
+
+@import '../../../styles.scss';
+
 .product-card {
     background-color: #fff;
     padding: 20px;
@@ -21,9 +24,7 @@
   }
   
   .product-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include flex-between;
     gap: 24px;
   }
   
@@ -36,9 +37,7 @@
   }
   
   .product-price {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
     font-weight: 600;
     font-size: 0.87rem;
     padding-left: 1rem ;

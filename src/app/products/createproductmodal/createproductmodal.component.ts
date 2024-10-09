@@ -1,5 +1,5 @@
 import { ProductService } from './../../services/product.service';
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, Output, output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,43 +8,43 @@ import {
 } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { Observable, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { AppState } from '../../app.state';
 import { PRODUCT_ACTIONS } from '../products.actions';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-createproductmodal',
   standalone: true,
-  imports: [MatIconModule, ReactiveFormsModule],
+  imports: [MatIconModule, ReactiveFormsModule, CommonModule],
   templateUrl: './createproductmodal.component.html',
   styleUrl: './createproductmodal.component.scss',
 })
 export class CreateproductmodalComponent implements OnInit {
-  productForm!: FormGroup;
+  public productForm!: FormGroup;
   public isLoading = false;
   public errorMessage = '';
-  @Output() closeModal = new EventEmitter();
-  @ViewChild('modalContent') modalContent!: ElementRef;
+  @Output() public closeModal = new EventEmitter();
 
-  constructor(
+   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private store: Store<AppState>
   ) {}
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
       title: ['', [Validators.required]],
-      price: [0, [Validators.required]],
+      price: [[Validators.required]],
       description: ['', [Validators.required]],
-      image: [''],
       category: ['', [Validators.required]],
     });
   }
-  formSubmit() {
+
+  public formSubmit() {
     if (this.productForm.valid) {
       const formData = this.productForm.value;
-      let authObs: Observable<any>;
-      authObs = this.productService.createProduct(formData);
+      const authObs = this.productService.createProduct(formData);
+      this.isLoading = true;
 
       authObs
         .pipe(
@@ -63,17 +63,8 @@ export class CreateproductmodalComponent implements OnInit {
         });
     }
   }
-  
-  // @HostListener('click', ['$event'])
-  // onClick() {
-  //     this.closeModal.emit();
-  // }
-  onCloseModal(): void {
-    console.log('clicked');
-    this.closeModal.emit();
-  }
 
-  modalClose(){
-    console.log('Overlay clicked');
+  public onCloseModal(): void {
+    this.closeModal.emit();
   }
 }
