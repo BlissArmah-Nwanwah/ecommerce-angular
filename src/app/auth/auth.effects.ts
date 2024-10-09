@@ -1,16 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthActions } from './action-types';
-import { tap } from 'rxjs';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {AuthActions} from './action-types';
+import {tap} from 'rxjs';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
-  login$ = createEffect(
+  public login$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.login),
-        tap(({ user }) => {
+        tap(({user}) => {
           localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('accessToken', JSON.stringify(user.login_token));
           localStorage.setItem(
@@ -19,20 +19,23 @@ export class AuthEffects {
           );
         })
       ),
-    { dispatch: false }
+    {dispatch: false}
   );
 
-  logout$ = createEffect(
+  public logout$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
+          localStorage.removeItem('user');
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           this.router.navigateByUrl('/');
         })
       ),
-    { dispatch: false }
+    {dispatch: false}
   );
-  constructor(private actions$: Actions, private router: Router) {}
+
+  constructor(private actions$: Actions, private router: Router) {
+  }
 }

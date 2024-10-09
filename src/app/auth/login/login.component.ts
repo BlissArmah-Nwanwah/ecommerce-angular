@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import {catchError, of, Subscription, tap} from 'rxjs';
+import {catchError, of, tap} from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -14,7 +14,7 @@ import {AppState} from '../../app.state';
 import {AuthActions} from '../action-types';
 import {getAuthError, isLoggedIn} from '../auth.selectors';
 import {LoaderComponent} from '../../loader/loader.component';
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.handleFormChange()
+    this.handleFormChange();
     if (this.isLoggedIn()) {
       this.router.navigateByUrl('/home');
     }
@@ -65,13 +65,11 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/home');
         }),
         catchError((error) => {
-          this.store.dispatch(AuthActions.loginError({error: error.message || 'Login failed'}));
-          return of();
+          return of(AuthActions.loginError({error: error.message || 'Login failed'}));
         }
-  ),
-    takeUntilDestroyed()
-  ).
-    subscribe();
+        ),
+        takeUntilDestroyed()
+      ).subscribe();
   }
 
 }

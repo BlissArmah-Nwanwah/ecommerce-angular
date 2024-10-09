@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ProductEffects {
-  public constructor(
+   constructor(
     private actions$: Actions,
     private productService: ProductService,
     private store: Store

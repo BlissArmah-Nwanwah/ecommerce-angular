@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { AppState } from './app.state';
-import { AuthActions } from './auth/action-types';
+import {Component, OnInit} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {AppState} from './app.state';
+import {AuthActions} from './auth/action-types';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +14,13 @@ import { AuthActions } from './auth/action-types';
 export class AppComponent implements OnInit {
   public title = 'B-commerce';
 
-   constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {
+  }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     const userProfile = localStorage?.getItem('user') ?? '';
     if (userProfile) {
-      this.store.dispatch(AuthActions.login({ user: JSON.parse(userProfile) }));
+      this.store.dispatch(AuthActions.login({user: JSON.parse(userProfile)}));
     }
   }
 }
