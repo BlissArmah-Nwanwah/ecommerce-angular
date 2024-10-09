@@ -94,6 +94,9 @@ module.exports = tseslint.config(
         "error",
         {
           accessibility: "explicit",
+          "overrides": {
+            "constructors": "no-public",
+          },
         },
       ],
       complexity: ["error", 5],
