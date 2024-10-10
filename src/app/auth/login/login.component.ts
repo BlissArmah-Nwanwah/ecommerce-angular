@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.handleFormChange();
     if (this.isLoggedIn()) {
-      this.router.navigateByUrl('/home');
+      void this.router.navigateByUrl('/home');
     }
   }
 
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
     const loginData = {
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
-    }
+    };
 
     const authObs = this.authService.logIn(loginData);
     authObs
