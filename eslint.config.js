@@ -93,9 +93,13 @@ module.exports = tseslint.config(
       "@typescript-eslint/explicit-member-accessibility": [
         "error",
         {
+          'ignoredMethodNames': [
+            'ngOnInit'
+          ],
           accessibility: "explicit",
           "overrides": {
             "constructors": "no-public",
+
           },
         },
       ],
@@ -115,4 +119,5 @@ module.exports = tseslint.config(
     ],
     rules: {},
   }
+
 );
