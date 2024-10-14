@@ -6,7 +6,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ProductService} from '../services/product.service';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../app.state';
-import {logout} from '../auth/auth.actions';
+import {AUTH_ACTIONS } from '../auth/auth.actions';
 import {isLoggedIn} from '../auth/auth.selectors';
 import {MatIconModule} from '@angular/material/icon';
 
@@ -58,6 +58,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public logout() {
-    this.store.dispatch(logout());
+    this.store.dispatch(AUTH_ACTIONS.logOut());
   }
 }

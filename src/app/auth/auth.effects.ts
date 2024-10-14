@@ -1,31 +1,33 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {AuthActions} from './action-types';
-import {tap} from 'rxjs';
+import {catchError, map, of, switchMap, tap} from 'rxjs';
 import {Router} from '@angular/router';
+import {AUTH_ACTIONS} from './auth.actions';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AuthService} from '../guard/auth.service';
 
 @Injectable()
 export class AuthEffects {
-  public login$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.login),
-        tap(({user}) => {
-          localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('accessToken', JSON.stringify(user.login_token));
-          localStorage.setItem(
-            'refreshToken',
-            JSON.stringify(user.refresh_token)
-          );
-        })
-      ),
-    {dispatch: false}
+  public login$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AUTH_ACTIONS.login),
+      switchMap(({email, password}) =>
+        this.authService.logIn({email, password}).pipe(
+          map((response) => {
+            this.router.navigateByUrl('/home');
+            return AUTH_ACTIONS.loginSuccess(response);
+          }),
+          catchError((error: HttpErrorResponse) => {
+            return of(AUTH_ACTIONS.loginFailure({error: error.message}));
+          })
+        )
+      )
+    )
   );
-
   public logout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.logout),
+        ofType(AUTH_ACTIONS.logOut),
         tap(() => {
           localStorage.removeItem('user');
           localStorage.removeItem('accessToken');
@@ -36,6 +38,6 @@ export class AuthEffects {
     {dispatch: false}
   );
 
-  constructor(private actions$: Actions, private router: Router) {
+  constructor(private actions$: Actions, private router: Router, private authService: AuthService) {
   }
 }
