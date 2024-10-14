@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {createReducer, on} from '@ngrx/store';
-import {AuthActions} from './action-types';
+import { AUTH_ACTIONS } from './auth.actions';
 import {User} from '../app.state';
 
 export const initialState: User = {
@@ -7,24 +8,50 @@ export const initialState: User = {
   refresh_token: null,
   isLoading: false,
   error: null,
+  message:null
 };
 
 export const authReducer = createReducer(
   initialState,
-  on(AuthActions.login, (_, { user }) => ({
-    ...user,
-    isLoading: false,
-    error: null
+  on(AUTH_ACTIONS.login, (state) => ({
+    ...state,
+    isLoading: true,
   })),
-  on(AuthActions.loginError, (state, { error }) => ({
+  on(
+    AUTH_ACTIONS.loginSuccess,
+    (state, { login_token, refresh_token }) => ({
+      ...state,
+      login_token,
+      refresh_token,
+      loading: false,
+    })
+  ),
+  on(AUTH_ACTIONS.loginFailure, (state, { error }) => ({
     ...state,
     error,
-    isLoading: false,
+    loading: false,
   })),
-  on(AuthActions.logout, () => ({
+  on(
+    AUTH_ACTIONS.getAuthState,
+    (state, { login_token, refresh_token, message }) => ({
+      ...state,
+      login_token,
+      refresh_token,
+      message,
+    })
+  ),
+  on(
+    AUTH_ACTIONS.refreshTokenSuccess,
+    (state, { login_token, refresh_token }) => ({
+      ...state,
+      login_token,
+      refresh_token,
+    })
+  ),
+  on(AUTH_ACTIONS.logOut, (state) => ({
+    ...state,
     login_token: null,
     refresh_token: null,
-    isLoading: false,
-    error: null
+    message: null,
   }))
 );

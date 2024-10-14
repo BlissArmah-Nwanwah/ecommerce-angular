@@ -9,6 +9,8 @@ export interface User {
   refresh_token: string | null;
   isLoading: boolean;
   error: string | null;
+  message: string | null;
+
 }
 
 export interface AppState {

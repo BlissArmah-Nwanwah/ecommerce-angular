@@ -71,7 +71,7 @@
       <button
         type="submit"
         class="submit-btn"
-        [ngClass]="{ disabled: signupForm.invalid  }"
+        [ngClass]="{ disabled: signupForm.invalid || isLoggedIn()  }"
         [disabled]="signupForm.invalid"
       >
         Log in

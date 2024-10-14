@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import {catchError, of, tap} from 'rxjs';
 import {
   FormBuilder,
   FormGroup,
@@ -9,12 +8,11 @@ import {
   Validators,
 } from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {AuthService} from '../../guard/auth.service';
 import {AppState} from '../../app.state';
-import {AuthActions} from '../action-types';
 import {getAuthError, isLoggedIn} from '../auth.selectors';
 import {LoaderComponent} from '../../loader/loader.component';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {AUTH_ACTIONS} from '../auth.actions';
+import {LoginRequestBody} from '../../interfaces/auth';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +28,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService,
     private router: Router,
     private store: Store<AppState>
   ) {
@@ -57,19 +54,9 @@ export class LoginComponent implements OnInit {
       password: this.signupForm.value.password,
     };
 
-    const authObs = this.authService.logIn(loginData);
-    authObs
-      .pipe(
-        tap((user) => {
-          this.store.dispatch(AuthActions.login({user: {...user, isLoading: false, error: null}}));
-          this.router.navigateByUrl('/home');
-        }),
-        catchError((error) => {
-          return of(AuthActions.loginError({error: error.message || 'Login failed'}));
-        }
-        ),
-        takeUntilDestroyed()
-      ).subscribe();
+    this.store.dispatch(
+      AUTH_ACTIONS.login(loginData as LoginRequestBody)
+    );
   }
 
 }

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, map, Observable, of } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { logout } from '../auth/auth.actions';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, map, Observable, of} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AUTH_ACTIONS} from '../auth/auth.actions';
+import {environment} from '../../environments/environment';
 import {
   SignUpRequestData,
   SignUpResponseData,
@@ -12,13 +12,14 @@ import {
   RefreshTokenResponseData,
   ValidateTokenResponseData,
 } from './auth.interfaces';
-import {LocalStorageService} from "../services/localstorage.service";
+import {LocalStorageService} from '../services/localstorage.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
   private authApi = environment.AUTH_API_BASEURL;
 
-  constructor(private http: HttpClient, private store: Store,private localStorageService: LocalStorageService) {}
+  constructor(private http: HttpClient, private store: Store, private localStorageService: LocalStorageService) {
+  }
 
   public signUp(data: SignUpRequestData): Observable<SignUpResponseData> {
     return this.http.post<SignUpResponseData>(`${this.authApi}/user/signup`, {
@@ -60,7 +61,7 @@ export class AuthService {
           return true;
         }),
         catchError(() => {
-          this.store.dispatch(logout());
+          this.store.dispatch(AUTH_ACTIONS.logOut());
           return of(false);
         })
       );
