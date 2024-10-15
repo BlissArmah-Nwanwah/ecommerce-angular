@@ -1,35 +1,31 @@
-import { Routes } from '@angular/router';
-import { authGuard } from './guard/auth.guard';
-import { HomeComponent } from './products/home/home.component';
-import { EmptyCartComponent } from './products/empty-cart/empty-cart.component';
-import { DetailsComponent } from './products/details/details.component';
-import { LoginComponent } from './auth/login/login.component';
-import { CheckoutComponent } from './checkout/checkout.component';
-import { SignupComponent } from './auth/signup/signup.component';
+import {Routes} from '@angular/router';
+import {authGuard} from './guard/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'home', component: HomeComponent,
-    // canActivate: [authGuard]
+  {path: '', loadComponent: () => import('./auth/login/login.component').then((m) => m.LoginComponent)},
+  {path: 'signup', loadComponent: () => import('./auth/signup/signup.component').then((m) => m.SignupComponent)},
+  {
+    path: 'home', loadComponent: () => import('./products/home/home.component').then((m) => m.HomeComponent),
+    canActivate: [authGuard]
   },
   {
     path: 'details/:id',
-    component: DetailsComponent,
-    // canActivate: [authGuard],
+    loadComponent: () => import('./products/details/details.component').then((m) => m.DetailsComponent),
+    canActivate: [authGuard],
   },
   {
     path: 'cart',
     loadChildren: () =>
       import('./products/cart/cart.module').then((m) => m.CartRoutingModule),
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'empty-cart',
-    component: EmptyCartComponent,
-    // canActivate: [authGuard],
+    loadComponent: () => import('./products/empty-cart/empty-cart.component').then((m) => m.EmptyCartComponent),
+    canActivate: [authGuard],
   },
-  { path: 'checkout', component: CheckoutComponent,
+  {
+    path: 'checkout', loadComponent: () => import('./checkout/checkout.component').then((m) => m.CheckoutComponent),
     canActivate: [authGuard]
   },
 ];
