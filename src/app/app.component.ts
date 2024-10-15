@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AppState} from './app.state';
+import {AppState, User} from './app.state';
 import {AUTH_ACTIONS} from './auth/auth.actions';
 import {selectAuthState} from "./auth/auth.selectors";
 import {LocalStorageService} from "./services/localstorage.service";
@@ -26,9 +26,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userProfile = this.localStorageService.getItem('user') as string;
+    const userProfile = this.localStorageService.getItem('user') as User;
     if (userProfile) {
-      this.store.dispatch(AUTH_ACTIONS.getAuthState(JSON.parse(userProfile)));
+      this.store.dispatch(AUTH_ACTIONS.getAuthState(userProfile));
     }
     this.localStorageService.removeItem('user');
   }
