@@ -1,8 +1,12 @@
 <header>
   <nav class="navbar">
-    <div (click)="routeToHome()" class="logo-container cursor-pointer">
+    <a
+      [routerLink]="['/home']"
+      tabindex="1"
+      class="logo-container cursor-pointer"
+    >
       <img src="../../../../../assets/Logo.png" alt="logo" />
-    </div>
+    </a>
 
     <!-- icons -->
     <div class="icon-container">

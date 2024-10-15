@@ -1,11 +1,9 @@
-import { HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import {
+  HttpInterceptorFn,
+} from '@angular/common/http';
+import {environment} from '../../environments/environment';
 
-export const authInterceptor = (
-  req: HttpRequest<any>,
-  next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const xApnHeader = environment.APN;
   let authReq = req.clone({
     setHeaders: { 'X-APN': xApnHeader },

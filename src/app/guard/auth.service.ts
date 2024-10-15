@@ -1,81 +1,59 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, map, Observable, of } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { logout } from '../auth/auth.actions';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, map, Observable, of} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AUTH_ACTIONS} from '../auth/auth.actions';
+import {environment} from '../../environments/environment';
+import {
+  SignUpRequestData,
+  SignUpResponseData,
+  LogInRequestData,
+  LogInResponseData,
+  RefreshTokenResponseData,
+  ValidateTokenResponseData,
+} from '../interfaces/auth.interfaces';
+import {LocalStorageService} from '../services/localstorage.service';
 
-export interface AuthResponseData {
-  user: { username: string; role: string };
-  token: string;
-}
-
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
-  constructor(private http: HttpClient, private store: Store) {}
+  private authApi = environment.AUTH_API_BASEURL;
 
-  private authApi = environment.AUTH_API_BASEURL
-
-  signUp(data: {
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-  }) {
-    return this.http.post<{ message: string }>(
-      `${this.authApi}/user/signup`,
-      {
-        email: data.email,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        password: data.password,
-      }
-    );
+  constructor(private http: HttpClient, private store: Store, private localStorageService: LocalStorageService) {
   }
-  logIn(email: string, password: string) {
-    return this.http.post<{ login_token: string; refresh_token: string }>(
-      `${this.authApi}/user/login`,
-      {
-        email,
-        password,
-      }
+
+  public signUp(data: SignUpRequestData): Observable<SignUpResponseData> {
+    return this.http.post<SignUpResponseData>(`${this.authApi}/user/signup`, data);
+  }
+
+  public logIn(data: LogInRequestData): Observable<LogInResponseData> {
+    return this.http.post<LogInResponseData>(`${this.authApi}/user/login`, data);
+  }
+
+  public validateToken(): Observable<boolean> {
+    return this.http.get<ValidateTokenResponseData>(`${this.authApi}/user/validate`).pipe(
+      map(() => true),
+      catchError(() => of(false))
     );
   }
 
-  validateToken(): Observable<boolean> {
-    return this.http.get(`${this.authApi}/user/validate`).pipe(
-      map(() => {
-        return true;
-      }),
-      catchError(() => {
-        return of(false);
-      })
-    );
-  }
-
-  refreshToken(): Observable<boolean> {
-    const refreshToken = localStorage.getItem('refreshToken');
+  public refreshToken(): Observable<boolean> {
+    const refreshToken = this.localStorageService.getItem('refreshToken') as string;
     if (!refreshToken) {
       return of(false);
     }
+
     return this.http
-      .post(`${this.authApi}/user/refresh-token`, {
-        refresh_token: JSON.parse(refreshToken),
+      .post<RefreshTokenResponseData>(`${this.authApi}/user/refresh-token`, {
+        refreshToken: JSON.parse(refreshToken),
       })
       .pipe(
-        map((response: any) => {
-          localStorage.setItem(
-            'accessToken',
-            JSON.stringify(response.login_token)
-          );
-          localStorage.setItem(
-            'refreshToken',
-            JSON.stringify(response.refresh_token)
-          );
+        map((response: RefreshTokenResponseData) => {
+          this.localStorageService.setItem('accessToken', JSON.stringify(response.login_token));
+          this.localStorageService.setItem('refreshToken', JSON.stringify(response.refresh_token));
           return true;
         }),
         catchError(() => {
-          this.store.dispatch(logout());
+          this.store.dispatch(AUTH_ACTIONS.logOut());
           return of(false);
         })
       );

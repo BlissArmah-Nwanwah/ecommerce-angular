@@ -1,38 +1,43 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthActions } from './action-types';
-import { tap } from 'rxjs';
-import { Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, of, switchMap, tap} from 'rxjs';
+import {Router} from '@angular/router';
+import {AUTH_ACTIONS} from './auth.actions';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AuthService} from '../guard/auth.service';
 
 @Injectable()
 export class AuthEffects {
-  login$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.login),
-        tap(({ user }) => {
-          localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('accessToken', JSON.stringify(user.login_token));
-          localStorage.setItem(
-            'refreshToken',
-            JSON.stringify(user.refresh_token)
-          );
-        })
-      ),
-    { dispatch: false }
+  public login$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AUTH_ACTIONS.login),
+      switchMap((loginData) =>
+        this.authService.logIn(loginData).pipe(
+          map((response) => {
+            this.router.navigateByUrl('/home');
+            return AUTH_ACTIONS.loginSuccess(response);
+          }),
+          catchError((error: HttpErrorResponse) => {
+            return of(AUTH_ACTIONS.loginFailure({error: error.message}));
+          })
+        )
+      )
+    )
   );
-
-  logout$ = createEffect(
+  public logout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.logout),
+        ofType(AUTH_ACTIONS.logOut),
         tap(() => {
+          localStorage.removeItem('user');
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           this.router.navigateByUrl('/');
         })
       ),
-    { dispatch: false }
+    {dispatch: false}
   );
-  constructor(private actions$: Actions, private router: Router) {}
+
+  constructor(private actions$: Actions, private router: Router, private authService: AuthService) {
+  }
 }
