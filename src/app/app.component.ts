@@ -30,5 +30,6 @@ export class AppComponent implements OnInit {
     if (userProfile) {
       this.store.dispatch(AUTH_ACTIONS.getAuthState(JSON.parse(userProfile)));
     }
+    this.localStorageService.removeItem('user');
   }
 }
