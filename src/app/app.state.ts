@@ -5,12 +5,11 @@ import { authReducer } from './auth/auth.reducer';
 import { productReducer, ProductState } from './products/product.reducers';
 
 export interface User {
-  login_token: string | null;
-  refresh_token: string | null;
+  login_token: string | undefined;
+  refresh_token: string | undefined;
   isLoading: boolean;
-  error: string | null;
-  message: string | null;
-
+  error: string | undefined;
+  message: string | undefined;
 }
 
 export interface AppState {
