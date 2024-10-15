@@ -22,19 +22,11 @@ export class AuthService {
   }
 
   public signUp(data: SignUpRequestData): Observable<SignUpResponseData> {
-    return this.http.post<SignUpResponseData>(`${this.authApi}/user/signup`, {
-      email: data.email,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      password: data.password,
-    });
+    return this.http.post<SignUpResponseData>(`${this.authApi}/user/signup`, data);
   }
 
   public logIn(data: LogInRequestData): Observable<LogInResponseData> {
-    return this.http.post<LogInResponseData>(`${this.authApi}/user/login`, {
-      email: data.email,
-      password: data.password,
-    });
+    return this.http.post<LogInResponseData>(`${this.authApi}/user/login`, data);
   }
 
   public validateToken(): Observable<boolean> {
