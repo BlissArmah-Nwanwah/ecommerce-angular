@@ -11,8 +11,8 @@ export class AuthEffects {
   public login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AUTH_ACTIONS.login),
-      switchMap(({email, password}) =>
-        this.authService.logIn({email, password}).pipe(
+      switchMap((loginData) =>
+        this.authService.logIn(loginData).pipe(
           map((response) => {
             this.router.navigateByUrl('/home');
             return AUTH_ACTIONS.loginSuccess(response);
