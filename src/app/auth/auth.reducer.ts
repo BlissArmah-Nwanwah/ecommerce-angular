@@ -4,11 +4,11 @@ import { AUTH_ACTIONS } from './auth.actions';
 import {User} from '../app.state';
 
 export const initialState: User = {
-  login_token: null,
-  refresh_token: null,
+  login_token: undefined,
+  refresh_token: undefined,
   isLoading: false,
-  error: null,
-  message:null
+  error: undefined,
+  message:undefined
 };
 
 export const authReducer = createReducer(
@@ -50,8 +50,8 @@ export const authReducer = createReducer(
   ),
   on(AUTH_ACTIONS.logOut, (state) => ({
     ...state,
-    login_token: null,
-    refresh_token: null,
-    message: null,
+    login_token: undefined,
+    refresh_token: undefined,
+    message: undefined,
   }))
 );
