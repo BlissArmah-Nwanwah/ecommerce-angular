@@ -9,5 +9,4 @@ import { Component } from '@angular/core';
   styleUrl: './loader.component.scss',
 })
 export class LoaderComponent {
-
 }

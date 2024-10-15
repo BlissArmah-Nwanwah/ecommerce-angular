@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createActionGroup, emptyProps, props} from '@ngrx/store';
 import { User } from '../app.state';
-import {LoginRequestBody, LoginResponseBody} from '../interfaces/auth';
+import {LogInRequestData, LogInResponseData} from "../interfaces/auth.interfaces";
 
 export const AUTH_ACTIONS = createActionGroup({
   source: 'Auth',
   events: {
-    ' Login': props<LoginRequestBody>(),
-    'Login Success': props<LoginResponseBody>(),
+    ' Login': props<LogInRequestData>(),
+    'Login Success': props<LogInResponseData>(),
     'Get Auth State': props<User>(),
     'Login Failure': props<{ error: string }>(),
     'Refresh Token Success': props<{

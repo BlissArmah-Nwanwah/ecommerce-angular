@@ -53,10 +53,6 @@ export class NavbarComponent implements OnInit {
     return this.productService.productCount;
   }
 
-  public routeToHome() {
-    this.router.navigate(['/home']);
-  }
-
   public logout() {
     this.store.dispatch(AUTH_ACTIONS.logOut());
   }
