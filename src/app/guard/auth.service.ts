@@ -45,19 +45,19 @@ export class AuthService {
   }
 
   public refreshToken(): Observable<boolean> {
-    const refreshToken = localStorage.getItem('refreshToken');
+    const refreshToken = this.localStorageService.getItem('refreshToken') as string;
     if (!refreshToken) {
       return of(false);
     }
 
     return this.http
       .post<RefreshTokenResponseData>(`${this.authApi}/user/refresh-token`, {
-        refreshToken: JSON.parse(refreshToken) as string,
+        refreshToken: JSON.parse(refreshToken),
       })
       .pipe(
         map((response: RefreshTokenResponseData) => {
-          localStorage.setItem('accessToken', JSON.stringify(response.login_token));
-          localStorage.setItem('refreshToken', JSON.stringify(response.refresh_token));
+          this.localStorageService.setItem('accessToken', JSON.stringify(response.login_token));
+          this.localStorageService.setItem('refreshToken', JSON.stringify(response.refresh_token));
           return true;
         }),
         catchError(() => {
