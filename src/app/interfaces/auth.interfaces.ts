@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface SignUpRequestData {
   email: string;
   firstName: string;

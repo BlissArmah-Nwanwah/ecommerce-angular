@@ -11,7 +11,7 @@ import {
   LogInResponseData,
   RefreshTokenResponseData,
   ValidateTokenResponseData,
-} from './auth.interfaces';
+} from '../interfaces/auth.interfaces';
 import {LocalStorageService} from '../services/localstorage.service';
 
 @Injectable({providedIn: 'root'})

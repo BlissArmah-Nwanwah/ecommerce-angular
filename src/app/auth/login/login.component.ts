@@ -12,7 +12,7 @@ import {AppState} from '../../app.state';
 import {getAuthError, isLoggedIn} from '../auth.selectors';
 import {LoaderComponent} from '../../loader/loader.component';
 import {AUTH_ACTIONS} from '../auth.actions';
-import {LoginRequestBody} from '../../interfaces/auth';
+import {LogInRequestData} from "../../interfaces/auth.interfaces";
 
 @Component({
   selector: 'app-login',
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
     };
 
     this.store.dispatch(
-      AUTH_ACTIONS.login(loginData as LoginRequestBody)
+      AUTH_ACTIONS.login(loginData as LogInRequestData)
     );
   }
 
