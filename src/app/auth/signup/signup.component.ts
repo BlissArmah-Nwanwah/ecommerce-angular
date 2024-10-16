@@ -1,13 +1,12 @@
 import {Component} from '@angular/core';
 import {
   FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
-import {AppState, User} from '../../app.state';
+import {AppState} from '../../app.state';
 import {select, Store} from '@ngrx/store';
 import {Observable, tap} from 'rxjs';
 import {isLoggedIn} from '../auth.selectors';
@@ -44,9 +43,9 @@ export class SignupComponent {
 
   ngOnInit(): void {
     this.isLoggenIn$ = this.store.pipe(select(isLoggedIn));
-    // if (this.isLoggenIn$) {
-    //   this.router.navigate(['/']);
-    // }
+    if (this.isLoggenIn$) {
+      this.router.navigateByUrl('/');
+    }
   }
 
 
@@ -69,7 +68,7 @@ export class SignupComponent {
   formAction() {
     if (this.signUpForm.valid) {
       const formData = {
-        email: this.email.value || '',       // Default to empty string if null
+        email: this.email.value || '',
         firstName: this.firstName.value || '',
         lastName: this.lastName.value || '',
         password: this.password.value || '',

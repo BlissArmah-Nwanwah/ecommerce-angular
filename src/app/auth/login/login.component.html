@@ -16,12 +16,12 @@
       (ngSubmit)="onSubmit()"
     >
       <!-- email Address -->
-        <app-custom-input-field
-          label="Email"
-          type="email"
-          placeholder="Enter your email"
-          [control]="email"
-        />
+      <app-custom-input-field
+        label="Email"
+        type="email"
+        placeholder="Enter your email"
+        [control]="email"
+      />
 
       <!-- password -->
       <app-custom-input-field
@@ -31,19 +31,19 @@
         placeholder="Enter your password"
       />
 
-      @if(errorMessage.length > 0){
-      <div class="error">Invalid credenetials</div>
+      @if (errorMessage.length > 0) {
+        <div class="error">Invalid credenetials</div>
       }
 
       <button
         type="submit"
         class="submit-btn"
-        [ngClass]="{ disabled: loginForm.invalid || isLoading }"
+        [class.disabled]="loginForm.invalid || isLoading"
         [disabled]="loginForm.invalid"
       >
         Log in
       </button>
-       <a class="link" routerLink="/signup">Sign up?</a>
+      <a class="link" routerLink="/signup">Sign up?</a>
     </form>
   </div>
 </section>
