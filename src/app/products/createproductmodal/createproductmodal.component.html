@@ -1,6 +1,6 @@
 <div class="">
   <div class="modal-wrapper" (click)="onCloseModal()"></div>
-  <div class="modal-content" #modalContent>
+  <div class="modal-content">
     <div class="modal-header">
       <h2>Create Product</h2>
       <mat-icon (click)="onCloseModal()" class="icon-close">close</mat-icon>
@@ -59,20 +59,14 @@
         />
       </div>
 
-      <!-- Image URL -->
-      <label for="image">Image URL</label>
-      <div class="input-wrapper">
-        <input
-          name="image"
-          class="input"
-          type="file"
-          placeholder="Image URL"
-          formControlName="image"
-          required
-        />
-      </div>
-
-      <button type="submit" class="submit-btn">Submit</button>
+      <button
+        type="submit"
+        class="submit-btn"
+        [ngClass]="{ disabled: productForm.invalid || isLoading }"
+        [disabled]="productForm.invalid"
+      >
+        Submit
+      </button>
     </form>
   </div>
 </div>
