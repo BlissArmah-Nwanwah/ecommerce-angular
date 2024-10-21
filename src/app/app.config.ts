@@ -20,6 +20,6 @@ export const appConfig: ApplicationConfig = {
     provideStore(reducers, { metaReducers }),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideEffects([AuthEffects, ProductEffects]),
-    provideAnimationsAsync(), provideAnimationsAsync(),
+    provideAnimationsAsync(),
   ],
 };
