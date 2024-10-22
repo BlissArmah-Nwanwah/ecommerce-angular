@@ -67,7 +67,6 @@ export class ProductService {
     title: string;
     price: number;
     description: string;
-    image: string;
     category: string;
   }): Observable<ProductData> {
     return this.http.post<ProductData>(`${this.apiurl}`, {
