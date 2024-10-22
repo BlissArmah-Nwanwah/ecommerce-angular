@@ -31,8 +31,8 @@
         placeholder="Enter your password"
       />
 
-      @if (errorMessage.length > 0) {
-        <div class="error">Invalid credenetials</div>
+      @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
       }
 
       <button
