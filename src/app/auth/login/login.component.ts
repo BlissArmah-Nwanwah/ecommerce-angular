@@ -1,19 +1,18 @@
-import {Component, OnInit, Signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
-import {Observable, tap} from 'rxjs';
 import {
-  FormBuilder,
+  FormBuilder, FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {AuthService} from '../../guard/auth.service';
-import {AppState, User} from '../../app.state';
-import {forbiddenNameValidator} from '../../shared/forbidden-name-validator.directive';
-import {AuthActions} from '../action-types';
-import {isLoggedIn} from '../auth.selectors';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../app.state';
+import {getAuthError, isLoggedIn} from '../auth.selectors';
+import {LoaderComponent} from '../../loader/loader.component';
+import {AUTH_ACTIONS} from '../auth.actions';
+import {LogInRequestData} from "../../interfaces/auth.interfaces";
 import {CustomInputFieldComponent} from "../custom-input-field/custom-input-field.component";
 
 @Component({
@@ -21,67 +20,53 @@ import {CustomInputFieldComponent} from "../custom-input-field/custom-input-fiel
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule,CustomInputFieldComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgOptimizedImage, LoaderComponent,CustomInputFieldComponent],
 })
 export class LoginComponent implements OnInit {
-  public loginForm=this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
-  });
-  public isLoading = false;
-  public errorMessage = '';
-  isLoggenIn!: Signal<boolean>;
+  public loginForm!: FormGroup;
+  public errorMessage = this.store.selectSignal(getAuthError);
+  public isLoggedIn = this.store.selectSignal(isLoggedIn);
 
   constructor(
-    private authService: AuthService,
+    private formBuilder: FormBuilder,
     private router: Router,
-    private store: Store<AppState>,
-  private formBuilder: FormBuilder,
+    private store: Store<AppState>
   ) {
   }
 
   ngOnInit(): void {
-    this.isLoggenIn = this.store.selectSignal(isLoggedIn);
-    if (this.isLoggenIn()) {
-      this.router.navigate(['/home']);
+    this.handleFormChange();
+    if (this.isLoggedIn()) {
+      void this.router.navigateByUrl('/home');
     }
   }
 
+  public handleFormChange() {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
+
+  }
 
   public get email() {
-    return this.loginForm.controls['email'];
+    return this.loginForm.controls['email'] as FormControl
   }
 
   public get password() {
-    return this.loginForm.controls['password'];
+    return this.loginForm.controls['password'] as FormControl
   }
 
-  public onSubmit()
-    {
-      const email = this.loginForm.value.email ?? '';
-      const password = this.loginForm.value.password ?? '';
 
-      let authObs: Observable<User>;
-      this.isLoading = true;
+  public onSubmit() {
+    const loginData = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
 
-      authObs = this.authService.logIn(email, password);
-
-      authObs
-        .pipe(
-          tap((user) => {
-            this.store.dispatch(AuthActions.login({user: {...user}}));
-            this.router.navigate(['/home']);
-          })
-        )
-        .subscribe({
-          next: () => {
-            this.isLoading = true;
-          },
-          error: (error) => {
-            this.isLoading = false;
-            this.loginForm.reset();
-            this.errorMessage = error.message;
-          },
-        });
-    }
+    this.store.dispatch(
+      AUTH_ACTIONS.login(loginData as LogInRequestData)
+    );
   }
+
+}

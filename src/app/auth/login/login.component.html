@@ -31,14 +31,14 @@
         placeholder="Enter your password"
       />
 
-      @if (errorMessage) {
-        <div class="error">{{ errorMessage }}</div>
+      @if (errorMessage()) {
+        <div class="error">{{ errorMessage() }}</div>
       }
 
       <button
         type="submit"
         class="submit-btn"
-        [class.disabled]="loginForm.invalid || isLoading"
+        [class.disabled]="loginForm.invalid"
         [disabled]="loginForm.invalid"
       >
         Log in

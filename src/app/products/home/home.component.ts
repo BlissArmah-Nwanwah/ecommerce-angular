@@ -1,14 +1,7 @@
-import { SearchService } from './../../services/search.service';
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  Signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import {
@@ -18,13 +11,16 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { ItemCardComponent } from '../item-card/item-card.component';
-import { ProductData, cartProductData } from '../../services/product-data';
-import { CommonModule } from '@angular/common';
+import {  CartProductData } from '../../services/product-data';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { Store } from '@ngrx/store';
 import { PRODUCT_ACTIONS } from '../products.actions';
 import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {CustomInputFieldComponent} from "../../auth/custom-input-field/custom-input-field.component";
 
 @Component({
   selector: 'app-home',
@@ -39,64 +35,55 @@ import { CreateproductmodalComponent } from '../createproductmodal/createproduct
     MatSnackBarModule,
     CommonModule,
     CreateproductmodalComponent,
+    ReactiveFormsModule,
+    NgOptimizedImage,
+    CustomInputFieldComponent,
   ],
 })
 export class HomeComponent implements OnInit {
-  horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  public horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+  public verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+  public searchForm!: FormGroup;
+  public products = this.store.selectSignal(allProducts);
+  public loading = this.store.selectSignal(isProductsLoading);
+  public durationInSeconds = 2;
+  public toggleModal = false;
 
-  newProducts$!: Observable<ProductData[]>;
-
-  products!: Signal<ProductData[]>;
-  currentPage: number = 1;
-  itemsPerPage: number = 8;
-  loading!: Signal<boolean>;
-  productLength: number = 0;
-  durationInSeconds = 2;
-  toggleModal: boolean = false;
-
-  @ViewChild('cardRef', { read: ElementRef })
-  card!: ElementRef;
-
-  @ViewChild('container')
-  container!: ElementRef;
-
-  constructor(
+   constructor(
     private router: Router,
     private productService: ProductService,
-    private searchService: SearchService,
     private _snackBar: MatSnackBar,
     private store: Store
   ) {}
 
-  ngOnInit(): void {
+   ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
-    this.products = this.store.selectSignal(allProducts);
-    this.loading = this.store.selectSignal(isProductsLoading);
+    this.searchForm = new FormGroup({
+      searchTerm: new FormControl(''),
+    });
+    this.searchForm
+      .get('searchTerm')
+      ?.valueChanges.pipe(debounceTime(300), distinctUntilChanged(),takeUntilDestroyed())
+      .subscribe((searchTerm: string) => {
+        this.store.dispatch(PRODUCT_ACTIONS.searchProducts({ searchTerm }));
+      });
   }
 
-  onToggleCreatProductModal() {
+  public onToggleCreatProductModal() {
     this.toggleModal = !this.toggleModal;
   }
-  onInputChange(event: KeyboardEvent) {
-    const text = (event.target as HTMLInputElement).value;
-    this.searchService.getSearchData(text);
-  }
 
-  onProductSelectedToCart(product: cartProductData): void {
+  public onProductSelectedToCart(product: CartProductData): void {
     this.productService.setSelectedProductToCart(product);
     this.openSnackBar('Item added to cart', 'Close');
   }
 
-  onProductSelectDetail(product: cartProductData): void {
-    this.router.navigate(['/details', product.id]);
+  public onProductSelectDetail(product: CartProductData): void {
+    this.router.navigateByUrl(`/details/${product.id}`);
   }
 
-  handlePageEvent(event: PageEvent) {
-    this.currentPage = event.pageIndex + 1;
-  }
 
-  openSnackBar(message: string, action: string) {
+  public openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: this.durationInSeconds * 1000,
       horizontalPosition: this.horizontalPosition,
