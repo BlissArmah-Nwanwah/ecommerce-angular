@@ -34,15 +34,13 @@
       </button>
       @if (!loading) {
       <div id="searchBar">
-        <form class="search-bar">
-          <i class="fas fa-search icon-search"></i>
-          <input
+        <form class="search-bar" [formGroup]="searchForm">
+          <app-custom-input-field
+            label="Search"
+            placeholder="Search Products"
+            [control]="searchForm.get('searchTerm')"
             type="text"
-            placeholder="Search"
-            class="search-input"
-            formControlName="searchTerm"
-            (keyup)="onInputChange($event)"
-          />
+          ></app-custom-input-field>
         </form>
       </div>
       }

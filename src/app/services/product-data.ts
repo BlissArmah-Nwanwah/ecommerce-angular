@@ -11,10 +11,9 @@ export interface ProductData {
       count: number;
     };
   }
-  
-  export interface  cartProductData extends ProductData {
+
+  export interface  CartProductData extends ProductData {
     count?:  number;
   }
-  
-  
-  
+
+

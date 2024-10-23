@@ -11,7 +11,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { ItemCardComponent } from '../item-card/item-card.component';
-import { ProductData, CartProductData } from '../../services/product-data';
+import {  CartProductData } from '../../services/product-data';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { Store } from '@ngrx/store';
@@ -20,6 +20,7 @@ import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {CustomInputFieldComponent} from "../../auth/custom-input-field/custom-input-field.component";
 
 @Component({
   selector: 'app-home',
@@ -36,6 +37,7 @@ import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
     CreateproductmodalComponent,
     ReactiveFormsModule,
     NgOptimizedImage,
+    CustomInputFieldComponent,
   ],
 })
 export class HomeComponent implements OnInit {
