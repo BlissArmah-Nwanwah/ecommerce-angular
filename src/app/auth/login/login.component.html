@@ -31,9 +31,7 @@
         placeholder="Enter your password"
       />
 
-      @if (errorMessage) {
-        <div class="error">{{ errorMessage }}</div>
-      }
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
       <button
         type="submit"
