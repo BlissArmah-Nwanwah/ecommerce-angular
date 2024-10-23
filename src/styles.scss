@@ -30,6 +30,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 align-items: center;
 justify-content: space-between;
 }
+
 @mixin flex-center{
     display: flex;
   align-items: center;
