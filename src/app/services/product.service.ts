@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable } from 'rxjs';
 import { ProductData, CartProductData } from './product-data';
 import { environment } from '../../environments/environment';
-import {LocalStorageService} from "./localstorage.service";
+import {LocalStorageService} from './localstorage.service';
 
 @Injectable({
   providedIn: 'root',

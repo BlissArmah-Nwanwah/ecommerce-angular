@@ -10,7 +10,7 @@ describe('CustomInputFieldComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CustomInputFieldComponent]
     })
-    .compileComponents();
+      .compileComponents();
     
     fixture = TestBed.createComponent(CustomInputFieldComponent);
     component = fixture.componentInstance;

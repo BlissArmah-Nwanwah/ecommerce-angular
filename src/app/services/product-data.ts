@@ -12,7 +12,7 @@ export interface ProductData {
     };
   }
 
-  export interface  CartProductData extends ProductData {
+export interface  CartProductData extends ProductData {
     count?:  number;
   }
 

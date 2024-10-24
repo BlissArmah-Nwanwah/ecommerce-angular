@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import {
   MatSnackBarModule,
   MatSnackBar,
@@ -19,8 +19,8 @@ import { PRODUCT_ACTIONS } from '../products.actions';
 import { allProducts, isProductsLoading } from '../products.selectors';
 import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {CustomInputFieldComponent} from "../../auth/custom-input-field/custom-input-field.component";
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-input-field.component';
 
 @Component({
   selector: 'app-home',
@@ -49,14 +49,14 @@ export class HomeComponent implements OnInit {
   public durationInSeconds = 2;
   public toggleModal = false;
 
-   constructor(
+  constructor(
     private router: Router,
     private productService: ProductService,
     private _snackBar: MatSnackBar,
     private store: Store
   ) {}
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
     this.searchForm = new FormGroup({
       searchTerm: new FormControl(''),
@@ -73,6 +73,9 @@ export class HomeComponent implements OnInit {
     this.toggleModal = !this.toggleModal;
   }
 
+  public get searchTerm() {
+    return this.searchForm.controls['searchTerm'] as FormControl;
+  }
   public onProductSelectedToCart(product: CartProductData): void {
     this.productService.setSelectedProductToCart(product);
     this.openSnackBar('Item added to cart', 'Close');

@@ -4,7 +4,7 @@ export class User {
   ) {}
 
   get tokens(){
-      return this.token
+    return this.token;
   }
 
 }

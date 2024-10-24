@@ -3,8 +3,8 @@ import {RouterOutlet} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {AppState, User} from './app.state';
 import {AUTH_ACTIONS} from './auth/auth.actions';
-import {selectAuthState} from "./auth/auth.selectors";
-import {LocalStorageService} from "./services/localstorage.service";
+import {selectAuthState} from './auth/auth.selectors';
+import {LocalStorageService} from './services/localstorage.service';
 
 @Component({
   selector: 'app-root',

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { createActionGroup, emptyProps, props} from '@ngrx/store';
 import { User } from '../app.state';
-import {LogInRequestData, LogInResponseData} from "../interfaces/auth.interfaces";
+import {LogInRequestData, LogInResponseData} from '../interfaces/auth.interfaces';
 
 export const AUTH_ACTIONS = createActionGroup({
   source: 'Auth',

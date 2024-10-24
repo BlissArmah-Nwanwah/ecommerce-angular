@@ -12,8 +12,8 @@ import {AppState} from '../../app.state';
 import {getAuthError, isLoggedIn} from '../auth.selectors';
 import {LoaderComponent} from '../../loader/loader.component';
 import {AUTH_ACTIONS} from '../auth.actions';
-import {LogInRequestData} from "../../interfaces/auth.interfaces";
-import {CustomInputFieldComponent} from "../custom-input-field/custom-input-field.component";
+import {LogInRequestData} from '../../interfaces/auth.interfaces';
+import {CustomInputFieldComponent} from '../custom-input-field/custom-input-field.component';
 
 @Component({
   selector: 'app-login',
@@ -50,11 +50,11 @@ export class LoginComponent implements OnInit {
   }
 
   public get email() {
-    return this.loginForm.controls['email'] as FormControl
+    return this.loginForm.controls['email'] as FormControl;
   }
 
   public get password() {
-    return this.loginForm.controls['password'] as FormControl
+    return this.loginForm.controls['password'] as FormControl;
   }
 
 

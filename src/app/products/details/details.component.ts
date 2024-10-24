@@ -29,14 +29,14 @@ export class DetailsComponent implements OnInit {
   public selectedSize = '';
   public id!: string;
 
-   constructor(
+  constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private store: Store
   ) {
     this.id = this.route.snapshot.params['id'];
   }
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.store.dispatch(
       PRODUCT_ACTIONS.loadSelectedProduct({ productId: this.id })
     );

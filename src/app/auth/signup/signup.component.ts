@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -11,7 +11,7 @@ import {select, Store} from '@ngrx/store';
 import {Observable, tap} from 'rxjs';
 import {isLoggedIn} from '../auth.selectors';
 import {AuthService} from '../../guard/auth.service';
-import {CustomInputFieldComponent} from "../custom-input-field/custom-input-field.component";
+import {CustomInputFieldComponent} from '../custom-input-field/custom-input-field.component';
 
 @Component({
   selector: 'app-signup',
@@ -20,16 +20,16 @@ import {CustomInputFieldComponent} from "../custom-input-field/custom-input-fiel
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent {
-  signUpForm = this.formBuilder.group({
+export class SignupComponent implements OnInit {
+  public signUpForm = this.formBuilder.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  showPassword: boolean = false;
-  isLoggenIn$: Observable<boolean> = new Observable();
+  public showPassword = false;
+  public isLoggenIn$ = new Observable<boolean>();
   public isLoading = false;
   public errorMessage = '';
 
@@ -65,7 +65,7 @@ export class SignupComponent {
     return this.signUpForm.controls.password;
   }
 
-  formAction() {
+  public formAction() {
     if (this.signUpForm.valid) {
       const formData = {
         email: this.email.value || '',
@@ -73,9 +73,7 @@ export class SignupComponent {
         lastName: this.lastName.value || '',
         password: this.password.value || '',
       };
-
-      let authObs: Observable<{ message: string }>;
-      authObs = this.authService.signUp(formData);
+      const  authObs : Observable<{ message: string }> = this.authService.signUp(formData);
 
       authObs
         .pipe(
@@ -95,8 +93,4 @@ export class SignupComponent {
     }
   }
 
-
-  togglePassword(): void {
-    this.showPassword = !this.showPassword;
-  }
 }
