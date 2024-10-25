@@ -76,6 +76,7 @@ export class HomeComponent implements OnInit {
   public get searchTerm() {
     return this.searchForm.controls['searchTerm'] as FormControl;
   }
+
   public onProductSelectedToCart(product: CartProductData): void {
     this.productService.setSelectedProductToCart(product);
     this.openSnackBar('Item added to cart', 'Close');
@@ -84,7 +85,6 @@ export class HomeComponent implements OnInit {
   public onProductSelectDetail(product: CartProductData): void {
     this.router.navigateByUrl(`/details/${product.id}`);
   }
-
 
   public openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
