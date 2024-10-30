@@ -12,16 +12,19 @@ import { ProductData } from '../../services/product-data';
 })
 export class ItemCardComponent {
   @Input() public product!: ProductData;
-  @Output() public productSelectDetail = new EventEmitter<ProductData>();
-  @Output() public productAddToCart = new EventEmitter<ProductData>();
+  @Output() public productAction = new EventEmitter<{ type: 'detail' | 'addToCart', data: ProductData }>();
 
-  constructor() {}
+  private emitProductAction(type: 'detail' | 'addToCart'): void {
+    this.productAction.emit({ type, data: this.product });
+  }
 
   public onViewDetails(): void {
-    this.productSelectDetail.emit(this.product);
+    this.emitProductAction('detail');
   }
 
   public onProductSelectedToCart(): void {
-    this.productAddToCart.emit(this.product);
+    this.emitProductAction('addToCart');
   }
+
+
 }

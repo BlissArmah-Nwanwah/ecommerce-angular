@@ -26,7 +26,6 @@ import { LoaderComponent } from '../../loader/loader.component';
 export class DetailsComponent implements OnInit {
   public selectedProduct = this.store.selectSignal(selectedProduct);
   public loading = this.store.selectSignal(isProductsLoading);
-  public selectedSize = '';
   public id!: string;
 
   constructor(

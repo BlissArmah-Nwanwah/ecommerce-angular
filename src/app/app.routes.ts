@@ -1,9 +1,10 @@
 import {Routes} from '@angular/router';
 import {authGuard} from './guard/auth.guard';
+import {redirectIfAuthenticatedGuard} from './guard/redirectIfAuthenticatedGuard.guard';
 
 export const routes: Routes = [
-  {path: '', loadComponent: () => import('./auth/login/login.component').then((m) => m.LoginComponent)},
-  {path: 'signup', loadComponent: () => import('./auth/signup/signup.component').then((m) => m.SignupComponent)},
+  {path: '', loadComponent: () => import('./auth/login/login.component').then((m) => m.LoginComponent),canActivate:[redirectIfAuthenticatedGuard]},
+  {path: 'signup', loadComponent: () => import('./auth/signup/signup.component').then((m) => m.SignupComponent),canActivate:[redirectIfAuthenticatedGuard]},
   {
     path: 'home', loadComponent: () => import('./products/home/home.component').then((m) => m.HomeComponent),
     canActivate: [authGuard]

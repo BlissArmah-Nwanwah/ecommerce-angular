@@ -41,13 +41,13 @@ export class CustomInputFieldComponent {
       case 'whitespace':
         return `${this.label} shouldn't be empty`;
       case 'invalidName':
-        return 'Did you entered your name correctly?';
+        return 'Did you enter your name correctly?';
       case 'email':
-        return `${this.label} should be a email`;
+        return `${this.label} should be an email`;
       case 'invalidDomain':
         return `${this.control.errors?.[error].message}`;
       case 'minlength':
-        return `${this.label} must have at least ${this.control.errors?.[error].requiredLength} chars`;
+        return `${this.label} must have at least ${this.control.errors?.[error].requiredLength} characters`;
       default:
         return '';
       }

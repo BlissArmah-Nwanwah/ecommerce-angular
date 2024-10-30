@@ -55,8 +55,7 @@
         <app-item-card
           #cardRef
           [product]="product"
-          (productSelectDetail)="onProductSelectDetail($event)"
-          (productAddToCart)="onProductSelectedToCart($event)"
+          (productAction)="onProductAction($event)"
         ></app-item-card>
         }
       </div>

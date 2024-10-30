@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {AUTH_ACTIONS} from './auth.actions';
 import {HttpErrorResponse} from '@angular/common/http';
 import {AuthService} from '../guard/auth.service';
+import {LocalStorageService} from '../services/localstorage.service';
 
 @Injectable()
 export class AuthEffects {
@@ -29,15 +30,15 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AUTH_ACTIONS.logOut),
         tap(() => {
-          localStorage.removeItem('user');
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          this.localStorageService.removeItem('user');
+          this.localStorageService.removeItem('accessToken');
+          this.localStorageService.removeItem('refreshToken');
           this.router.navigateByUrl('/');
         })
       ),
     {dispatch: false}
   );
 
-  constructor(private actions$: Actions, private router: Router, private authService: AuthService) {
+  constructor(private actions$: Actions, private router: Router, private authService: AuthService, private localStorageService: LocalStorageService) {
   }
 }

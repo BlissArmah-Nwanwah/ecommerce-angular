@@ -60,16 +60,12 @@ export class ProductService {
     return this.http.get<ProductData>(`${this.apiurl}/${id}`);
   }
 
-  public createProduct(data: {
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-  }): Observable<ProductData> {
+  public createProduct(data: Pick<ProductData, 'title' | 'price' | 'description' | 'category'>): Observable<ProductData> {
     return this.http.post<ProductData>(`${this.apiurl}`, {
       ...data,
     });
   }
+
 
   public setSelectedProductToCart(product: CartProductData): void {
     const existingProductIndex = this.cartProducts.findIndex(
@@ -126,7 +122,7 @@ export class ProductService {
     const index = this.cartProducts.findIndex((p) => p.id === product.id);
     if (index !== -1) {
       this.cartProducts.splice(index, 1);
-      this.productCount--; // Decrease product count
+      this.productCount--;
       this.updateLocalStorage();
     }
   }

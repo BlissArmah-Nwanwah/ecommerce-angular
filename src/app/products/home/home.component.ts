@@ -77,6 +77,15 @@ export class HomeComponent implements OnInit {
     return this.searchForm.controls['searchTerm'] as FormControl;
   }
 
+  public onProductAction(event: { type: 'detail' | 'addToCart'; data: CartProductData }): void {
+    if (event.type === 'detail') {
+      this.onProductSelectDetail(event.data);
+    } else if (event.type === 'addToCart') {
+      this.onProductSelectedToCart(event.data);
+    }
+  }
+
+
   public onProductSelectedToCart(product: CartProductData): void {
     this.productService.setSelectedProductToCart(product);
     this.openSnackBar('Item added to cart', 'Close');

@@ -4,8 +4,8 @@ import { AUTH_ACTIONS } from './auth.actions';
 import {User} from '../app.state';
 
 export const initialState: User = {
-  login_token: undefined,
-  refresh_token: undefined,
+  login_token: '',
+  refresh_token: '',
   isLoading: false,
   error: undefined,
   message:undefined
@@ -32,7 +32,7 @@ export const authReducer = createReducer(
     loading: false,
   })),
   on(
-    AUTH_ACTIONS.getAuthState,
+    AUTH_ACTIONS.updateAuthState,
     (state, { login_token, refresh_token, message }) => ({
       ...state,
       login_token,
@@ -50,8 +50,8 @@ export const authReducer = createReducer(
   ),
   on(AUTH_ACTIONS.logOut, (state) => ({
     ...state,
-    login_token: undefined,
-    refresh_token: undefined,
+    login_token: '',
+    refresh_token: '',
     message: undefined,
   }))
 );

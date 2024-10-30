@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const userProfile = this.localStorageService.getItem('user') as User;
     if (userProfile) {
-      this.store.dispatch(AUTH_ACTIONS.getAuthState(userProfile));
+      this.store.dispatch(AUTH_ACTIONS.updateAuthState(userProfile));
     }
     this.localStorageService.removeItem('user');
   }

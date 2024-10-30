@@ -1,37 +1,15 @@
-import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {ProductService} from './product.service';
-import {LocalStorageService} from './localstorage.service';
-import {ProductData, CartProductData} from './product-data';
-import {environment} from '../../environments/environment';
-import {of} from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ProductService } from './product.service';
+import { LocalStorageService } from './localstorage.service';
+import { environment } from '../../environments/environment';
+import { of } from 'rxjs';
+import {cartProduct, mockProducts} from '../utils/utils';
 
 describe('ProductService', () => {
   let service: ProductService;
   let httpMock: HttpTestingController;
   let localStorageService: jest.Mocked<LocalStorageService>;
-
-  const mockProducts: ProductData[] = [
-    {
-      id: '1',
-      title: 'Product 1',
-      price: '100',
-      description: 'Description 1',
-      category: 'Category 1',
-      image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    },
-    {
-      id: '2', title: 'Product 2', price: '200', description: 'Description 2', category: 'Category 2', image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    },
-  ];
 
   beforeEach(() => {
     localStorageService = {
@@ -45,7 +23,7 @@ describe('ProductService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         ProductService,
-        {provide: LocalStorageService, useValue: localStorageService},
+        { provide: LocalStorageService, useValue: localStorageService },
       ],
     });
 
@@ -58,21 +36,7 @@ describe('ProductService', () => {
   });
 
   it('should load product data from local storage', () => {
-    const cartProducts: CartProductData[] = [
-      {
-        id: '1',
-        title: 'Product 1',
-        price: '100',
-        description: 'Description 1',
-        category: 'Category 1',
-        count: 1,
-        image: '',
-        rating: {
-          rate: 2,
-          count: 4
-        }
-      },
-    ];
+    const cartProducts = [cartProduct];
 
     localStorageService.getItem.mockReturnValueOnce(cartProducts);
 
@@ -103,20 +67,6 @@ describe('ProductService', () => {
   });
 
   it('should add a new product to the cart and update local storage', () => {
-    const cartProduct: CartProductData = {
-      id: '1',
-      title: 'Product 1',
-      price: '100',
-      description: 'Description 1',
-      category: 'Category 1',
-      count: 1,
-      image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    };
-
     service.setSelectedProductToCart(cartProduct);
 
     expect(service.cartProducts.length).toBe(1);
@@ -125,20 +75,6 @@ describe('ProductService', () => {
   });
 
   it('should increment the count if the product already exists in the cart', () => {
-    const cartProduct: CartProductData = {
-      id: '1',
-      title: 'Product 1',
-      price: '100',
-      description: 'Description 1',
-      category: 'Category 1',
-      count: 1,
-      image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    };
-
     service.cartProducts = [cartProduct];
 
     service.setSelectedProductToCart(cartProduct);
@@ -149,20 +85,6 @@ describe('ProductService', () => {
   });
 
   it('should increase the product count and update local storage', () => {
-    const cartProduct: CartProductData = {
-      id: '1',
-      title: 'Product 1',
-      price: '100',
-      description: 'Description 1',
-      category: 'Category 1',
-      count: 1,
-      image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    };
-
     service.cartProducts = [cartProduct];
 
     service.incrementProductCount('1');
@@ -172,20 +94,6 @@ describe('ProductService', () => {
   });
 
   it('should decrease the product count and remove from cart if count is 0', () => {
-    const cartProduct: CartProductData = {
-      id: '1',
-      title: 'Product 1',
-      price: '100',
-      description: 'Description 1',
-      category: 'Category 1',
-      count: 1,
-      image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    };
-
     service.cartProducts = [cartProduct];
 
     service.decrementProductCount('1');
@@ -195,20 +103,6 @@ describe('ProductService', () => {
   });
 
   it('should remove the product from the cart and update local storage', () => {
-    const cartProduct: CartProductData = {
-      id: '1',
-      title: 'Product 1',
-      price: '100',
-      description: 'Description 1',
-      category: 'Category 1',
-      count: 1,
-      image: '',
-      rating: {
-        rate: 2,
-        count: 4
-      }
-    };
-
     service.cartProducts = [cartProduct];
 
     service.removeProductFromCart(cartProduct);

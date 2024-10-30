@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -6,10 +6,7 @@ import {
 } from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
-import {AppState} from '../../app.state';
-import {select, Store} from '@ngrx/store';
 import {Observable, tap} from 'rxjs';
-import {isLoggedIn} from '../auth.selectors';
 import {AuthService} from '../../guard/auth.service';
 import {CustomInputFieldComponent} from '../custom-input-field/custom-input-field.component';
 
@@ -20,7 +17,7 @@ import {CustomInputFieldComponent} from '../custom-input-field/custom-input-fiel
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent  {
   public signUpForm = this.formBuilder.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
@@ -28,8 +25,6 @@ export class SignupComponent implements OnInit {
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  public showPassword = false;
-  public isLoggenIn$ = new Observable<boolean>();
   public isLoading = false;
   public errorMessage = '';
 
@@ -37,17 +32,8 @@ export class SignupComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private store: Store<AppState>
   ) {
   }
-
-  ngOnInit(): void {
-    this.isLoggenIn$ = this.store.pipe(select(isLoggedIn));
-    if (this.isLoggenIn$) {
-      this.router.navigateByUrl('/');
-    }
-  }
-
 
   public get firstName() {
     return this.signUpForm.controls.firstName;

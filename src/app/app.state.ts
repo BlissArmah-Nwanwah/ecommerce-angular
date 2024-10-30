@@ -4,8 +4,8 @@ import { authReducer } from './auth/auth.reducer';
 import { productReducer, ProductState } from './products/product.reducers';
 
 export interface User {
-  login_token: string | undefined;
-  refresh_token: string | undefined;
+  login_token: string;
+  refresh_token: string;
   isLoading: boolean;
   error: string | undefined;
   message: string | undefined;

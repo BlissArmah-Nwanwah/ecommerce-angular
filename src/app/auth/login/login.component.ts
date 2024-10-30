@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {Router, RouterModule} from '@angular/router';
+import { RouterModule} from '@angular/router';
 import {
   FormBuilder, FormControl,
   FormGroup,
@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../app.state';
-import {getAuthError, isLoggedIn} from '../auth.selectors';
+import {getAuthError} from '../auth.selectors';
 import {LoaderComponent} from '../../loader/loader.component';
 import {AUTH_ACTIONS} from '../auth.actions';
 import {LogInRequestData} from '../../interfaces/auth.interfaces';
@@ -22,31 +22,18 @@ import {CustomInputFieldComponent} from '../custom-input-field/custom-input-fiel
   styleUrl: './login.component.scss',
   imports: [CommonModule, RouterModule, ReactiveFormsModule, NgOptimizedImage, LoaderComponent,CustomInputFieldComponent],
 })
-export class LoginComponent implements OnInit {
-  public loginForm!: FormGroup;
+export class LoginComponent {
+  public loginForm: FormGroup = this.formBuilder.group({
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
+  });
+
   public errorMessage = this.store.selectSignal(getAuthError);
-  public isLoggedIn = this.store.selectSignal(isLoggedIn);
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private store: Store<AppState>
   ) {
-  }
-
-  ngOnInit(): void {
-    this.handleFormChange();
-    if (this.isLoggedIn()) {
-      void this.router.navigateByUrl('/home');
-    }
-  }
-
-  public handleFormChange() {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    });
-
   }
 
   public get email() {
@@ -59,14 +46,10 @@ export class LoginComponent implements OnInit {
 
 
   public onSubmit() {
-    const loginData = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password,
-    };
-
-    this.store.dispatch(
-      AUTH_ACTIONS.login(loginData as LogInRequestData)
-    );
+    if (this.loginForm.valid) {
+      const loginData: LogInRequestData = this.loginForm.value;
+      this.store.dispatch(AUTH_ACTIONS.login(loginData));
+    }
   }
 
 }
