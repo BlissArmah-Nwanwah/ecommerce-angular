@@ -19,14 +19,14 @@
         label="Email"
         type="email"
         placeholder="Enter your email"
-        [control]="email"
+        [control]="getControl('email')"
       />
 
       <!-- password -->
       <app-custom-input-field
         label="Password"
         type="password"
-        [control]="password"
+        [control]="getControl('password')"
         placeholder="Enter your password"
       />
 

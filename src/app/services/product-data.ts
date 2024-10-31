@@ -12,6 +12,12 @@ export interface ProductData {
     };
   }
 
+// Create this interface either in the same file or in a separate file if needed
+export interface ProductActionEvent {
+  type: 'detail' | 'addToCart';
+  data: ProductData;
+}
+
 export interface  CartProductData extends ProductData {
     count?:  number;
   }

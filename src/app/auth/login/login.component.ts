@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { RouterModule} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {
   FormBuilder, FormControl,
-  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -20,12 +19,12 @@ import {CustomInputFieldComponent} from '../custom-input-field/custom-input-fiel
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgOptimizedImage, LoaderComponent,CustomInputFieldComponent],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgOptimizedImage, LoaderComponent, CustomInputFieldComponent],
 })
 export class LoginComponent {
-  public loginForm: FormGroup = this.formBuilder.group({
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
+  public loginForm = this.formBuilder.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   public errorMessage = this.store.selectSignal(getAuthError);
@@ -36,18 +35,13 @@ export class LoginComponent {
   ) {
   }
 
-  public get email() {
-    return this.loginForm.controls['email'] as FormControl;
+  public getControl(controlName: 'email' | 'password'): FormControl {
+    return this.loginForm.get(controlName) as FormControl;
   }
-
-  public get password() {
-    return this.loginForm.controls['password'] as FormControl;
-  }
-
 
   public onSubmit() {
     if (this.loginForm.valid) {
-      const loginData: LogInRequestData = this.loginForm.value;
+      const loginData = this.loginForm.value as LogInRequestData;
       this.store.dispatch(AUTH_ACTIONS.login(loginData));
     }
   }

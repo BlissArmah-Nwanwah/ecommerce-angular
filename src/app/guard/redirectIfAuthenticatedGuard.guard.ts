@@ -12,7 +12,7 @@ export const redirectIfAuthenticatedGuard: CanActivateFn = () => {
     select(isLoggedIn),
     tap((loggedIn) => {
       if (loggedIn) {
-        router.navigate(['/home']);
+        router.navigateByUrl('/home');
       }
     }),
     map((loggedIn) => !loggedIn)

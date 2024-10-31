@@ -1,24 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
-import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {Component, OnInit} from '@angular/core';
+import {ProductService} from '../../services/product.service';
+import {Router} from '@angular/router';
+import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {MatButtonModule} from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {
   MatSnackBarModule,
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { ItemCardComponent } from '../item-card/item-card.component';
-import {  CartProductData } from '../../services/product-data';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { NavbarComponent } from '../../navbar/navbar.component';
-import { Store } from '@ngrx/store';
-import { PRODUCT_ACTIONS } from '../products.actions';
-import { allProducts, isProductsLoading } from '../products.selectors';
-import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {ItemCardComponent} from '../item-card/item-card.component';
+import {CartProductData, ProductActionEvent} from '../../services/product-data';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {NavbarComponent} from '../../navbar/navbar.component';
+import {Store} from '@ngrx/store';
+import {PRODUCT_ACTIONS} from '../products.actions';
+import {allProducts, isProductsLoading} from '../products.selectors';
+import {CreateproductmodalComponent} from '../createproductmodal/createproductmodal.component';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-input-field.component';
 
@@ -43,7 +43,7 @@ import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-in
 export class HomeComponent implements OnInit {
   public horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   public verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  public searchForm!: FormGroup;
+  public searchControl = new FormControl(''); // Use FormControl instead of FormGroup
   public products = this.store.selectSignal(allProducts);
   public loading = this.store.selectSignal(isProductsLoading);
   public durationInSeconds = 2;
@@ -54,37 +54,36 @@ export class HomeComponent implements OnInit {
     private productService: ProductService,
     private _snackBar: MatSnackBar,
     private store: Store
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
-    this.searchForm = new FormGroup({
-      searchTerm: new FormControl(''),
+
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      takeUntilDestroyed()
+    ).subscribe((searchTerm: string | null) => {
+      if (searchTerm) {
+        this.store.dispatch(PRODUCT_ACTIONS.searchProducts({searchTerm}));
+      } else {
+        this.store.dispatch(PRODUCT_ACTIONS.searchProducts({searchTerm: ''}));
+      }
     });
-    this.searchForm
-      .get('searchTerm')
-      ?.valueChanges.pipe(debounceTime(300), distinctUntilChanged(),takeUntilDestroyed())
-      .subscribe((searchTerm: string) => {
-        this.store.dispatch(PRODUCT_ACTIONS.searchProducts({ searchTerm }));
-      });
   }
 
   public onToggleCreatProductModal() {
     this.toggleModal = !this.toggleModal;
   }
 
-  public get searchTerm() {
-    return this.searchForm.controls['searchTerm'] as FormControl;
-  }
-
-  public onProductAction(event: { type: 'detail' | 'addToCart'; data: CartProductData }): void {
+  public onProductAction(event: ProductActionEvent): void {
     if (event.type === 'detail') {
       this.onProductSelectDetail(event.data);
     } else if (event.type === 'addToCart') {
       this.onProductSelectedToCart(event.data);
     }
   }
-
 
   public onProductSelectedToCart(product: CartProductData): void {
     this.productService.setSelectedProductToCart(product);

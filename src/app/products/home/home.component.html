@@ -1,7 +1,7 @@
-@if(toggleModal){
-<app-createproductmodal
-  (closeModal)="onToggleCreatProductModal()"
-></app-createproductmodal>
+@if (toggleModal) {
+  <app-createproductmodal
+    (closeModal)="onToggleCreatProductModal()"
+  ></app-createproductmodal>
 }
 <app-navbar></app-navbar>
 <section class="main-section">
@@ -33,30 +33,30 @@
         Create Product
       </button>
       @if (!loading) {
-      <div id="searchBar">
-        <form class="search-bar" [formGroup]="searchForm">
-          <app-custom-input-field
-            label="Search"
-            placeholder="Search Products"
-            [control]="searchTerm"
-            type="text"
-          ></app-custom-input-field>
-        </form>
-      </div>
+        <div id="searchBar">
+          <form class="search-bar">
+            <app-custom-input-field
+              label="Search"
+              placeholder="Search Products"
+              [control]="searchControl"
+              type="text"
+            ></app-custom-input-field>
+          </form>
+        </div>
       }
     </div>
     <div class="content">
       @if (loading()) {
-      <div class="loading-message">Loading...😎</div>
+        <div class="loading-message">Loading...😎</div>
       }
 
       <div class="product-grid" #container>
-        @for(product of products();track product.id){
-        <app-item-card
-          #cardRef
-          [product]="product"
-          (productAction)="onProductAction($event)"
-        ></app-item-card>
+        @for (product of products(); track product.id) {
+          <app-item-card
+            #cardRef
+            [product]="product"
+            (productAction)="onProductAction($event)"
+          ></app-item-card>
         }
       </div>
     </div>
