@@ -9,6 +9,7 @@ import {Router, RouterLink} from '@angular/router';
 import {Observable, tap} from 'rxjs';
 import {AuthService} from '../../guard/auth.service';
 import {CustomInputFieldComponent} from '../custom-input-field/custom-input-field.component';
+import {SignUpRequestData} from "../../interfaces/auth.interfaces";
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +18,7 @@ import {CustomInputFieldComponent} from '../custom-input-field/custom-input-fiel
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
-export class SignupComponent  {
+export class SignupComponent {
   public signUpForm = this.formBuilder.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
@@ -53,13 +54,13 @@ export class SignupComponent  {
 
   public formAction() {
     if (this.signUpForm.valid) {
-      const formData = {
-        email: this.email.value || '',
-        firstName: this.firstName.value || '',
-        lastName: this.lastName.value || '',
-        password: this.password.value || '',
+      const formData:SignUpRequestData = {
+        email: this.email.value,
+        firstName: this.firstName.value,
+        lastName: this.lastName.value,
+        password: this.password.value,
       };
-      const  authObs : Observable<{ message: string }> = this.authService.signUp(formData);
+      const authObs: Observable<{ message: string }> = this.authService.signUp(formData);
 
       authObs
         .pipe(

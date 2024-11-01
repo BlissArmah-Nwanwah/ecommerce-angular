@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export interface SignUpRequestData {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
+  email: string|null;
+  firstName: string|null;
+  lastName: string|null;
+  password: string|null;
 }
 
 export interface SignUpResponseData {
@@ -20,9 +20,6 @@ export interface LogInResponseData {
   refresh_token: string;
 }
 
-export interface RefreshTokenRequestData {
-  refreshToken: string;
-}
 
 export interface RefreshTokenResponseData {
   login_token: string;

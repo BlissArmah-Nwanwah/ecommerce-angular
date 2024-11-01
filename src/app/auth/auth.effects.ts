@@ -39,6 +39,6 @@ export class AuthEffects {
     {dispatch: false}
   );
 
-  constructor(private actions$: Actions, private router: Router, private authService: AuthService, private localStorageService: LocalStorageService) {
+  constructor(private readonly actions$: Actions, private readonly router: Router, private readonly authService: AuthService, private readonly localStorageService: LocalStorageService) {
   }
 }

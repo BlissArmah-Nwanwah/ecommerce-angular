@@ -9,6 +9,7 @@ import {AppState} from '../app.state';
 import {AUTH_ACTIONS } from '../auth/auth.actions';
 import {isLoggedIn} from '../auth/auth.selectors';
 import {MatIconModule} from '@angular/material/icon';
+import {atLeastOneCartItem} from "../services/constant";
 
 @Component({
   selector: 'app-navbar',
@@ -42,10 +43,10 @@ export class NavbarComponent implements OnInit {
 
   public routeToCart() {
     this.selectedProductCount = this.productService.productCount;
-    if (this.selectedProductCount >= 1) {
-      this.router.navigate(['/cart']);
+    if (this.selectedProductCount >= atLeastOneCartItem) {
+      this.router.navigateByUrl('/cart');
     } else {
-      this.router.navigate(['/empty-cart']);
+      this.router.navigateByUrl('/empty-cart');
     }
   }
 
