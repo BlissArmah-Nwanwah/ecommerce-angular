@@ -1,7 +1,6 @@
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
-import {Observable} from 'rxjs';
 import {MatButtonModule} from '@angular/material/button';
 import {ProductService} from '../services/product.service';
 import {select, Store} from '@ngrx/store';
@@ -9,7 +8,7 @@ import {AppState} from '../app.state';
 import {AUTH_ACTIONS } from '../auth/auth.actions';
 import {isLoggedIn} from '../auth/auth.selectors';
 import {MatIconModule} from '@angular/material/icon';
-import {atLeastOneCartItem} from "../services/constant";
+import {atLeastOneCartItem} from '../services/constant';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +25,7 @@ import {atLeastOneCartItem} from "../services/constant";
 })
 export class NavbarComponent implements OnInit {
   public selectedProductCount = 0;
-  public isLoggenIn$ = new Observable<boolean>();
+  public isLoggenIn$ = this.store.pipe(select(isLoggedIn));
 
   constructor(
     private router: Router,
@@ -38,7 +37,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProductCount();
-    this.isLoggenIn$ = this.store.pipe(select(isLoggedIn));
   }
 
   public routeToCart() {

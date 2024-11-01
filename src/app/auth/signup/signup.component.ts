@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {
-  FormBuilder,
+  FormBuilder, FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -36,30 +36,13 @@ export class SignupComponent {
   ) {
   }
 
-  public get firstName() {
-    return this.signUpForm.controls.firstName;
-  }
-
-  public get lastName() {
-    return this.signUpForm.controls.lastName;
-  }
-
-  public get email() {
-    return this.signUpForm.controls.email;
-  }
-
-  public get password() {
-    return this.signUpForm.controls.password;
+  public getControl(controlName: 'email' | 'password'|'firstName'|'lastName'): FormControl {
+    return this.signUpForm.get(controlName) as FormControl;
   }
 
   public formAction() {
     if (this.signUpForm.valid) {
-      const formData:SignUpRequestData = {
-        email: this.email.value,
-        firstName: this.firstName.value,
-        lastName: this.lastName.value,
-        password: this.password.value,
-      };
+      const formData = this.signUpForm.value as SignUpRequestData;
       const authObs: Observable<{ message: string }> = this.authService.signUp(formData);
 
       authObs

@@ -22,25 +22,24 @@
       <app-custom-input-field
         label="First name"
         placeholder="Enter your first name"
-        [control]="firstName"
+        [control]="getControl('firstName')"
       />
       <app-custom-input-field
         label="Last name"
         placeholder="Enter your last name"
-        [control]="lastName"
+        [control]="getControl('lastName')"
       />
       <app-custom-input-field
         label="Email"
         type="email"
         placeholder="Enter your email"
-        [control]="email"
+        [control]="getControl('email')"
       />
 
-      <!-- password -->
       <app-custom-input-field
         label="Password"
         type="password"
-        [control]="password"
+        [control]="getControl('password')"
         placeholder="Enter your password"
       />
 

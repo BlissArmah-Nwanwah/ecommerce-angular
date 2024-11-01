@@ -43,7 +43,7 @@ import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-in
 export class HomeComponent implements OnInit {
   public horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   public verticalPosition: MatSnackBarVerticalPosition = 'bottom';
-  public searchControl = new FormControl(''); // Use FormControl instead of FormGroup
+  public searchControl = new FormControl('');
   public products = this.store.selectSignal(allProducts);
   public loading = this.store.selectSignal(isProductsLoading);
   public durationInSeconds = 2;

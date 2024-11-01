@@ -14,7 +14,6 @@
       [formGroup]="loginForm"
       (ngSubmit)="onSubmit()"
     >
-      <!-- email Address -->
       <app-custom-input-field
         label="Email"
         type="email"
@@ -22,7 +21,6 @@
         [control]="getControl('email')"
       />
 
-      <!-- password -->
       <app-custom-input-field
         label="Password"
         type="password"
