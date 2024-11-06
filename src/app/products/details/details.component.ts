@@ -24,9 +24,9 @@ import { LoaderComponent } from '../../loader/loader.component';
   ],
 })
 export class DetailsComponent implements OnInit {
-  public selectedProduct = this.store.selectSignal(selectedProduct);
-  public loading = this.store.selectSignal(isProductsLoading);
-  public id!: string;
+  protected selectedProduct = this.store.selectSignal(selectedProduct);
+  protected loading = this.store.selectSignal(isProductsLoading);
+  protected id!: string;
 
   constructor(
     private route: ActivatedRoute,
