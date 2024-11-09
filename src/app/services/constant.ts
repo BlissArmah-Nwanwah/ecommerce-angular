@@ -1,1 +1,1 @@
-export const   atLeastOneCartItem =1;
+export const atLeastOneCartItem = 1;

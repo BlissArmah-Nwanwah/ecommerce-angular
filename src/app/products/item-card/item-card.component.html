@@ -5,11 +5,7 @@
     (keydown.enter)="onViewDetails()"
     tabindex="0"
   >
-    <img
-      class="product-image"
-      [src]="product.image"
-      [alt]="product.title"
-    />
+    <img class="product-image" [src]="product.image" [alt]="product.title" />
     <div class="product-details">
       <p class="product-title">
         {{ product.title }}
@@ -20,11 +16,7 @@
     </div>
   </div>
 
-  <button
-    mat-raised-button
-    color="basic"
-    (click)="onProductSelectedToCart()"
-  >
+  <button mat-raised-button color="basic" (click)="onProductSelectedToCart()">
     Add To Cart
   </button>
 </div>

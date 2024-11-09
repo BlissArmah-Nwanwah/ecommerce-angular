@@ -9,11 +9,7 @@
 
   <div class="form-container">
     <h1 class="header">Sign In</h1>
-    <form
-      class="form"
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
-    >
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <app-custom-input-field
         label="Email"
         type="email"
@@ -28,9 +24,9 @@
         placeholder="Enter your password"
       />
 
-      @if (errorMessage()) {
-        <div class="error">{{ errorMessage() }}</div>
-      }
+      <!--      @if (errorMessage()) {-->
+      <!--        <div class="error">{{ errorMessage() }}</div>-->
+      <!--      }-->
 
       <button
         type="submit"

@@ -1,31 +1,28 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {createReducer, on} from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { AUTH_ACTIONS } from './auth.actions';
-import {User} from '../app.state';
+import { User } from '../app.state';
 
 export const initialState: User = {
   login_token: '',
   refresh_token: '',
   isLoading: false,
   error: undefined,
-  message:undefined
+  message: undefined,
 };
 
 export const authReducer = createReducer(
   initialState,
-  on(AUTH_ACTIONS.login, (state) => ({
+  on(AUTH_ACTIONS.login, state => ({
     ...state,
     isLoading: true,
   })),
-  on(
-    AUTH_ACTIONS.loginSuccess,
-    (state, { login_token, refresh_token }) => ({
-      ...state,
-      login_token,
-      refresh_token,
-      loading: false,
-    })
-  ),
+  on(AUTH_ACTIONS.loginSuccess, (state, { login_token, refresh_token }) => ({
+    ...state,
+    login_token,
+    refresh_token,
+    loading: false,
+  })),
   on(AUTH_ACTIONS.loginFailure, (state, { error }) => ({
     ...state,
     error,
@@ -48,7 +45,7 @@ export const authReducer = createReducer(
       refresh_token,
     })
   ),
-  on(AUTH_ACTIONS.logOut, (state) => ({
+  on(AUTH_ACTIONS.logOut, state => ({
     ...state,
     login_token: '',
     refresh_token: '',

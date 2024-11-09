@@ -1,6 +1,6 @@
 // src/app/test-utils.ts
 
-import {CartProductData, ProductData} from '../services/product-data';
+import { CartProductData, ProductData } from '../services/product-data';
 
 export const cartProduct: CartProductData = {
   id: '1',

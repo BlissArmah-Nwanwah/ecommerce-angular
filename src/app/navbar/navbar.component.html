@@ -1,20 +1,18 @@
 <header>
   <nav class="navbar">
-    <a
-      routerLink="/home"
-      class="logo-container cursor-pointer"
-    >
+    <a routerLink="/home" class="logo-container cursor-pointer">
       <img src="../../../../../assets/Logo.png" alt="logo" />
     </a>
 
     <!-- icons -->
     <div class="icon-container">
-      @if (isLoggenIn$ | async){
-      <h1>Welcome Bliss Armah</h1>
-      <button mat-raised-button color="link" (click)="logout()">Logout</button>
+      @if (isLoggenIn$ | async) {
+        <h1>Welcome Bliss Armah</h1>
+        <button mat-raised-button color="link" (click)="logout()">
+          Logout
+        </button>
       } @else {
-
-      <button mat-raised-button color="link" routerLink="/">Login</button>
+        <button mat-raised-button color="link" routerLink="/">Login</button>
       }
 
       <!-- cart icon -->
@@ -30,11 +28,11 @@
           >shopping_cart</mat-icon
         >
         @if (getProductCount() >= 1) {
-        <span
-          class="cart-count bg-red-500 w-5 h-5 rounded-full text-white text-[13px] flex justify-center items-center"
-        >
-          {{ getProductCount() }}
-        </span>
+          <span
+            class="cart-count bg-red-500 w-5 h-5 rounded-full text-white text-[13px] flex justify-center items-center"
+          >
+            {{ getProductCount() }}
+          </span>
         }
       </button>
     </div>

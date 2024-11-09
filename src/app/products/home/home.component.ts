@@ -1,26 +1,27 @@
-import {Component, OnInit} from '@angular/core';
-import {ProductService} from '../../services/product.service';
-import {Router} from '@angular/router';
-import {debounceTime, distinctUntilChanged} from 'rxjs';
-import {MatButtonModule} from '@angular/material/button';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { Component, computed, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import {
   MatSnackBarModule,
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import {ItemCardComponent} from '../item-card/item-card.component';
-import {CartProductData, ProductActionEvent} from '../../services/product-data';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {NavbarComponent} from '../../navbar/navbar.component';
-import {Store} from '@ngrx/store';
-import {PRODUCT_ACTIONS} from '../products.actions';
-import {allProducts, isProductsLoading} from '../products.selectors';
-import {CreateproductmodalComponent} from '../createproductmodal/createproductmodal.component';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-input-field.component';
+import { ItemCardComponent } from '../item-card/item-card.component';
+import {
+  CartProductData,
+  ProductActionEvent,
+} from '../../services/product-data';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NavbarComponent } from '../../navbar/navbar.component';
+import { Store } from '@ngrx/store';
+import { PRODUCT_ACTIONS } from '../products.actions';
+import { allProducts, isProductsLoading } from '../products.selectors';
+import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CustomInputFieldComponent } from '../../auth/custom-input-field/custom-input-field.component';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -44,33 +45,32 @@ export class HomeComponent implements OnInit {
   public horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   public verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   public searchControl = new FormControl('');
+  public searchTerm = signal('');
   public products = this.store.selectSignal(allProducts);
   public loading = this.store.selectSignal(isProductsLoading);
-  public durationInSeconds = 2;
+  private durationInSeconds = 2;
   public toggleModal = false;
+
+  public filteredProducts = computed(() => {
+    const searchValue = this.searchTerm().toLowerCase();
+    return this.products().filter(product =>
+      product.title.toLowerCase().includes(searchValue)
+    );
+  });
 
   constructor(
     private router: Router,
-    private productService: ProductService,
     private _snackBar: MatSnackBar,
     private store: Store
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
-
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      takeUntilDestroyed()
-    ).subscribe((searchTerm: string | null) => {
-      if (searchTerm) {
-        this.store.dispatch(PRODUCT_ACTIONS.searchProducts({searchTerm}));
-      } else {
-        this.store.dispatch(PRODUCT_ACTIONS.searchProducts({searchTerm: ''}));
-      }
-    });
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((value: string | null) => {
+        this.searchTerm.set(value || '');
+      });
   }
 
   public onToggleCreatProductModal() {
@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit {
   }
 
   public onProductSelectedToCart(product: CartProductData): void {
-    this.productService.setSelectedProductToCart(product);
+    this.store.dispatch(PRODUCT_ACTIONS.addProductToCart({ product }));
     this.openSnackBar('Item added to cart', 'Close');
   }
 

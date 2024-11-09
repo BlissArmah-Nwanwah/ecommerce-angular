@@ -1,13 +1,12 @@
-
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
-
 
 :root {
   --primary-color: rgba(132, 52, 225, 1);
@@ -20,7 +19,6 @@ body {
   --gap-large: 20px;
 }
 
-
 .primary-color {
   color: var(--primary-color);
 }
@@ -29,8 +27,7 @@ body {
   color: var(--white-color);
 }
 
-
-@mixin flex-option($display, $justify-content, $align-items,$direction) {
+@mixin flex-option($display, $justify-content, $align-items, $direction) {
   display: $display;
   justify-content: $justify-content;
   align-items: $align-items;

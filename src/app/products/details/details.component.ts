@@ -2,7 +2,6 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ProductService } from '../../services/product.service';
 import { CartProductData } from '../../services/product-data';
 import { FooterComponent } from '../../footer/footer.component';
 import { NavbarComponent } from '../../navbar/navbar.component';
@@ -30,7 +29,6 @@ export class DetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService,
     private store: Store
   ) {
     this.id = this.route.snapshot.params['id'];
@@ -43,8 +41,7 @@ export class DetailsComponent implements OnInit {
 
   public onProductSelectedToCart(product: CartProductData | null): void {
     if (product) {
-      this.productService.setSelectedProductToCart(product);
+      this.store.dispatch(PRODUCT_ACTIONS.addProductToCart({ product }));
     }
   }
-
 }

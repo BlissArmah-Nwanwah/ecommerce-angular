@@ -1,8 +1,8 @@
-import {map, tap} from 'rxjs';
-import {inject} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {CanActivateFn, Router} from '@angular/router';
-import {isLoggedIn} from '../auth/auth.selectors';
+import { map, tap } from 'rxjs';
+import { inject } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { CanActivateFn, Router } from '@angular/router';
+import { isLoggedIn } from '../auth/auth.selectors';
 
 export const authGuard: CanActivateFn = () => {
   const store = inject(Store);
@@ -10,11 +10,11 @@ export const authGuard: CanActivateFn = () => {
 
   return store.pipe(
     select(isLoggedIn),
-    tap((loggedIn) => {
+    tap(loggedIn => {
       if (!loggedIn) {
         router.navigateByUrl('/');
       }
     }),
-    map((loggedIn) => loggedIn)
+    map(loggedIn => loggedIn)
   );
 };

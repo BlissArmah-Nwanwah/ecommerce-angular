@@ -3,13 +3,13 @@ import { PRODUCT_ACTIONS } from './products.actions';
 import { ProductData } from '../services/product-data';
 
 export interface ProductState {
-    products: ProductData[];
-    selectedProduct: ProductData | null;
-    isLoading: boolean;
-    error: string | null;
-  }
+  products: ProductData[];
+  selectedProduct: ProductData | null;
+  isLoading: boolean;
+  error: string | null;
+}
 
-export const initialState:ProductState = {
+export const initialState: ProductState = {
   products: [],
   selectedProduct: null,
   isLoading: false,
@@ -18,39 +18,39 @@ export const initialState:ProductState = {
 
 export const productReducer = createReducer(
   initialState,
-  on(PRODUCT_ACTIONS.createProduct, (state) => ({
+  on(PRODUCT_ACTIONS.createProduct, state => ({
     ...state,
     isLoading: true,
     error: null,
   })),
-  on(PRODUCT_ACTIONS.loadProduct, (state) => ({
+  on(PRODUCT_ACTIONS.loadProduct, state => ({
     ...state,
     isLoading: true,
     error: null,
   })),
-  on(PRODUCT_ACTIONS.loadProductSuccess,(state,{products})=>({
+  on(PRODUCT_ACTIONS.loadProductSuccess, (state, { products }) => ({
     ...state,
     products,
     isLoading: false,
   })),
-  on(PRODUCT_ACTIONS.productFailure,(state,{error})=>({
+  on(PRODUCT_ACTIONS.productFailure, (state, { error }) => ({
     ...state,
     error,
     isLoading: false,
   })),
-  on(PRODUCT_ACTIONS.loadSelectedProduct,(state)=>({
+  on(PRODUCT_ACTIONS.loadSelectedProduct, state => ({
     ...state,
     isLoading: true,
     error: null,
   })),
-  on(PRODUCT_ACTIONS.loadSelectedProductSuccess,(state,{product})=>({
+  on(PRODUCT_ACTIONS.loadSelectedProductSuccess, (state, { product }) => ({
     ...state,
     selectedProduct: product,
     isLoading: false,
   })),
-  on(PRODUCT_ACTIONS.loadSelectedProductFailure,(state,{error})=>({
+  on(PRODUCT_ACTIONS.loadSelectedProductFailure, (state, { error }) => ({
     ...state,
     error,
     isLoading: false,
-  })),
+  }))
 );

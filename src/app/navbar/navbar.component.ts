@@ -1,14 +1,14 @@
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterModule} from '@angular/router';
-import {MatButtonModule} from '@angular/material/button';
-import {ProductService} from '../services/product.service';
-import {select, Store} from '@ngrx/store';
-import {AppState} from '../app.state';
-import {AUTH_ACTIONS } from '../auth/auth.actions';
-import {isLoggedIn} from '../auth/auth.selectors';
-import {MatIconModule} from '@angular/material/icon';
-import {atLeastOneCartItem} from '../services/constant';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { ProductService } from '../services/product.service';
+import { select, Store } from '@ngrx/store';
+import { AppState } from '../app.state';
+import { AUTH_ACTIONS } from '../auth/auth.actions';
+import { isLoggedIn } from '../auth/auth.selectors';
+import { MatIconModule } from '@angular/material/icon';
+import { atLeastOneCartItem } from '../services/constant';
 
 @Component({
   selector: 'app-navbar',

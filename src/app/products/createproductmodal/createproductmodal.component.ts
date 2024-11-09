@@ -56,7 +56,7 @@ export class CreateproductmodalComponent implements OnInit {
           next: () => {
             this.isLoading = true;
           },
-          error: (error) => {
+          error: error => {
             this.isLoading = false;
             this.errorMessage = error.message;
           },

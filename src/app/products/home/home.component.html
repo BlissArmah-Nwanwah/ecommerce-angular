@@ -25,6 +25,14 @@
   <section class="products-section">
     <div class="title-all-container">
       <div class="title-container">Products</div>
+      @if (!loading()) {
+        <app-custom-input-field
+          label="Search"
+          placeholder="Search Products"
+          [control]="searchControl"
+          type="text"
+        ></app-custom-input-field>
+      }
       <button
         mat-raised-button
         color="accent"
@@ -32,18 +40,6 @@
       >
         Create Product
       </button>
-      @if (!loading) {
-        <div id="searchBar">
-          <form class="search-bar">
-            <app-custom-input-field
-              label="Search"
-              placeholder="Search Products"
-              [control]="searchControl"
-              type="text"
-            ></app-custom-input-field>
-          </form>
-        </div>
-      }
     </div>
     <div class="content">
       @if (loading()) {
@@ -51,7 +47,7 @@
       }
 
       <div class="product-grid" #container>
-        @for (product of products(); track product.id) {
+        @for (product of filteredProducts(); track product.id) {
           <app-item-card
             #cardRef
             [product]="product"
