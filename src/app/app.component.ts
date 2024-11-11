@@ -1,10 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { AppState, User } from './app.state';
-import { AUTH_ACTIONS } from './auth/auth.actions';
-import { selectAuthState } from './auth/auth.selectors';
-import { LocalStorageService } from './services/localstorage.service';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {AppState, User} from './app.state';
+import {AUTH_ACTIONS} from './auth/auth.actions';
+import {selectAuthState} from './auth/auth.selectors';
+import {LocalStorageService} from './services/localstorage.service';
 
 @Component({
   selector: 'app-root',
@@ -20,11 +20,12 @@ export class AppComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private localStorageService: LocalStorageService
-  ) {}
+  ) {
+  }
 
   @HostListener('window:beforeunload', ['$event'])
   public beforeUnload() {
-    this.localStorageService.setItem('auth', JSON.stringify(this.authState()));
+    this.localStorageService.setItem('auth', this.authState());
   }
 
   ngOnInit(): void {
