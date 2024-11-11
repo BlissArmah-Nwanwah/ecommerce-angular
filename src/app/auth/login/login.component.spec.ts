@@ -27,7 +27,7 @@ describe('LoginComponent', () => {
       imports: [ReactiveFormsModule, NoopAnimationsModule, LoginComponent],
       providers: [
         { provide: Store, useValue: storeMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }, // Mock ActivatedRoute
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
     }).compileComponents();
 
