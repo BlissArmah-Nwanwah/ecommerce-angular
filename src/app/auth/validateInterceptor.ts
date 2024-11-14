@@ -9,7 +9,7 @@ export const validateInterceptor: HttpInterceptorFn = (req, next) => {
   if (isExternalEndpoint(req.url)) {
     return authService.validateToken().pipe(
       switchMap((isValid: boolean) => {
-        if (isValid) {
+        if (!isValid) {
           return next(req);
         } else {
           return authService.refreshToken().pipe(

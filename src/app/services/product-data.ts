@@ -9,14 +9,21 @@ export interface ProductData {
     rate: number;
     count: number;
   };
+  count:number
 }
 
-// Create this interface either in the same file or in a separate file if needed
+export interface CreateProductData {
+  title: string;
+  price: string;
+  description: string;
+  category: string;
+}
+
+
+
+export type ActionType = 'detail' | 'addToCart'
 export interface ProductActionEvent {
-  type: 'detail' | 'addToCart';
+  type:  ActionType;
   data: ProductData;
 }
 
-export interface CartProductData extends ProductData {
-  count?: number;
-}

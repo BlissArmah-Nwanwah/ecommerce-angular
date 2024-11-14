@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { AuthService } from '../../guard/auth.service';
-import { CustomInputFieldComponent } from '../custom-input-field/custom-input-field.component';
-import { SignUpRequestData } from '../../interfaces/auth.interfaces';
+import {CommonModule} from '@angular/common';
+import {Router, RouterLink} from '@angular/router';
+import {Observable, tap} from 'rxjs';
+import {AuthService} from '../../guard/auth.service';
+import {CustomInputFieldComponent} from '../custom-input-field/custom-input-field.component';
+import {SignUpRequestData} from '../../interfaces/auth.interfaces';
+import {nameValidator} from "../../utils/utils";
+import {passwordValidator} from "../../shared/password.validator";
 
 @Component({
   selector: 'app-signup',
@@ -24,12 +26,13 @@ import { SignUpRequestData } from '../../interfaces/auth.interfaces';
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
+
 export class SignupComponent {
   public signUpForm = this.formBuilder.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
+    firstName: ['', [Validators.required, nameValidator]],
+    lastName: ['', [Validators.required, nameValidator]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    password: ['', [Validators.required, passwordValidator]],
   });
 
   public isLoading = false;
@@ -39,7 +42,8 @@ export class SignupComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   public getControl(
     controlName: 'email' | 'password' | 'firstName' | 'lastName'
@@ -47,7 +51,7 @@ export class SignupComponent {
     return this.signUpForm.get(controlName) as FormControl;
   }
 
-  public formAction() {
+  public submitForm() {
     if (this.signUpForm.valid) {
       const formData = this.signUpForm.value as SignUpRequestData;
       const authObs: Observable<{ message: string }> =

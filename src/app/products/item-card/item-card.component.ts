@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { ProductActionEvent, ProductData } from '../../services/product-data';
+import {ActionType, ProductActionEvent, ProductData} from '../../services/product-data';
 
 @Component({
   selector: 'app-item-card',
@@ -14,7 +14,7 @@ export class ItemCardComponent {
   @Input() public product!: ProductData;
   @Output() public productAction = new EventEmitter<ProductActionEvent>();
 
-  private emitProductAction(type: ProductActionEvent['type']): void {
+  private emitProductAction(type: ActionType): void {
     this.productAction.emit({ type, data: this.product });
   }
 

@@ -2,7 +2,7 @@ import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartProductData } from '../../services/product-data';
+import { ProductData } from '../../services/product-data';
 import { FooterComponent } from '../../footer/footer.component';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { isProductsLoading, selectedProduct } from '../products.selectors';
@@ -37,9 +37,10 @@ export class DetailsComponent implements OnInit {
     this.store.dispatch(
       PRODUCT_ACTIONS.loadSelectedProduct({ productId: this.id })
     );
+    console.log(this.selectedProduct())
   }
 
-  public onProductSelectedToCart(product: CartProductData | null): void {
+  public onProductSelectedToCart(product: ProductData | null): void {
     if (product) {
       this.store.dispatch(PRODUCT_ACTIONS.addProductToCart({ product }));
     }

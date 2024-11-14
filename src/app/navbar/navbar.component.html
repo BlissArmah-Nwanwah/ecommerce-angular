@@ -19,19 +19,19 @@
       <button
         (click)="routeToCart()"
         class="cart-button"
-        [ngClass]="{ 'cart-button-color': selectedProductCount > 0 }"
+        [ngClass]="{ 'cart-button-color': selectedProductCount() > 0 }"
       >
         <mat-icon
-          [ngClass]="{ 'cart-button-icon ': selectedProductCount > 0 }"
+          [ngClass]="{ 'cart-button-icon ': selectedProductCount() > 0 }"
           name="cart-outline"
           class="icon-gray icon"
           >shopping_cart</mat-icon
         >
-        @if (getProductCount() >= 1) {
+        @if (selectedProductCount() >= 1) {
           <span
             class="cart-count bg-red-500 w-5 h-5 rounded-full text-white text-[13px] flex justify-center items-center"
           >
-            {{ getProductCount() }}
+            {{ selectedProductCount() }}
           </span>
         }
       </button>

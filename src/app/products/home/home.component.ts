@@ -1,27 +1,25 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {Component, computed, OnInit, signal} from '@angular/core';
+import {Router} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {
-  MatSnackBarModule,
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
+  MatSnackBarModule
 } from '@angular/material/snack-bar';
-import { ItemCardComponent } from '../item-card/item-card.component';
+import {ItemCardComponent} from '../item-card/item-card.component';
 import {
-  CartProductData,
+  ProductData,
   ProductActionEvent,
 } from '../../services/product-data';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { NavbarComponent } from '../../navbar/navbar.component';
-import { Store } from '@ngrx/store';
-import { PRODUCT_ACTIONS } from '../products.actions';
-import { allProducts, isProductsLoading } from '../products.selectors';
-import { CreateproductmodalComponent } from '../createproductmodal/createproductmodal.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { CustomInputFieldComponent } from '../../auth/custom-input-field/custom-input-field.component';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {NavbarComponent} from '../../navbar/navbar.component';
+import {Store} from '@ngrx/store';
+import {PRODUCT_ACTIONS} from '../products.actions';
+import {allProducts, isProductsLoading} from '../products.selectors';
+import {CreateproductmodalComponent} from '../createproductmodal/createproductmodal.component';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-input-field.component';
+import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {SnackbarService} from "../../services/snackbar.service";
 
 @Component({
   selector: 'app-home',
@@ -42,13 +40,10 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
   ],
 })
 export class HomeComponent implements OnInit {
-  public horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-  public verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   public searchControl = new FormControl('');
   public searchTerm = signal('');
   public products = this.store.selectSignal(allProducts);
   public loading = this.store.selectSignal(isProductsLoading);
-  private durationInSeconds = 2;
   public toggleModal = false;
 
   public filteredProducts = computed(() => {
@@ -60,9 +55,10 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private _snackBar: MatSnackBar,
+    private snackbarService: SnackbarService,
     private store: Store
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
@@ -85,20 +81,13 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  public onProductSelectedToCart(product: CartProductData): void {
-    this.store.dispatch(PRODUCT_ACTIONS.addProductToCart({ product }));
-    this.openSnackBar('Item added to cart', 'Close');
+  public onProductSelectedToCart(product: ProductData): void {
+    this.store.dispatch(PRODUCT_ACTIONS.addProductToCart({product}));
+    this.snackbarService.openSnackBar('Item added to cart', 'Close');
   }
 
-  public onProductSelectDetail(product: CartProductData): void {
+  public onProductSelectDetail(product: ProductData): void {
     this.router.navigateByUrl(`/details/${product.id}`);
   }
 
-  public openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: this.durationInSeconds * 1000,
-      horizontalPosition: this.horizontalPosition,
-      verticalPosition: this.verticalPosition,
-    });
-  }
 }

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { CartProductData } from '../../services/product-data';
-import { ProductService } from '../../services/product.service';
-import { CommonModule } from '@angular/common';
-import { NavbarComponent } from '../../navbar/navbar.component';
-import { FooterComponent } from '../../footer/footer.component';
+import {Component} from '@angular/core';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
+import {ProductData} from '../../services/product-data';
+import {CommonModule} from '@angular/common';
+import {NavbarComponent} from '../../navbar/navbar.component';
+import {FooterComponent} from '../../footer/footer.component';
+import {Store} from "@ngrx/store";
+import {cartProductCount, cartProducts} from "../products.selectors";
+import {PRODUCT_ACTIONS} from "../products.actions";
 
 @Component({
   selector: 'app-cart',
@@ -19,58 +21,32 @@ import { FooterComponent } from '../../footer/footer.component';
     RouterOutlet,
   ],
 })
-export class CartComponent implements OnInit {
-  public cartProducts: CartProductData[] = [];
-  public totalAmount = 0;
+export class CartComponent {
+  public cartProducts = this.store.selectSignal(cartProducts)
+  public totalAmount = this.store.selectSignal(cartProductCount)
 
   constructor(
-    private productService: ProductService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.getCartProducts();
+    private router: Router,
+    private store: Store
+  ) {
   }
 
-  public getCartProducts() {
-    this.cartProducts = this.productService.getCartProducts();
-    this.getTotalAmount();
-  }
-
-  public getTotalAmount() {
-    this.totalAmount = this.cartProducts.reduce((total, product) => {
-      const count = product.count ?? 0;
-      const amount = parseFloat(product.price) * count || 0;
-      return total + amount;
-    }, 0);
-  }
-
-  public removeProduct(product: CartProductData): void {
-    this.productService.removeProductFromCart(product);
-    this.getCartProducts();
-    if (!this.cartProducts.length) {
+  public removeProduct(product: ProductData): void {
+    this.store.dispatch(PRODUCT_ACTIONS.incrementProductCount({productId: product.id}))
+    if (!this.cartProducts().length) {
       this.router.navigateByUrl('/empty-cart');
     }
   }
 
   public incrementCount(id: string) {
-    this.productService.incrementProductCount(id);
-    this.getTotalAmount();
+    this.store.dispatch(PRODUCT_ACTIONS.incrementProductCount({productId: id}))
   }
 
   public decrementCount(id: string) {
-    this.productService.decrementProductCount(id);
-    this.getTotalAmount();
-    if (this.cartProducts.length === 0) {
-      this.router.navigate(['/empty-cart']);
+    this.store.dispatch(PRODUCT_ACTIONS.decrementProductCount({productId: id}))
+    if (this.cartProducts().length === 0) {
+      this.router.navigateByUrl('/empty-cart');
     }
   }
 
-  public redirectToHome() {
-    this.router.navigateByUrl('');
-  }
-
-  public redirectToCheckout() {
-    this.router.navigateByUrl('/checkout');
-  }
 }

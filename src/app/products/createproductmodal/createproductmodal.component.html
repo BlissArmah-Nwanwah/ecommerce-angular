@@ -7,57 +7,32 @@
     </div>
 
     <form class="form" [formGroup]="productForm" (ngSubmit)="formSubmit()">
-      <!-- Title (mapped to firstName) -->
-      <label for="title">Title</label>
-      <div class="input-wrapper">
-        <input
-          name="title"
-          class="input"
-          type="text"
-          placeholder="Product Title"
-          formControlName="title"
-          required
-        />
-      </div>
 
-      <!-- Description (mapped to lastName) -->
-      <label for="description">Description</label>
-      <div class="input-wrapper">
-        <input
-          name="description"
-          class="input"
-          type="text"
-          placeholder="Product Description"
-          formControlName="description"
-          required
-        />
-      </div>
 
-      <!-- Price -->
-      <label for="price">Price</label>
-      <div class="input-wrapper">
-        <input
-          name="price"
-          class="input"
-          type="number"
-          placeholder="Product Price"
-          formControlName="price"
-          required
-        />
-      </div>
-
-      <!-- Category -->
-      <label for="category">Category</label>
-      <div class="input-wrapper">
-        <input
-          name="category"
-          class="input"
-          type="text"
-          placeholder="Product Category"
-          formControlName="category"
-          required
-        />
-      </div>
+      <app-custom-input-field
+        label="Title"
+        type="text"
+        placeholder="Product Title"
+        [control]="getControl('title')"
+      />
+      <app-custom-input-field
+        label="Description"
+        type="text"
+        placeholder="Product Description"
+        [control]="getControl('description')"
+      />
+      <app-custom-input-field
+        label="Price"
+        type="text"
+        placeholder="Product Price"
+        [control]="getControl('price')"
+      />
+      <app-custom-input-field
+        label="Category"
+        type="text"
+        placeholder="Product Category"
+        [control]="getControl('category')"
+      />
 
       <button
         type="submit"

@@ -10,7 +10,7 @@
   </div>
 
   <!-- Cart Products -->
-  @for (product of cartProducts; track product) {
+  @for (product of cartProducts(); track product) {
     <div class="cart-product">
       <div class="product-details">
         <img
@@ -39,20 +39,20 @@
   }
 
   <div class="cart-summary">
-    <button class="continue-shopping" (click)="redirectToHome()">
+    <button class="continue-shopping" routerLink="/home" >
       Continue Shopping
     </button>
 
     <div class="order-summary">
       <div class="summary-details">
         <p>Sub Total</p>
-        <p>{{ totalAmount | number }}</p>
+        <p>{{ totalAmount() | number }}</p>
         <p>Shipping</p>
         <p>{{ 00.0 | number }}</p>
         <p class="font-bold">Grand Total</p>
-        <p>{{ totalAmount | number }}</p>
+        <p>{{ totalAmount() | number }}</p>
       </div>
-      <button class="checkout-button" (click)="redirectToCheckout()">
+      <button class="checkout-button" routerLink="/checkout">
         Proceed To Checkout
       </button>
     </div>

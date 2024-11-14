@@ -11,10 +11,10 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './custom-input-field.component.scss',
 })
 export class CustomInputFieldComponent {
-  @Input({ required: true }) public label!: string;
-  @Input({ required: true }) public placeholder!: string;
+  @Input({required: true}) public label!: string;
+  @Input({required: true}) public placeholder!: string;
   @Input() public type = 'text';
-  @Input({ required: true }) public control!: FormControl;
+  @Input({required: true}) public control!: FormControl;
 
   public getError() {
     const errors = this.control.errors;
@@ -41,13 +41,36 @@ export class CustomInputFieldComponent {
       case 'invalidName':
         return 'Did you enter your name correctly?';
       case 'email':
-        return `${this.label} should be an email`;
-      case 'invalidDomain':
-        return `${this.control.errors?.[error].message}`;
+        return `${this.label} should be a valid email`;
       case 'minlength':
         return `${this.label} must have at least ${this.control.errors?.[error].requiredLength} characters`;
+      case 'passwordStrength':
+        const errors = this.control.errors?.['passwordStrength'];
+        return this.getPasswordStrengthErrorMessage(errors);
       default:
         return '';
     }
+  }
+
+  private getPasswordStrengthErrorMessage(errors: any): string {
+    const messages: string[] = [];
+
+    if (!errors.hasUpperCase) {
+      messages.push('at least one uppercase letter');
+    }
+    if (!errors.hasLowerCase) {
+      messages.push('at least one lowercase letter');
+    }
+    if (!errors.hasDigit) {
+      messages.push('at least one digit');
+    }
+    if (!errors.hasSpecialChar) {
+      messages.push('at least one special character');
+    }
+    if (!errors.minLength) {
+      messages.push('at least 8 characters long');
+    }
+
+    return `Password must contain ${messages.join(', ')}.`;
   }
 }

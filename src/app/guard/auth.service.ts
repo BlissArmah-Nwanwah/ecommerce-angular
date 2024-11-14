@@ -16,7 +16,7 @@ import { LocalStorageService } from '../services/localstorage.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private authApi = environment.AUTH_API_BASEURL;
+  private readonly authApi = environment.AUTH_API_BASEURL;
 
   constructor(
     private http: HttpClient,
