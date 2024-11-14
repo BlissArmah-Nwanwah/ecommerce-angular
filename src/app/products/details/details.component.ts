@@ -37,7 +37,6 @@ export class DetailsComponent implements OnInit {
     this.store.dispatch(
       PRODUCT_ACTIONS.loadSelectedProduct({ productId: this.id })
     );
-    console.log(this.selectedProduct())
   }
 
   public onProductSelectedToCart(product: ProductData | null): void {
