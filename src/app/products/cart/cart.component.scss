@@ -53,11 +53,6 @@
   color: rgb(46, 46, 46);
 }
 
-.quantity-button {
-  border: none;
-  color: black;
-}
-
 .subtotal {
   margin: auto;
 }
@@ -67,6 +62,7 @@ button {
   cursor: pointer;
 }
 .remove-button {
+  cursor: pointer;
   border: none;
   color: tomato;
 }

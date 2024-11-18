@@ -19,7 +19,7 @@ export const routes: Routes = [
     path: 'home',
     loadComponent: () =>
       import('./products/home/home.component').then(m => m.HomeComponent),
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
   {
     path: 'details/:id',
@@ -27,13 +27,13 @@ export const routes: Routes = [
       import('./products/details/details.component').then(
         m => m.DetailsComponent
       ),
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
   {
     path: 'cart',
     loadChildren: () =>
       import('./products/cart/cart.module').then(m => m.CartRoutingModule),
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
   {
     path: 'empty-cart',
@@ -41,12 +41,12 @@ export const routes: Routes = [
       import('./products/empty-cart/empty-cart.component').then(
         m => m.EmptyCartComponent
       ),
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
   {
     path: 'checkout',
     loadComponent: () =>
       import('./checkout/checkout.component').then(m => m.CheckoutComponent),
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
   },
 ];

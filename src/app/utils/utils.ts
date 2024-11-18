@@ -1,3 +1,4 @@
+import { ProductData } from '../services/product-data';
 export const cartProduct = {
   id: '1',
   title: 'Product 1',
@@ -23,4 +24,34 @@ export function nameValidator(control: any) {
     return {invalidName: true};
   }
   return null;
+}
+
+
+
+export function addProductToCart(cartProducts: ProductData[], product: ProductData): ProductData[] {
+  const existingProduct = cartProducts.find(item => item.id === product.id);
+
+  if (existingProduct) {
+    return cartProducts.map(p =>
+      p.id === product.id ? { ...p, count: (p.count || 1) + 1 } : p
+    );
+  }
+
+  return [...cartProducts, { ...product, count: 1 }];
+}
+
+export function incrementProductCount(cartProducts: ProductData[], productId: string): ProductData[] {
+  return cartProducts.map(product =>
+    product.id === productId ? { ...product, count: product.count + 1 } : product
+  );
+}
+export function decrementProductCount(cartProducts: ProductData[], productId: string): ProductData[] {
+  return cartProducts
+    .map(product =>
+      product.id === productId ? { ...product, count: product.count - 1 } : product
+    )
+    .filter(product => product.count > 0);
+}
+export function removeProductFromCart(cartProducts: ProductData[], productId: string): ProductData[] {
+  return cartProducts.filter(product => product.id !== productId);
 }

@@ -20,6 +20,7 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-input-field.component';
 import {debounceTime, distinctUntilChanged} from 'rxjs';
 import {SnackbarService} from "../../services/snackbar.service";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'app-home',
@@ -44,7 +45,7 @@ export class HomeComponent implements OnInit {
   public searchTerm = signal('');
   public products = this.store.selectSignal(allProducts);
   public loading = this.store.selectSignal(isProductsLoading);
-  public toggleModal = false;
+
 
   public filteredProducts = computed(() => {
     const searchValue = this.searchTerm().toLowerCase();
@@ -56,7 +57,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private router: Router,
     private snackbarService: SnackbarService,
-    private store: Store
+    private store: Store,
+    private modalService: ModalService
   ) {
   }
 
@@ -70,7 +72,7 @@ export class HomeComponent implements OnInit {
   }
 
   public onToggleCreatProductModal() {
-    this.toggleModal = !this.toggleModal;
+    this.modalService.openModal('createProductModal');
   }
 
   public onProductAction(event: ProductActionEvent): void {

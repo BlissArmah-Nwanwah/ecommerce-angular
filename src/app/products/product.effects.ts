@@ -4,6 +4,7 @@ import {PRODUCT_ACTIONS} from './products.actions';
 import {catchError, map, of, switchMap, tap} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {SnackbarService} from "../services/snackbar.service";
+import {ModalService} from "../services/modal.service";
 
 @Injectable()
 export class ProductEffects {
@@ -11,6 +12,7 @@ export class ProductEffects {
     private actions$: Actions,
     private productService: ProductService,
     private snackbarService: SnackbarService,
+    private modalService: ModalService
   ) {
   }
 
@@ -29,20 +31,19 @@ export class ProductEffects {
   );
 
   public createProduct$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PRODUCT_ACTIONS.createProduct),
-      switchMap(({products}) =>
-        this.productService.createProduct(products).pipe(
-          map(products => {
-            this.snackbarService.openSnackBar('Product created successfully', 'Close');
-            return PRODUCT_ACTIONS.loadProductSuccess({products});
-          }),
-          catchError(error => of(PRODUCT_ACTIONS.productFailure({error})))
+      this.actions$.pipe(
+        ofType(PRODUCT_ACTIONS.createProduct),
+        switchMap(({product}) =>
+          this.productService.createProduct(product).pipe(
+            tap(() => {
+              this.modalService.closeModal();
+              this.snackbarService.openSnackBar('Product created successfully', 'Close');
+            })
+          )
         )
-      )
-    )
-  );
-
+      ),
+    {dispatch: false}
+  )
   public loadSelectedProduct$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PRODUCT_ACTIONS.loadSelectedProduct),
@@ -59,40 +60,4 @@ export class ProductEffects {
     )
   );
 
-  public addProductToCart$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(PRODUCT_ACTIONS.addProductToCart),
-        tap(({product}) => PRODUCT_ACTIONS.addProductToCart({product})
-        )
-      ),
-    {dispatch: false}
-  );
-  public incrementProductCount$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(PRODUCT_ACTIONS.incrementProductCount),
-        tap(({productId}) => PRODUCT_ACTIONS.incrementProductCount({productId})
-        )
-      ),
-    {dispatch: false}
-  );
-  public decrementProductCount$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(PRODUCT_ACTIONS.decrementProductCount),
-        tap(({productId}) => PRODUCT_ACTIONS.decrementProductCount({productId})
-        )
-      ),
-    {dispatch: false}
-  );
-  public removeProductFromCart$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(PRODUCT_ACTIONS.removeProductFromCart),
-        tap(({productId}) => PRODUCT_ACTIONS.removeProductFromCart({productId})
-        )
-      ),
-    {dispatch: false}
-  );
 }

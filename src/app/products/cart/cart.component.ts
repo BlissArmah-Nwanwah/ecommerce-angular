@@ -5,8 +5,9 @@ import {CommonModule} from '@angular/common';
 import {NavbarComponent} from '../../navbar/navbar.component';
 import {FooterComponent} from '../../footer/footer.component';
 import {Store} from "@ngrx/store";
-import {cartProductCount, cartProducts} from "../products.selectors";
+import {cartProducts, cartProductTotal} from "../products.selectors";
 import {PRODUCT_ACTIONS} from "../products.actions";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-cart',
@@ -19,11 +20,12 @@ import {PRODUCT_ACTIONS} from "../products.actions";
     NavbarComponent,
     CommonModule,
     RouterOutlet,
+    MatIconModule
   ],
 })
 export class CartComponent {
   public cartProducts = this.store.selectSignal(cartProducts)
-  public totalAmount = this.store.selectSignal(cartProductCount)
+  public totalAmount = this.store.selectSignal(cartProductTotal)
 
   constructor(
     private router: Router,
@@ -32,7 +34,7 @@ export class CartComponent {
   }
 
   public removeProduct(product: ProductData): void {
-    this.store.dispatch(PRODUCT_ACTIONS.incrementProductCount({productId: product.id}))
+    this.store.dispatch(PRODUCT_ACTIONS.removeProductFromCart({productId: product.id}))
     if (!this.cartProducts().length) {
       this.router.navigateByUrl('/empty-cart');
     }

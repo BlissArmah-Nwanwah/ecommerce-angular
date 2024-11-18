@@ -22,19 +22,13 @@
       </div>
       <p class="product-price">$ {{ product.price }}</p>
       <div class="quantity">
-        <button class="quantity-button" (click)="decrementCount(product.id)">
-          <i class="fa-solid fa-minus"></i>
-        </button>
+          <mat-icon (click)="decrementCount(product.id)">remove</mat-icon>
         <p>{{ product.count }}</p>
-        <button class="quantity-button" (click)="incrementCount(product.id)">
-          <i class="fa-solid fa-plus"></i>
-        </button>
+          <mat-icon (click)="incrementCount(product.id)" >add</mat-icon>
       </div>
-      <button class="">FREE</button>
+      <p >FREE</p>
       <p class="subtotal">$ {{ product.price }}</p>
-      <button class="remove-button" (click)="removeProduct(product)">
-        <i class="fa-solid fa-trash"></i>
-      </button>
+        <mat-icon class="remove-button" (click)="removeProduct(product)" >close</mat-icon>
     </div>
   }
 

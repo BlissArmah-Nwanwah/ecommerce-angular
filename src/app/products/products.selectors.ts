@@ -1,5 +1,5 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ProductState } from './product.reducers';
+import {createFeatureSelector, createSelector} from '@ngrx/store';
+import {ProductState} from './product.reducers';
 
 export const selectProductState = createFeatureSelector<ProductState>('goods');
 
@@ -22,5 +22,10 @@ export const cartProducts = createSelector(
 );
 export const cartProductCount = createSelector(
   selectProductState,
-  state => state.cartProducts.reduce((count, product) => count + (product.count || 0), 0)
+  state => state.cartProducts.length
+);
+
+export const cartProductTotal = createSelector(
+  selectProductState,
+  state => state.cartProducts.map(val => (val.price as unknown as number) * val.count).reduce((acc, val) => acc + val, 0).toFixed(2)
 );
