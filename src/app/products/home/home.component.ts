@@ -69,6 +69,7 @@ export class HomeComponent implements OnInit {
       .subscribe((value: string | null) => {
         this.searchTerm.set(value || '');
       });
+    console.log('kkk:', this.loading())
   }
 
   public onToggleCreatProductModal() {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   FormBuilder, FormControl,
   ReactiveFormsModule,
@@ -13,6 +13,7 @@ import {CreateProductData} from "../../services/product-data";
 import {CustomInputFieldComponent} from "../../auth/custom-input-field/custom-input-field.component";
 import {isProductsLoading} from "../products.selectors";
 import {ModalService} from "../../services/modal.service";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-createproductmodal',
@@ -21,10 +22,10 @@ import {ModalService} from "../../services/modal.service";
   templateUrl: './createproductmodal.component.html',
   styleUrl: './createproductmodal.component.scss',
 })
-export class CreateproductmodalComponent implements OnInit{
+export class CreateproductmodalComponent implements OnInit {
   public productForm = this.formBuilder.group({
     title: ['', [Validators.required]],
-    price: ['',[Validators.required]],
+    price: ['', [Validators.required]],
     description: ['', [Validators.required]],
     category: ['', [Validators.required]],
   });
@@ -37,12 +38,13 @@ export class CreateproductmodalComponent implements OnInit{
     private store: Store<AppState>,
     private modalService: ModalService
   ) {
-    this.modalService.getActiveModal().subscribe((activeModal) => {
+    this.modalService.getActiveModal().pipe(takeUntilDestroyed()).subscribe((activeModal) => {
+
       this.isOpen = activeModal === 'createProductModal';
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.onCloseModal()
   }
 

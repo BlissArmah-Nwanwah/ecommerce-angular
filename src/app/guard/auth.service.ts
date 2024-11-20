@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { catchError, map, Observable, of } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AUTH_ACTIONS } from '../auth/auth.actions';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, map, Observable, of} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AUTH_ACTIONS} from '../auth/auth.actions';
+import {environment} from '../../environments/environment';
 import {
   SignUpRequestData,
   SignUpResponseData,
@@ -12,9 +12,9 @@ import {
   RefreshTokenResponseData,
   ValidateTokenResponseData,
 } from '../interfaces/auth.interfaces';
-import { LocalStorageService } from '../services/localstorage.service';
+import {LocalStorageService} from '../services/localstorage.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
   private readonly authApi = environment.AUTH_API_BASEURL;
 
@@ -22,7 +22,8 @@ export class AuthService {
     private http: HttpClient,
     private store: Store,
     private localStorageService: LocalStorageService
-  ) {}
+  ) {
+  }
 
   public signUp(data: SignUpRequestData): Observable<SignUpResponseData> {
     return this.http.post<SignUpResponseData>(
@@ -67,7 +68,7 @@ export class AuthService {
           );
           this.localStorageService.setItem(
             'refreshToken',
-            JSON.stringify(response.refresh_token)
+            response.refresh_token
           );
           return true;
         }),

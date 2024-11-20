@@ -1,12 +1,16 @@
 <app-navbar></app-navbar>
+
 @if (loading()) {
   <app-loader></app-loader>
 }
+
 @if (!loading()) {
   <section class="product-details-container">
     <div class="product-details-title">Product Details</div>
+
     <div class="product-grid">
       <div></div>
+
       @if (selectedProduct()) {
         <img
           class="product-detail-image"
@@ -18,7 +22,7 @@
           <h1 class="product-title">
             {{ selectedProduct()?.title }}
           </h1>
-          <!-- stars -->
+
           <div class="product-rating">
             <i class="fa-solid fa-star text-yellow-500"></i>
             <span class="rating-text">Rating:</span>

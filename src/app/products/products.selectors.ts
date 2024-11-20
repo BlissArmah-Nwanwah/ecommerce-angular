@@ -22,7 +22,7 @@ export const cartProducts = createSelector(
 );
 export const cartProductCount = createSelector(
   selectProductState,
-  state => state.cartProducts.length
+  state => state.cartProducts?.length
 );
 
 export const cartProductTotal = createSelector(

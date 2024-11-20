@@ -24,4 +24,24 @@ export class LocalStorageService {
   public clear(): void {
     localStorage.clear();
   }
+
+  public persistAuthState(authState: any): void {
+    this.setItem('auth', authState);
+  }
+
+  public persistCartProducts(cartProducts: any): void {
+    this.setItem('cart', cartProducts);
+  }
+
+  public getAuthState<T>(): T | null {
+    return this.getItem<T>('auth');
+  }
+
+  public getCartProducts<T>(): T | null {
+    return this.getItem<T>('cart');
+  }
+
+  public clearUserAndCart(): void {
+    this.removeItems(['user', 'cart']);
+  }
 }

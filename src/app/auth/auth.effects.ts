@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { Router } from '@angular/router';
-import { AUTH_ACTIONS } from './auth.actions';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from '../guard/auth.service';
-import { LocalStorageService } from '../services/localstorage.service';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {catchError, map, of, switchMap, tap} from 'rxjs';
+import {Router} from '@angular/router';
+import {AUTH_ACTIONS} from './auth.actions';
+import {HttpErrorResponse} from '@angular/common/http';
+import {AuthService} from '../guard/auth.service';
+import {LocalStorageService} from '../services/localstorage.service';
 
 @Injectable()
 export class AuthEffects {
@@ -14,17 +14,16 @@ export class AuthEffects {
       ofType(AUTH_ACTIONS.login),
       switchMap(loginData =>
         this.authService.logIn(loginData).pipe(
-          map(response => {
-            this.router.navigateByUrl('/home');
-            return AUTH_ACTIONS.loginSuccess(response);
-          }),
-          catchError((error: HttpErrorResponse) => {
-            return of(AUTH_ACTIONS.loginFailure({ error: error.message }));
-          })
+          tap(() => this.router.navigateByUrl('/home')),
+          map(response => AUTH_ACTIONS.loginSuccess(response)),
+          catchError((error: HttpErrorResponse) =>
+            of(AUTH_ACTIONS.loginFailure({ error: error.message }))
+          )
         )
       )
     )
   );
+
 
   public logout$ = createEffect(
     () =>
@@ -39,7 +38,7 @@ export class AuthEffects {
           this.router.navigateByUrl('/');
         })
       ),
-    { dispatch: false }
+    {dispatch: false}
   );
 
   constructor(
@@ -47,5 +46,6 @@ export class AuthEffects {
     private readonly router: Router,
     private readonly authService: AuthService,
     private readonly localStorageService: LocalStorageService
-  ) {}
+  ) {
+  }
 }

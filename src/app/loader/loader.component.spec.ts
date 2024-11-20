@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LoaderComponent } from './loader.component';
 
 describe('LoaderComponent', () => {
@@ -18,5 +17,11 @@ describe('LoaderComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render the spinner in the DOM', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const spinnerElement = compiled.querySelector('.spinner');
+    expect(spinnerElement).toBeTruthy();
   });
 });
