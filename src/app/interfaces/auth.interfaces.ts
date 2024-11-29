@@ -15,15 +15,11 @@ export interface LogInRequestData {
   password: string;
 }
 
-export interface LogInResponseData {
+export interface AuthResponseData {
   login_token: string;
   refresh_token: string;
 }
 
-export interface RefreshTokenResponseData {
-  login_token: string;
-  refresh_token: string;
-}
 
 export interface ValidateTokenResponseData {
   isValid: boolean;

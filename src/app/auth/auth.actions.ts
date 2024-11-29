@@ -3,14 +3,14 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { User } from '../app.state';
 import {
   LogInRequestData,
-  LogInResponseData,
+  AuthResponseData,
 } from '../interfaces/auth.interfaces';
 
 export const AUTH_ACTIONS = createActionGroup({
   source: 'Auth',
   events: {
-    ' Login': props<LogInRequestData>(),
-    'Login Success': props<LogInResponseData>(),
+    'Login': props<LogInRequestData>(),
+    'Login Success': props<AuthResponseData>(),
     'Update Auth State': props<User>(),
     'Login Failure': props<{ error: string }>(),
     'Refresh Token Success': props<{

@@ -8,8 +8,7 @@ import {
   SignUpRequestData,
   SignUpResponseData,
   LogInRequestData,
-  LogInResponseData,
-  RefreshTokenResponseData,
+  AuthResponseData,
   ValidateTokenResponseData,
 } from '../interfaces/auth.interfaces';
 import {LocalStorageService} from '../services/localstorage.service';
@@ -32,8 +31,8 @@ export class AuthService {
     );
   }
 
-  public logIn(data: LogInRequestData): Observable<LogInResponseData> {
-    return this.http.post<LogInResponseData>(
+  public logIn(data: LogInRequestData): Observable<AuthResponseData> {
+    return this.http.post<AuthResponseData>(
       `${this.authApi}/user/login`,
       data
     );
@@ -57,11 +56,11 @@ export class AuthService {
     }
 
     return this.http
-      .post<RefreshTokenResponseData>(`${this.authApi}/user/refresh-token`, {
+      .post<AuthResponseData>(`${this.authApi}/user/refresh-token`, {
         refreshToken: JSON.parse(refreshToken),
       })
       .pipe(
-        map((response: RefreshTokenResponseData) => {
+        map((response: AuthResponseData) => {
           this.localStorageService.setItem(
             'accessToken',
             JSON.stringify(response.login_token)

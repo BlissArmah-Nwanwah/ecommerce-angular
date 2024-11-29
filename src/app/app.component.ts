@@ -28,22 +28,10 @@ export class AppComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   public beforeUnload(): void {
-    this.localStorageService.persistAuthState(this.authState());
-    this.localStorageService.persistCartProducts(this.cartProducts());
+    this.localStorageService.persistState();
   }
 
   ngOnInit(): void {
-    const userProfile = this.localStorageService.getAuthState<User>();
-    const savedCartProducts = this.localStorageService.getCartProducts<ProductData[]>();
-
-    if (userProfile) {
-      this.store.dispatch(AUTH_ACTIONS.updateAuthState(userProfile));
-    }
-
-    if (savedCartProducts) {
-      this.store.dispatch(PRODUCT_ACTIONS.loadProductFromCart({ products: savedCartProducts }));
-    }
-
-    this.localStorageService.clearUserAndCart();
+    this.localStorageService.initializeState();
   }
 }

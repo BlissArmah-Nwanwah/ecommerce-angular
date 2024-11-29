@@ -33,7 +33,7 @@ export const routes: Routes = [
     path: 'cart',
     loadChildren: () =>
       import('./products/cart/cart.module').then(m => m.CartRoutingModule),
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
   },
   {
     path: 'empty-cart',

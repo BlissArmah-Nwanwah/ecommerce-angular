@@ -67,9 +67,9 @@ export class SignupComponent {
           next: () => {
             this.isLoading = true;
           },
-          error: error => {
+          error: ({message}) => {
             this.isLoading = false;
-            this.errorMessage = error.message;
+            this.errorMessage = message;
           },
         });
     }

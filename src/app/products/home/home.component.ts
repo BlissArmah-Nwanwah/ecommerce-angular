@@ -18,9 +18,10 @@ import {allProducts, isProductsLoading} from '../products.selectors';
 import {CreateproductmodalComponent} from '../createproductmodal/createproductmodal.component';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {CustomInputFieldComponent} from '../../auth/custom-input-field/custom-input-field.component';
-import {debounceTime, distinctUntilChanged} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map, startWith} from 'rxjs';
 import {SnackbarService} from "../../services/snackbar.service";
 import {ModalService} from "../../services/modal.service";
+import {takeUntilDestroyed, toSignal} from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-home',
@@ -42,17 +43,19 @@ import {ModalService} from "../../services/modal.service";
 })
 export class HomeComponent implements OnInit {
   public searchControl = new FormControl('');
-  public searchTerm = signal('');
   public products = this.store.selectSignal(allProducts);
   public loading = this.store.selectSignal(isProductsLoading);
 
-
-  public filteredProducts = computed(() => {
-    const searchValue = this.searchTerm().toLowerCase();
-    return this.products().filter(product =>
-      product.title.toLowerCase().includes(searchValue)
-    );
-  });
+  public filteredProducts = toSignal(
+    this.searchControl.valueChanges.pipe(
+      startWith(''),
+      map((searchTerm: string | null) =>
+        this.products().filter(product =>
+          product.title.toLowerCase().includes((searchTerm || '').toLowerCase())
+        )
+      )
+    )
+  );
 
   constructor(
     private router: Router,
@@ -64,12 +67,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(PRODUCT_ACTIONS.loadProduct());
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((value: string | null) => {
-        this.searchTerm.set(value || '');
-      });
-    console.log('kkk:', this.loading())
   }
 
   public onToggleCreatProductModal() {

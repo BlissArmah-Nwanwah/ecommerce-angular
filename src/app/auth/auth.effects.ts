@@ -16,8 +16,8 @@ export class AuthEffects {
         this.authService.logIn(loginData).pipe(
           tap(() => this.router.navigateByUrl('/home')),
           map(response => AUTH_ACTIONS.loginSuccess(response)),
-          catchError((error: HttpErrorResponse) =>
-            of(AUTH_ACTIONS.loginFailure({ error: error.message }))
+          catchError(({message}: HttpErrorResponse) =>
+            of(AUTH_ACTIONS.loginFailure({ error: message }))
           )
         )
       )
