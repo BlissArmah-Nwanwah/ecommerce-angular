@@ -13,6 +13,7 @@ import {CustomInputFieldComponent} from '../custom-input-field/custom-input-fiel
 import {SignUpRequestData} from '../../interfaces/auth.interfaces';
 import {nameValidator} from "../../utils/utils";
 import {passwordValidator} from "../../shared/password.validator";
+import {ControlNameType} from "../../interfaces/types";
 
 @Component({
   selector: 'app-signup',
@@ -26,6 +27,7 @@ import {passwordValidator} from "../../shared/password.validator";
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
+
 
 export class SignupComponent {
   public signUpForm = this.formBuilder.group({
@@ -46,7 +48,7 @@ export class SignupComponent {
   }
 
   public getControl(
-    controlName: 'email' | 'password' | 'firstName' | 'lastName'
+    controlName: ControlNameType
   ): FormControl {
     return this.signUpForm.get(controlName) as FormControl;
   }

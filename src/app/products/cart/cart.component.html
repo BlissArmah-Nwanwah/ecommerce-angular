@@ -22,18 +22,18 @@
       </div>
       <p class="product-price">$ {{ product.price }}</p>
       <div class="quantity">
-          <mat-icon (click)="decrementCount(product.id)">remove</mat-icon>
+        <mat-icon (click)="decrementCount(product.id)">remove</mat-icon>
         <p>{{ product.count }}</p>
-          <mat-icon (click)="incrementCount(product.id)" >add</mat-icon>
+        <mat-icon (click)="incrementCount(product.id)">add</mat-icon>
       </div>
-      <p >FREE</p>
-      <p class="subtotal">$ {{ product.price }}</p>
-        <mat-icon class="remove-button" (click)="removeProduct(product)" >close</mat-icon>
+      <p>FREE</p>
+      <p class="subtotal"> {{ product.price | currency }}</p>
+      <mat-icon class="remove-button" (click)="removeProduct(product)">close</mat-icon>
     </div>
   }
 
   <div class="cart-summary">
-    <button class="continue-shopping" routerLink="/home" >
+    <button class="continue-shopping" routerLink="/home">
       Continue Shopping
     </button>
 
@@ -42,7 +42,7 @@
         <p>Sub Total</p>
         <p>{{ totalAmount() | number }}</p>
         <p>Shipping</p>
-        <p>{{ 00.0 | number }}</p>
+        <p>{{ 0 | number }}</p>
         <p class="font-bold">Grand Total</p>
         <p>{{ totalAmount() | number }}</p>
       </div>
