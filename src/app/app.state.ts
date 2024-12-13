@@ -4,18 +4,21 @@ import { authReducer } from './auth/auth.reducer';
 import { productReducer, ProductState } from './products/product.reducers';
 
 export interface User {
-  login_token: string | null;
-  refresh_token: string | null;
+  login_token: string;
+  refresh_token: string;
+  isLoading: boolean;
+  error: string | undefined;
+  message: string | undefined;
 }
 
 export interface AppState {
   auth: User;
-  goods:ProductState
+  goods: ProductState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
-  goods: productReducer
+  goods: productReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];

@@ -9,36 +9,28 @@
 
   <div class="form-container">
     <h1 class="header">Sign In</h1>
-    <form
-      class="form"
-      action=""
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
-    >
-      <!-- email Address -->
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <app-custom-input-field
         label="Email"
-        type="email"
         placeholder="Enter your email"
-        [control]="email"
+        [control]="getControl('email')"
       />
 
-      <!-- password -->
       <app-custom-input-field
         label="Password"
         type="password"
-        [control]="password"
+        [control]="getControl('password')"
         placeholder="Enter your password"
       />
 
-      @if (errorMessage) {
-        <div class="error">{{ errorMessage }}</div>
+      @if (errorMessage()) {
+        <div class="error">{{ errorMessage() }}</div>
       }
 
       <button
         type="submit"
         class="submit-btn"
-        [class.disabled]="loginForm.invalid || isLoading"
+        [class.disabled]="loginForm.invalid"
         [disabled]="loginForm.invalid"
       >
         Log in

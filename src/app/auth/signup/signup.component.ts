@@ -1,81 +1,100 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   ReactiveFormsModule,
   Validators,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {Router, RouterLink} from '@angular/router';
-import {AppState} from '../../app.state';
-import {select, Store} from '@ngrx/store';
-import {Observable, tap} from 'rxjs';
-import {isLoggedIn} from '../auth.selectors';
-import {AuthService} from '../../guard/auth.service';
-import {CustomInputFieldComponent} from "../custom-input-field/custom-input-field.component";
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { AuthService } from '../../guard/auth.service';
+import { CustomInputFieldComponent } from '../custom-input-field/custom-input-field.component';
+
+interface SignUpRequestData {
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  password: string | null;
+}
+
+export type ControlNameType = 'email' | 'password' | 'firstName' | 'lastName';
+
+function nameValidator(control: any) {
+  const nameRegex = /^[a-zA-Z\s]*$/;
+  if (!nameRegex.test(control.value)) {
+    return { invalidName: true };
+  }
+  return null;
+}
+
+function passwordValidator(control: AbstractControl): ValidationErrors | null {
+  const password = control.value;
+
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasDigit = /\d/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const minLength = password?.length >= 8;
+
+  const valid =
+    hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && minLength;
+
+  if (!valid) {
+    return {
+      passwordStrength: {
+        hasUpperCase,
+        hasLowerCase,
+        hasDigit,
+        hasSpecialChar,
+        minLength,
+      },
+    };
+  }
+
+  return null;
+}
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, CommonModule, CustomInputFieldComponent],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    CommonModule,
+    CustomInputFieldComponent,
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
 })
 export class SignupComponent {
-  signUpForm = this.formBuilder.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
+  public signUpForm = this.formBuilder.group({
+    firstName: ['', [Validators.required, nameValidator]],
+    lastName: ['', [Validators.required, nameValidator]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(8)]],
+    password: ['', [Validators.required, passwordValidator]],
   });
 
-  showPassword: boolean = false;
-  isLoggenIn$: Observable<boolean> = new Observable();
   public isLoading = false;
   public errorMessage = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService,
-    private store: Store<AppState>
-  ) {
+    private authService: AuthService
+  ) {}
+
+  public getControl(controlName: ControlNameType): FormControl {
+    return this.signUpForm.get(controlName) as FormControl;
   }
 
-  ngOnInit(): void {
-    this.isLoggenIn$ = this.store.pipe(select(isLoggedIn));
-    if (this.isLoggenIn$) {
-      this.router.navigateByUrl('/');
-    }
-  }
-
-
-  public get firstName() {
-    return this.signUpForm.controls.firstName;
-  }
-
-  public get lastName() {
-    return this.signUpForm.controls.lastName;
-  }
-
-  public get email() {
-    return this.signUpForm.controls.email;
-  }
-
-  public get password() {
-    return this.signUpForm.controls.password;
-  }
-
-  formAction() {
+  public submitForm() {
     if (this.signUpForm.valid) {
-      const formData = {
-        email: this.email.value || '',
-        firstName: this.firstName.value || '',
-        lastName: this.lastName.value || '',
-        password: this.password.value || '',
-      };
-
-      let authObs: Observable<{ message: string }>;
-      authObs = this.authService.signUp(formData);
+      const formData = this.signUpForm.value as SignUpRequestData;
+      const authObs: Observable<{ message: string }> =
+        this.authService.signUp(formData);
 
       authObs
         .pipe(
@@ -87,16 +106,11 @@ export class SignupComponent {
           next: () => {
             this.isLoading = true;
           },
-          error: (error) => {
+          error: ({ message }) => {
             this.isLoading = false;
-            this.errorMessage = error.message;
+            this.errorMessage = message;
           },
         });
     }
-  }
-
-
-  togglePassword(): void {
-    this.showPassword = !this.showPassword;
   }
 }

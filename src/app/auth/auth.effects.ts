@@ -1,38 +1,49 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthActions } from './action-types';
-import { tap } from 'rxjs';
+import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { AUTH_ACTIONS } from './auth.actions';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../guard/auth.service';
+import { LocalStorageService } from '../services/localstorage.service';
 
 @Injectable()
 export class AuthEffects {
-  login$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.login),
-        tap(({ user }) => {
-          localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('accessToken', JSON.stringify(user.login_token));
-          localStorage.setItem(
-            'refreshToken',
-            JSON.stringify(user.refresh_token)
-          );
-        })
-      ),
-    { dispatch: false }
+  public login$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AUTH_ACTIONS.login),
+      switchMap(loginData =>
+        this.authService.logIn(loginData).pipe(
+          tap(() => this.router.navigateByUrl('/home')),
+          map(response => AUTH_ACTIONS.loginSuccess(response)),
+          catchError(({ message }: HttpErrorResponse) =>
+            of(AUTH_ACTIONS.loginFailure({ error: message }))
+          )
+        )
+      )
+    )
   );
 
-  logout$ = createEffect(
+  public logout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.logout),
+        ofType(AUTH_ACTIONS.logOut),
         tap(() => {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          this.localStorageService.removeItems([
+            'user',
+            'accessToken',
+            'refreshToken',
+          ]);
           this.router.navigateByUrl('/');
         })
       ),
     { dispatch: false }
   );
-  constructor(private actions$: Actions, private router: Router) {}
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly router: Router,
+    private readonly authService: AuthService,
+    private readonly localStorageService: LocalStorageService
+  ) {}
 }

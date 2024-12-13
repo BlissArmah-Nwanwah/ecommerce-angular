@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { ProductData } from '../services/product-data';
+import { CreateProductData, ProductData } from '../services/product-data';
 
 export const PRODUCT_ACTIONS = createActionGroup({
   source: 'Product',
@@ -7,10 +7,15 @@ export const PRODUCT_ACTIONS = createActionGroup({
     'Load Product': emptyProps(),
     'Load Product Success': props<{ products: ProductData[] }>(),
     'Product Failure': props<{ error: string }>(),
-    'create Product': emptyProps(),
-    'create Product success': props<{ products: ProductData[] }>(),
-    'load Selected Product': props<{ productId: string }>(),
-    'load selected Product success': props<{ product: ProductData }>(),
-    'load selected Product failure':props<{ error: string }>(),
+    'Create Product': props<{ product: CreateProductData }>(),
+    'Create Product Success': props<{ products: ProductData[] }>(),
+    'Load Selected Product': props<{ productId: string }>(),
+    'Load Selected Product Success': props<{ product: ProductData }>(),
+    'Load Selected Product Failure': props<{ error: string }>(),
+    'Add Product To Cart': props<{ product: ProductData }>(),
+    'Load Product From Cart': props<{ products: ProductData[] }>(),
+    'Increment Product Count': props<{ productId: string }>(),
+    'Decrement Product Count': props<{ productId: string }>(),
+    'Remove Product From Cart': props<{ productId: string }>(),
   },
 });

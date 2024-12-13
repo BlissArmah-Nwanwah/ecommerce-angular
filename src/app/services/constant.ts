@@ -1,1 +1,1 @@
-export const   itemsPerPage:number = 8;  
+export const atLeastOneCartItem = 1;

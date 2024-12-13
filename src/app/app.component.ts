@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { AppState } from './app.state';
-import { AuthActions } from './auth/action-types';
+import { LocalStorageService } from './services/localstorage.service';
 
 @Component({
   selector: 'app-root',
@@ -13,16 +10,16 @@ import { AuthActions } from './auth/action-types';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'B-commerce';
+  public title = 'B-commerce';
 
-  count$?: Observable<number>;
+  constructor(private localStorageService: LocalStorageService) {}
 
-  constructor(private store: Store<AppState>) {}
+  @HostListener('window:beforeunload', ['$event'])
+  public beforeUnload(): void {
+    this.localStorageService.persistState();
+  }
 
   ngOnInit(): void {
-    const userProfile = localStorage?.getItem('user') ?? '';
-    if (userProfile) {
-      this.store.dispatch(AuthActions.login({ user: JSON.parse(userProfile) }));
-    }
+    this.localStorageService.initializeState();
   }
 }

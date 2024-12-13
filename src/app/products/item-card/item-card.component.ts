@@ -1,27 +1,32 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { ProductData } from '../../services/product-data';
+import {
+  ActionType,
+  ProductActionEvent,
+  ProductData,
+} from '../../services/product-data';
 
 @Component({
   selector: 'app-item-card',
   standalone: true,
-  imports: [MatButtonModule,CommonModule],
+  imports: [MatButtonModule, CommonModule],
   templateUrl: './item-card.component.html',
-  styleUrl: './item-card.component.scss',
+  styleUrls: ['./item-card.component.scss'],
 })
 export class ItemCardComponent {
-  @Input() product!: ProductData;
-  @Output() productSelectDetail = new EventEmitter<ProductData>();
-  @Output() productAddToCart = new EventEmitter<ProductData>();
+  @Input() public product!: ProductData;
+  @Output() public productAction = new EventEmitter<ProductActionEvent>();
 
-  constructor() {}
-
-  onViewDetails(): void {
-    this.productSelectDetail.emit(this.product);
+  private emitProductAction(type: ActionType): void {
+    this.productAction.emit({ type, data: this.product });
   }
 
-  onProductSelectedToCart(): void {
-    this.productAddToCart.emit(this.product);
+  public onViewDetails(): void {
+    this.emitProductAction('detail');
+  }
+
+  public onProductSelectedToCart(): void {
+    this.emitProductAction('addToCart');
   }
 }

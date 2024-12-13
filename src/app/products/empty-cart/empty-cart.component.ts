@@ -6,8 +6,6 @@ import { NavbarComponent } from '../../navbar/navbar.component';
   standalone: true,
   imports: [NavbarComponent],
   templateUrl: './empty-cart.component.html',
-  styleUrl: './empty-cart.component.scss'
+  styleUrl: './empty-cart.component.scss',
 })
-export class EmptyCartComponent {
-
-}
+export class EmptyCartComponent {}

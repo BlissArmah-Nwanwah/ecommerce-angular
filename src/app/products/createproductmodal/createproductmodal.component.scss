@@ -1,50 +1,47 @@
 .modal-wrapper {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000; 
-    background: rgba(0, 0, 0, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(5px); 
-  }
-  
-  .modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    width: 25rem;
-    z-index: 1001; 
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .modal-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 2rem;
-    margin-bottom: 1rem;
-  }
-.icon-close{
-    font-weight: 900;
-    cursor: pointer;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
 }
 
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 25rem;
+  z-index: 1001;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2rem;
+  margin-bottom: 1rem;
+}
+.icon-close {
+  font-weight: 900;
+  cursor: pointer;
+}
 
-
-.image-container{
+.image-container {
   display: none;
 }
 
-.login-img{
+.login-img {
   width: 100%;
 }
-
 
 .form-container {
   width: 100%;
@@ -65,7 +62,7 @@
   flex-direction: column;
   gap: 5px;
 }
-label{
+label {
   margin-top: 5px;
   font-size: 18px;
   font-weight: 500;
@@ -107,21 +104,20 @@ label{
 }
 
 @media (min-width: 1024px) {
-  .large-grid-container  {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  .large-grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .large-image-container{
-      display: block;
+  .large-image-container {
+    display: block;
   }
 }
-  @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

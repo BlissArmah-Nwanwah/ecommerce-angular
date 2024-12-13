@@ -1,16 +1,18 @@
-import { ProductService } from './../services/product.service';
+import { ProductService } from '../services/product.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PRODUCT_ACTIONS } from './products.actions';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { SnackbarService } from '../services/snackbar.service';
+import { ModalService } from '../services/modal.service';
 
 @Injectable()
 export class ProductEffects {
-  public constructor(
+  constructor(
     private actions$: Actions,
     private productService: ProductService,
-    private router: Router
+    private snackbarService: SnackbarService,
+    private modalService: ModalService
   ) {}
 
   public loadProduct$ = createEffect(() =>
@@ -18,42 +20,46 @@ export class ProductEffects {
       ofType(PRODUCT_ACTIONS.loadProduct),
       switchMap(() =>
         this.productService.getProducts().pipe(
-          map((products) => PRODUCT_ACTIONS.loadProductSuccess({ products })),
-          catchError((error) => of(PRODUCT_ACTIONS.productFailure({ error })))
+          map(products => PRODUCT_ACTIONS.loadProductSuccess({ products })),
+          catchError(error => {
+            return of(PRODUCT_ACTIONS.productFailure({ error }));
+          })
         )
       )
     )
   );
 
-  public createProduct$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(PRODUCT_ACTIONS.createProduct),
-      switchMap(() =>
-        this.productService.getProducts().pipe(
-          map((products) => PRODUCT_ACTIONS.loadProductSuccess({ products })),
-          catchError((error) => of(PRODUCT_ACTIONS.productFailure({ error })))
+  public createProduct$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(PRODUCT_ACTIONS.createProduct),
+        switchMap(({ product }) =>
+          this.productService.createProduct(product).pipe(
+            tap(() => {
+              this.modalService.closeModal();
+              this.snackbarService.openSnackBar(
+                'Product created successfully',
+                'Close'
+              );
+            })
+          )
         )
-      )
-    )
+      ),
+    { dispatch: false }
   );
-
-  public loadSelectedProduct = createEffect(() =>
+  public loadSelectedProduct$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PRODUCT_ACTIONS.loadSelectedProduct),
       switchMap(({ productId }) =>
         this.productService.getSelectedProduct(productId).pipe(
-          tap((product) => {
-            this.router.navigate(['/details', product.id]);
+          map(product => {
+            return PRODUCT_ACTIONS.loadSelectedProductSuccess({ product });
           }),
-          map((product) => 
-            PRODUCT_ACTIONS.loadSelectedProductSuccess({ product })
-          ),
-          catchError((error) =>
+          catchError(error =>
             of(PRODUCT_ACTIONS.loadSelectedProductFailure({ error }))
           )
         )
       )
     )
   );
-  
 }

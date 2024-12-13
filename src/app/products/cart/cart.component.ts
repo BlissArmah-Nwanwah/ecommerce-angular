@@ -1,69 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { cartProductData } from '../../services/product-data';
-import { ProductService } from '../../services/product.service';
+import { ProductData } from '../../services/product-data';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../navbar/navbar.component';
 import { FooterComponent } from '../../footer/footer.component';
+import { Store } from '@ngrx/store';
+import { cartProducts, cartProductTotal } from '../products.selectors';
+import { PRODUCT_ACTIONS } from '../products.actions';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
-  imports: [RouterLink, FooterComponent, NavbarComponent,CommonModule,RouterOutlet],
+  imports: [
+    RouterLink,
+    FooterComponent,
+    NavbarComponent,
+    CommonModule,
+    RouterOutlet,
+    MatIconModule,
+  ],
 })
-export class CartComponent implements OnInit {
-  cartProducts: cartProductData[] = [];
-  totalAmount: number = 0;
+export class CartComponent {
+  public cartProducts = this.store.selectSignal(cartProducts);
+  public totalAmount = this.store.selectSignal(cartProductTotal);
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(
+    private router: Router,
+    private store: Store
+  ) {}
 
-  ngOnInit(): void {
-    this.getCartProducts();
-  }
-
-  getCartProducts() {
-    this.cartProducts = this.productService.getCartProducts();
-    this.TotalAmount();
-  }
-
-  TotalAmount() {
-    this.totalAmount = this.cartProducts.reduce((total, product) => {
-      // Use optional chaining to access product.count safely
-      const count = product.count ?? 0;
-      // Convert product.price.amount to a number using parseFloat or Number function
-      const amount = parseFloat(product.price) * count || 0; // Use parseFloat to handle cases where product.price.amount is not a valid number
-      return total + amount;
-    }, 0);
-  }
-
-  removeProduct(product: cartProductData): void {
-    this.productService.removeProductFromCart(product); // Remove product from cart
-    this.getCartProducts(); // Refresh cart products
-    if (this.cartProducts.length === 0) {
-      this.router.navigate(['/empty-cart']);
+  public removeProduct(product: ProductData): void {
+    this.store.dispatch(
+      PRODUCT_ACTIONS.removeProductFromCart({ productId: product.id })
+    );
+    if (!this.cartProducts().length) {
+      this.router.navigateByUrl('/empty-cart');
     }
   }
 
-  incrementCount(id: string) {
-    this.productService.incrementProductCount(id);
-    this.TotalAmount();
+  public incrementCount(id: string) {
+    this.store.dispatch(
+      PRODUCT_ACTIONS.incrementProductCount({ productId: id })
+    );
   }
 
-  decrementCount(id: string) {
-    this.productService.decrementProductCount(id);
-    this.TotalAmount();
-    if (this.cartProducts.length === 0) {
-      this.router.navigate(['/empty-cart']);
+  public decrementCount(id: string) {
+    this.store.dispatch(
+      PRODUCT_ACTIONS.decrementProductCount({ productId: id })
+    );
+    if (this.cartProducts().length === 0) {
+      this.router.navigateByUrl('/empty-cart');
     }
-  }
-
-  redirectToHome() {
-    this.router.navigate(['']);
-  }
-
-  redirectToCheckout() {
-    this.router.navigate(['/checkout']);
   }
 }

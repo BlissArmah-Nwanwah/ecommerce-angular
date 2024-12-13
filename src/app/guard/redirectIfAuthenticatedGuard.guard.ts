@@ -4,17 +4,17 @@ import { select, Store } from '@ngrx/store';
 import { CanActivateFn, Router } from '@angular/router';
 import { isLoggedIn } from '../auth/auth.selectors';
 
-export const authGuard: CanActivateFn = () => {
+export const redirectIfAuthenticatedGuard: CanActivateFn = () => {
   const store = inject(Store);
   const router = inject(Router);
 
   return store.pipe(
     select(isLoggedIn),
     tap(loggedIn => {
-      if (!loggedIn) {
-        router.navigateByUrl('/');
+      if (loggedIn) {
+        router.navigateByUrl('/home');
       }
     }),
-    map(loggedIn => loggedIn)
+    map(loggedIn => !loggedIn)
   );
 };
