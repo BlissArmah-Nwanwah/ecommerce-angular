@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 2.5rem;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   right: 0;
@@ -46,7 +46,7 @@
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 6px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &.auth-dropdown {
     top: 64px;
@@ -68,7 +68,6 @@
 .auth-option-hide {
   display: none;
 }
-
 
 .auth-link {
   color: #000;
@@ -112,7 +111,6 @@ button {
     font-size: 20px;
   }
 }
-
 
 .cart-count {
   background-color: #ff0000;

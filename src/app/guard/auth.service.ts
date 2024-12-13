@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of} from 'rxjs';
-import {Store} from '@ngrx/store';
-import {AUTH_ACTIONS} from '../auth/auth.actions';
-import {environment} from '../../environments/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map, Observable, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AUTH_ACTIONS } from '../auth/auth.actions';
+import { environment } from '../../environments/environment';
 import {
   SignUpRequestData,
   SignUpResponseData,
@@ -11,9 +11,9 @@ import {
   AuthResponseData,
   ValidateTokenResponseData,
 } from '../interfaces/auth.interfaces';
-import {LocalStorageService} from '../services/localstorage.service';
+import { LocalStorageService } from '../services/localstorage.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly authApi = environment.AUTH_API_BASEURL;
 
@@ -21,8 +21,7 @@ export class AuthService {
     private http: HttpClient,
     private store: Store,
     private localStorageService: LocalStorageService
-  ) {
-  }
+  ) {}
 
   public signUp(data: SignUpRequestData): Observable<SignUpResponseData> {
     return this.http.post<SignUpResponseData>(
@@ -32,10 +31,7 @@ export class AuthService {
   }
 
   public logIn(data: LogInRequestData): Observable<AuthResponseData> {
-    return this.http.post<AuthResponseData>(
-      `${this.authApi}/user/login`,
-      data
-    );
+    return this.http.post<AuthResponseData>(`${this.authApi}/user/login`, data);
   }
 
   public validateToken(): Observable<boolean> {

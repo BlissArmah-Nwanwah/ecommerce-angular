@@ -9,7 +9,7 @@ import {
 export const AUTH_ACTIONS = createActionGroup({
   source: 'Auth',
   events: {
-    'Login': props<LogInRequestData>(),
+    Login: props<LogInRequestData>(),
     'Login Success': props<AuthResponseData>(),
     'Update Auth State': props<User>(),
     'Login Failure': props<{ error: string }>(),

@@ -1,5 +1,5 @@
-import {createActionGroup, emptyProps, props} from '@ngrx/store';
-import {CreateProductData, ProductData} from '../services/product-data';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { CreateProductData, ProductData } from '../services/product-data';
 
 export const PRODUCT_ACTIONS = createActionGroup({
   source: 'Product',

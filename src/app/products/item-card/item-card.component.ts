@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import {ActionType, ProductActionEvent, ProductData} from '../../services/product-data';
+import {
+  ActionType,
+  ProductActionEvent,
+  ProductData,
+} from '../../services/product-data';
 
 @Component({
   selector: 'app-item-card',

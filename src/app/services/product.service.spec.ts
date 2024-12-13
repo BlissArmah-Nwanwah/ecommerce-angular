@@ -1,10 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ProductService } from './product.service';
 import { LocalStorageService } from './localstorage.service';
 import { environment } from '../../environments/environment';
-import {mockProducts} from "../utils/utils";
-
+import { mockProducts } from '../utils/utils';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -45,5 +47,4 @@ describe('ProductService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockProducts);
   });
-
 });

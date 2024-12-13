@@ -14,21 +14,28 @@ export const cartProduct = {
 };
 
 export const mockProducts = [
-  {id: '1', title: 'Product 1', price: 100, description: 'Description 1', category: 'Category 1', count: 1},
-  {id: '2', title: 'Product 2', price: 200, description: 'Description 2', category: 'Category 2', count: 1},
+  {
+    id: '1',
+    title: 'Product 1',
+    price: 100,
+    description: 'Description 1',
+    category: 'Category 1',
+    count: 1,
+  },
+  {
+    id: '2',
+    title: 'Product 2',
+    price: 200,
+    description: 'Description 2',
+    category: 'Category 2',
+    count: 1,
+  },
 ];
 
-export function nameValidator(control: any) {
-  const nameRegex = /^[a-zA-Z\s]*$/;
-  if (!nameRegex.test(control.value)) {
-    return {invalidName: true};
-  }
-  return null;
-}
-
-
-
-export function addProductToCart(cartProducts: ProductData[], product: ProductData): ProductData[] {
+export function addProductToCart(
+  cartProducts: ProductData[],
+  product: ProductData
+): ProductData[] {
   const existingProduct = cartProducts.find(item => item.id === product.id);
 
   if (existingProduct) {
@@ -40,18 +47,31 @@ export function addProductToCart(cartProducts: ProductData[], product: ProductDa
   return [...cartProducts, { ...product, count: 1 }];
 }
 
-export function incrementProductCount(cartProducts: ProductData[], productId: string): ProductData[] {
+export function incrementProductCount(
+  cartProducts: ProductData[],
+  productId: string
+): ProductData[] {
   return cartProducts.map(product =>
-    product.id === productId ? { ...product, count: product.count + 1 } : product
+    product.id === productId
+      ? { ...product, count: product.count + 1 }
+      : product
   );
 }
-export function decrementProductCount(cartProducts: ProductData[], productId: string): ProductData[] {
+export function decrementProductCount(
+  cartProducts: ProductData[],
+  productId: string
+): ProductData[] {
   return cartProducts
     .map(product =>
-      product.id === productId ? { ...product, count: product.count - 1 } : product
+      product.id === productId
+        ? { ...product, count: product.count - 1 }
+        : product
     )
     .filter(product => product.count > 0);
 }
-export function removeProductFromCart(cartProducts: ProductData[], productId: string): ProductData[] {
+export function removeProductFromCart(
+  cartProducts: ProductData[],
+  productId: string
+): ProductData[] {
   return cartProducts.filter(product => product.id !== productId);
 }

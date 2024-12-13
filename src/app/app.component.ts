@@ -12,9 +12,7 @@ import { LocalStorageService } from './services/localstorage.service';
 export class AppComponent implements OnInit {
   public title = 'B-commerce';
 
-  constructor(
-    private localStorageService: LocalStorageService
-  ) {}
+  constructor(private localStorageService: LocalStorageService) {}
 
   @HostListener('window:beforeunload', ['$event'])
   public beforeUnload(): void {

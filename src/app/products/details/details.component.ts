@@ -25,18 +25,14 @@ import { LoaderComponent } from '../../loader/loader.component';
 export class DetailsComponent implements OnInit {
   protected selectedProduct = this.store.selectSignal(selectedProduct);
   protected loading = this.store.selectSignal(isProductsLoading);
-  protected id!: string;
 
   constructor(
     private route: ActivatedRoute,
     private store: Store
-  ) {
-    this.id = this.route.snapshot.params['id'];
-  }
+  ) {}
   ngOnInit(): void {
-    this.store.dispatch(
-      PRODUCT_ACTIONS.loadSelectedProduct({ productId: this.id })
-    );
+    const productId = this.route.snapshot.params['id'];
+    this.store.dispatch(PRODUCT_ACTIONS.loadSelectedProduct({ productId }));
   }
 
   public onProductSelectedToCart(product: ProductData | null): void {

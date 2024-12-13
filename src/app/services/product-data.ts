@@ -9,7 +9,7 @@ export interface ProductData {
     rate: number;
     count: number;
   };
-  count:number
+  count: number;
 }
 
 export interface CreateProductData {
@@ -19,11 +19,8 @@ export interface CreateProductData {
   category: string;
 }
 
-
-
-export type ActionType = 'detail' | 'addToCart'
+export type ActionType = 'detail' | 'addToCart';
 export interface ProductActionEvent {
-  type:  ActionType;
+  type: ActionType;
   data: ProductData;
 }
-

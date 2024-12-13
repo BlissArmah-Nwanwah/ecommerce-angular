@@ -72,7 +72,9 @@ describe('SignupComponent', () => {
       password: 'password123',
     });
 
-    authServiceMock.signUp.mockReturnValue(throwError(() => ({ message: 'Sign-up failed' })));
+    authServiceMock.signUp.mockReturnValue(
+      throwError(() => ({ message: 'Sign-up failed' }))
+    );
 
     component.formAction();
 

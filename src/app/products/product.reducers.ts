@@ -1,7 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import { PRODUCT_ACTIONS } from './products.actions';
 import { ProductData } from '../services/product-data';
-import {addProductToCart, incrementProductCount, decrementProductCount, removeProductFromCart} from "../utils/utils";
+import {
+  addProductToCart,
+  incrementProductCount,
+  decrementProductCount,
+  removeProductFromCart,
+} from '../utils/utils';
 
 export interface ProductState {
   products: ProductData[];

@@ -47,7 +47,9 @@ describe('EmptyCartComponent', () => {
 
   it('should render the correct image', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const imgElement = compiled.querySelector('img.empty-cart-image') as HTMLImageElement;
+    const imgElement = compiled.querySelector(
+      'img.empty-cart-image'
+    ) as HTMLImageElement;
     expect(imgElement).not.toBeNull();
     expect(imgElement?.src).toContain('assets/images/empty-cart.png');
     expect(imgElement?.alt).toBe('empty-cart');
@@ -69,7 +71,9 @@ describe('EmptyCartComponent', () => {
 
   it('should render the "Continue Shopping" button with the correct link', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const linkElement = compiled.querySelector('a.continue-shopping-button') as HTMLAnchorElement;
+    const linkElement = compiled.querySelector(
+      'a.continue-shopping-button'
+    ) as HTMLAnchorElement;
     expect(linkElement).not.toBeNull();
     expect(linkElement?.textContent).toBe('Continue Shopping');
     expect(linkElement?.href).toContain('/');

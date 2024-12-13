@@ -12,7 +12,6 @@
     <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <app-custom-input-field
         label="Email"
-        type="email"
         placeholder="Enter your email"
         [control]="getControl('email')"
       />
@@ -24,9 +23,9 @@
         placeholder="Enter your password"
       />
 
-            @if (errorMessage()) {
-              <div class="error">{{ errorMessage() }}</div>
-            }
+      @if (errorMessage()) {
+        <div class="error">{{ errorMessage() }}</div>
+      }
 
       <button
         type="submit"

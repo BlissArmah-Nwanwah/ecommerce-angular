@@ -27,8 +27,10 @@
         <mat-icon (click)="incrementCount(product.id)">add</mat-icon>
       </div>
       <p>FREE</p>
-      <p class="subtotal"> {{ product.price | currency }}</p>
-      <mat-icon class="remove-button" (click)="removeProduct(product)">close</mat-icon>
+      <p class="subtotal">{{ product.price | currency }}</p>
+      <mat-icon class="remove-button" (click)="removeProduct(product)"
+        >close</mat-icon
+      >
     </div>
   }
 

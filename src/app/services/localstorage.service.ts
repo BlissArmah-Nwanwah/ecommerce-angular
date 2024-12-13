@@ -21,11 +21,9 @@ export class LocalStorageService {
     return storedValue ? JSON.parse(storedValue) : null;
   }
 
-
   public removeItems(keys: string[]): void {
     keys.forEach(key => localStorage.removeItem(key));
   }
-
 
   public persistAuthState(authState: any): void {
     this.setItem('auth', authState);
@@ -50,12 +48,10 @@ export class LocalStorageService {
   private authState = this.store.selectSignal(selectAuthState);
   private cartProducts = this.store.selectSignal(cartProducts);
 
-
   public persistState(): void {
     this.persistAuthState(this.authState());
     this.persistCartProducts(this.cartProducts());
   }
-
 
   public initializeState(): void {
     const userProfile = this.getAuthState<User>();

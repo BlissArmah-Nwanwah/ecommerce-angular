@@ -67,7 +67,9 @@ describe('CreateproductmodalComponent', () => {
 
     expect(component.isLoading).toBe(true);
     expect(productServiceMock.createProduct).toHaveBeenCalledWith(formData);
-    expect(storeMock.dispatch).toHaveBeenCalledWith(PRODUCT_ACTIONS.createProduct());
+    expect(storeMock.dispatch).toHaveBeenCalledWith(
+      PRODUCT_ACTIONS.createProduct()
+    );
   });
 
   it('should handle error when ProductService.createProduct fails', () => {
@@ -79,7 +81,9 @@ describe('CreateproductmodalComponent', () => {
     };
     const errorResponse = { message: 'Failed to create product' };
     component.productForm.setValue(formData);
-    productServiceMock.createProduct.mockReturnValue(throwError(() => errorResponse));
+    productServiceMock.createProduct.mockReturnValue(
+      throwError(() => errorResponse)
+    );
 
     component.formSubmit();
 

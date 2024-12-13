@@ -11,10 +11,10 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './custom-input-field.component.scss',
 })
 export class CustomInputFieldComponent {
-  @Input({required: true}) public label!: string;
-  @Input({required: true}) public placeholder!: string;
-  @Input() public type = 'text';
-  @Input({required: true}) public control!: FormControl;
+  @Input({ required: true }) public label!: string;
+  @Input({ required: true }) public placeholder!: string;
+  @Input() public type: 'text' | 'password' = 'text';
+  @Input({ required: true }) public control!: FormControl;
 
   public getError() {
     const errors = this.control.errors;

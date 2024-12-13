@@ -8,7 +8,7 @@ import { PRODUCT_ACTIONS } from '../products.actions';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import {of} from "rxjs";
+import { of } from 'rxjs';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -47,7 +47,7 @@ describe('HomeComponent', () => {
       queryParams: of({}),
     } as unknown as ActivatedRoute;
     await TestBed.configureTestingModule({
-      imports: [HomeComponent,RouterTestingModule],
+      imports: [HomeComponent, RouterTestingModule],
       providers: [
         provideMockStore({ initialState }),
         { provide: SnackbarService, useValue: mockSnackbarService },
@@ -80,7 +80,9 @@ describe('HomeComponent', () => {
 
   it('should open the create product modal', () => {
     component.onToggleCreatProductModal();
-    expect(mockModalService.openModal).toHaveBeenCalledWith('createProductModal');
+    expect(mockModalService.openModal).toHaveBeenCalledWith(
+      'createProductModal'
+    );
   });
 
   it('should navigate to product details on product detail action', () => {
@@ -95,7 +97,8 @@ describe('HomeComponent', () => {
       rating: {
         rate: 2,
         count: 4,
-      },},);
+      },
+    });
     expect(mockRouter.navigateByUrl).toHaveBeenCalledWith('/details/1');
   });
 
@@ -112,9 +115,11 @@ describe('HomeComponent', () => {
       rating: {
         rate: 2,
         count: 4,
-      },},);
+      },
+    });
     expect(dispatchSpy).toHaveBeenCalledWith(
-      PRODUCT_ACTIONS.addProductToCart({ product: {
+      PRODUCT_ACTIONS.addProductToCart({
+        product: {
           id: '1',
           title: 'Product 1',
           price: '100',
@@ -125,8 +130,13 @@ describe('HomeComponent', () => {
           rating: {
             rate: 2,
             count: 4,
-          },}, })
+          },
+        },
+      })
     );
-    expect(mockSnackbarService.openSnackBar).toHaveBeenCalledWith('Item added to cart', 'Close');
+    expect(mockSnackbarService.openSnackBar).toHaveBeenCalledWith(
+      'Item added to cart',
+      'Close'
+    );
   });
 });
